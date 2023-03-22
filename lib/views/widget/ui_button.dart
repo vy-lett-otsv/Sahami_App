@@ -5,7 +5,13 @@ import '../constants/dimens_manager.dart';
 import '../constants/ui_color.dart';
 class UIButton extends StatelessWidget {
   final String text;
-  const UIButton ({super.key, required this.text});
+  final VoidCallback? onPress;
+  final double? size;
+  const UIButton ({super.key,
+    this.onPress,
+    this.size = 20,
+    required this.text
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,11 +22,11 @@ class UIButton extends StatelessWidget {
               padding:
               MaterialStateProperty.all(EdgeInsets.symmetric(
                   horizontal: DimensManager.dimens.setWidth(50),
-                  vertical: DimensManager.dimens.setWidth(20)
+                  vertical: DimensManager.dimens.setWidth(15)
               )),
               textStyle: MaterialStateProperty.all(
-                  const TextStyle(
-                      fontSize: 20,
+                  TextStyle(
+                      fontSize: size,
                       color: Colors.white,
                       fontFamily: Fonts.Outfit)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -29,7 +35,7 @@ class UIButton extends StatelessWidget {
                   )
               )
           ),
-          onPressed: () {},
+          onPressed: onPress,
           child: Text(text)),
     );
   }

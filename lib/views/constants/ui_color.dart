@@ -7,10 +7,10 @@ class UIColors {
   static final Color background = HexColor.fromHex("#F9F9FB");
   static final Color text = HexColor.fromHex("#6E6E6E");
   static final Color star = HexColor.fromHex("#F7DC69");
-
   static final Color label = HexColor.fromHex("#F2F2FF");
   static final Color borderError = HexColor.fromHex("#F23E3E").withOpacity(0.8);
   static final Color errorMessage = HexColor.fromHex("#F23E3E");
+  static final Color lightRed = HexColor.fromHex("#FCA896");
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;
