@@ -13,8 +13,15 @@ class UIStrings {
   static const String search = "Search";
   static const String product = "Product";
   static const String noAccount = "Don’t have an account? ";
+
+  static const String addNewProduct = "Add New Product";
+  static const String addNewImage = "Add new image";
+
+  static const String add = "Add";
   static const String create = "Create";
+
   static const String manageCategory = "Manage Category";
+  static const String manageProduct = "Manage Product";
 
   //product
   static const String product1 = "Cool Lime Physio";

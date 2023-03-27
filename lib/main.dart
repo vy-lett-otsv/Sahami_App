@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/views/screens/auth/login.dart';
 import 'package:get/get.dart';
-import 'package:sahami_app/views/screens/auth/register.dart';
-import 'package:sahami_app/views/screens/manage/manage_create_category_view.dart';
+import 'package:sahami_app/views/screens/manage/manage_create_product_view.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: ManageCreateCategoryView()
+      home: ManageCreateProductView()
     );
   }
 }

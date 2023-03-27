@@ -7,15 +7,27 @@ import 'package:sahami_app/views/widget/ui_button.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_textinput.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
+
+import '../../../data/remote/entity/category_entity.dart';
+import '../../../viewmodel/managers/create_category_view_model.dart';
+
 class ManageCreateCategoryView extends StatefulWidget {
   const ManageCreateCategoryView({Key? key}) : super(key: key);
 
   @override
-  State<ManageCreateCategoryView> createState() => _ManageCreateCategoryViewState();
+  State<ManageCreateCategoryView> createState() =>
+      _ManageCreateCategoryViewState();
 }
 
 class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
-  final controller = TextEditingController();
+  final controllerName = TextEditingController();
+  final controllerNameUpdate = TextEditingController();
+  final CreateCategoryViewModel _createCategoryViewModel =
+      CreateCategoryViewModel();
+
+  void clearText() {
+    controllerName.clear();
+  }
 
   @override
   void initState() {
@@ -26,87 +38,137 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: UITilte(UIStrings.manageCategory, color: UIColors.white)),
-        backgroundColor: UIColors.primary,
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
+        appBar: AppBar(
+          title: const Center(
+              child: UITilte(UIStrings.manageCategory, color: UIColors.white)),
+          backgroundColor: UIColors.primary,
+        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(20)),
           child: Column(
             children: [
-                SizedBox(height: DimensManager.dimens.setHeight(20)),
-                Row(
-                  children: [
-                    Expanded(child: UITextInput(text: "Add new category", controller: controller)),
-                    SizedBox(width: DimensManager.dimens.setWidth(10)),
-                    UIButton(
-                        text: "Add",
-                        size: 18,
-                        onPress: () {
-                          final name = controller.text;
-                          createCategory(name: name);
-                        },
-                    )
-                  ],
-                ),
               SizedBox(height: DimensManager.dimens.setHeight(20)),
-              SingleChildScrollView(
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: DimensManager.dimens.setHeight(10),
-                          vertical: DimensManager.dimens.setWidth(25)
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: UIColors.white,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                UIText("1", size: 18,),
-                                SizedBox(width: DimensManager.dimens.setWidth(20)),
-                                UITilte("Cold Brew Coffee", size: 18, color: UIColors.primary),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-
-                                  },
-                                  child: Icon(Icons.edit, color: UIColors.star,),
-                                ),
-                                SizedBox(width: DimensManager.dimens.setWidth(20)),
-                                GestureDetector(
-                                  onTap: () {
-
-                                  },
-                                  child: Icon(Icons.delete, color: UIColors.lightRed,),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
+              Row(
+                children: [
+                  Expanded(
+                      child: UITextInput(controller: controllerName, text: "")),
+                  SizedBox(width: DimensManager.dimens.setWidth(10)),
+                  UIButton(
+                    text: UIStrings.add,
+                    size: DimensManager.dimens.setHeight(18),
+                    onPress: () {
+                      final category =
+                          CategoryEntity(name: controllerName.text);
+                      _createCategoryViewModel.createCategory(category);
+                      clearText();
+                    },
+                  )
+                ],
+              ),
+              SizedBox(height: DimensManager.dimens.setHeight(20)),
+              Expanded(
+                child: StreamBuilder<List<CategoryEntity>>(
+                  stream: _createCategoryViewModel.readCategory(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong! ${snapshot.hasError}');
+                    } else if (snapshot.hasData) {
+                      final categories = snapshot.data!;
+                      return ListView(
+                        children: categories.map(buildCategory).toList(),
                       );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
                     }
+                  },
                 ),
               )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
-  Future createCategory({required String name}) async {
-    final docCategory = FirebaseFirestore.instance.collection('category');
-  }
-}
 
+  Widget buildCategory(CategoryEntity category) => ListTile(
+      visualDensity: VisualDensity(vertical: DimensManager.dimens.setHeight(5)),
+      title: Text(category.name),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              DimensManager.dimens.setRadius(20))),
+                        ),
+                        content: UITextInput(
+                            text: category.name,
+                            controller: controllerNameUpdate,
+                            colorCusor: UIColors.black),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              _createCategoryViewModel.updateCategory(
+                                  category, controllerNameUpdate.text);
+                              Navigator.pop(context, 'Update');
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: UIColors.primary),
+                            child: UIText('OK', color: UIColors.white),
+                          ),
+                        ],
+                      ));
+            },
+            child: Icon(
+              Icons.edit,
+              color: UIColors.star,
+            ),
+          ),
+          SizedBox(width: DimensManager.dimens.setWidth(20)),
+          GestureDetector(
+            onTap: () {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              DimensManager.dimens.setRadius(20))),
+                        ),
+                        title: const UITilte('Are you sure?'),
+                        content: UIText(
+                            'Do you really want to delete these records? This process cannot be undone.'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: UIColors.white,
+                                side: BorderSide(
+                                    width: 1.0, color: UIColors.primary)),
+                            child: UIText('Cancel'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              final docCat = FirebaseFirestore.instance
+                                  .collection('category')
+                                  .doc(category.id);
+                              docCat.delete();
+                              Navigator.pop(context, 'OK');
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: UIColors.primary),
+                            child: UIText('OK', color: UIColors.white),
+                          ),
+                        ],
+                      ));
+            },
+            child: Icon(
+              Icons.delete,
+              color: UIColors.lightRed,
+            ),
+          )
+        ],
+      ));
+}
