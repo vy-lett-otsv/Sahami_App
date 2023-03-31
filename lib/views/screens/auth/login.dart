@@ -9,7 +9,7 @@ import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../assets/asset_images.dart';
 import '../../constants/ui_color.dart';
 import '../../widget/ui_button.dart';
-import '../../widget/ui_textinput.dart';
+import '../../widget/ui_textinput_icon.dart';
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -73,13 +73,13 @@ Widget _buildHeader() {
 Widget _buildTextField(TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
-      UITextInput(
+      UITextInputIcon(
         text: UIStrings.email,
         icon: Icons.mail,
         controller: email,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
-      UITextInput(
+      UITextInputIcon(
         text: UIStrings.password,
         icon: Icons.key,
         controller: pass,

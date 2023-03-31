@@ -15,7 +15,7 @@ class UIText extends StatelessWidget {
   final TextDecoration decoration;
   final FontWeight fontWeight;
 
-  UIText(
+  const UIText(
       this.text, {
         Key? key,
         this.style,

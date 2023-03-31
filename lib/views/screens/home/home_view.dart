@@ -6,7 +6,7 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 import '../../assets/asset_images.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
-import '../../widget/ui_textinput.dart';
+import '../../widget/ui_textinput_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:get/get.dart';
 class HomeView extends StatefulWidget {
@@ -166,7 +166,7 @@ Widget _buildHeader() {
       children: [
         UITilte(UIStrings.appName, size: 40, color: UIColors.primary),
         SizedBox(height: DimensManager.dimens.setHeight(20)),
-        const UITextInput(
+        const UITextInputIcon(
           text: UIStrings.search,
           icon: Icons.search,
         ),

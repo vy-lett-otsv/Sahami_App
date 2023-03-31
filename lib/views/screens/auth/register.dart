@@ -7,7 +7,7 @@ import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
 import '../../widget/ui_button.dart';
 import '../../widget/ui_text.dart';
-import '../../widget/ui_textinput.dart';
+import '../../widget/ui_textinput_icon.dart';
 import '../home/home_view.dart';
 import 'login.dart';
 class RegisterView extends StatefulWidget {
@@ -67,25 +67,25 @@ Widget _buildLogo() {
 Widget _buildTextField(TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
-      const UITextInput(
+      const UITextInputIcon(
         text: UIStrings.userName,
         icon: Icons.person,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(30)),
-      UITextInput(
+      UITextInputIcon(
         text: UIStrings.email,
         icon: Icons.mail,
         controller: email,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
-      UITextInput(
+      UITextInputIcon(
         text: UIStrings.password,
         icon: Icons.key,
         isPassWordType: true,
         controller: pass,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
-      const UITextInput(
+      const UITextInputIcon(
         text: UIStrings.phone,
         icon: Icons.phone,
       ),

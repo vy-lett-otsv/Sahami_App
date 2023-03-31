@@ -11,6 +11,7 @@ class UIColors {
   static final Color borderError = HexColor.fromHex("#F23E3E").withOpacity(0.8);
   static final Color errorMessage = HexColor.fromHex("#F23E3E");
   static final Color lightRed = HexColor.fromHex("#FCA896");
+  static final Color red = HexColor.fromHex("#D52731");
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;
