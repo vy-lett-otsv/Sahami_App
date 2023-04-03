@@ -48,7 +48,30 @@ class CreateCategoryViewModel extends BaseViewModel {
   }
 
 
-  // int selectedButton = 0;
+  int selectedButton = 0;
+  void setSelectedCategory(int? index) {
+    selectedButton = index?? selectedButton;
+    // updateUI();
+    notifyListeners();
+  }
+
+  bool hasSubmitted = false;
+  @override
+  void onInitView(BuildContext context) {
+    super.onInitView(context);
+    hasSubmitted = false;
+    getAllCategory();
+  }
+
+
+  CategoryEntity? _selected;
+  bool _filterAll = false;
+  bool get filterAll => _filterAll;
+  void initializeCategory(CategoryEntity? entity) {
+    _selected = entity;
+    _filterAll = (_selected == null);
+  }
+
   // void setSelectedButton() {
   //
   // }
