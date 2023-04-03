@@ -1,12 +1,11 @@
 import 'dart:io';
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/widget/bottomsheet_model.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_button_small.dart';
 import 'package:sahami_app/views/widget/ui_label.dart';
@@ -27,28 +26,13 @@ class ManageCreateProductView extends StatefulWidget {
 
 class _ManageCreateProductViewState extends State<ManageCreateProductView> {
   final CreateCategoryViewModel _categoryViewModel = CreateCategoryViewModel();
-  final CreateProductViewModel _productViewModel = CreateProductViewModel();
-  // var _selected = 0;
-  // String selectedFileName = '';
-  // XFile? file;
-  //
-  // _selectFile(bool imageFrom) async {
-  //   file = await ImagePicker().pickImage(
-  //       source: imageFrom ? ImageSource.gallery : ImageSource.camera);
-  //   if (file != null) {
-  //     setState(() {
-  //       selectedFileName = file!.name;
-  //     });
-  //   }
-  //   print(file!.name);
-  // }
+  final CreateProductViewModel _productViewModelViewModel = CreateProductViewModel();
 
   @override
   void initState() {
     super.initState();
     DimensManager();
     _categoryViewModel.getAllCategory();
-    _productViewModel.updateUI();
   }
 
   @override
@@ -56,7 +40,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => _categoryViewModel),
-        ChangeNotifierProvider(create: (_) => _productViewModel),
+        ChangeNotifierProvider(create: (_) => _categoryViewModel),
       ],
       child: Scaffold(
           appBar: AppBar(
@@ -69,43 +53,43 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
               padding: EdgeInsets.symmetric(
                   horizontal: DimensManager.dimens.setWidth(20),
                   vertical: DimensManager.dimens.setHeight(10)),
-              child: Consumer<CreateProductViewModel>(
-                builder: (_, product, __) {
-                  return Column(
-                    children: [
-                      _buildAddImage(product),
-                      SizedBox(height: DimensManager.dimens.setHeight(10)),
-                      _buildBasicInf(),
-                      SizedBox(height: DimensManager.dimens.setHeight(10)),
-                      Consumer<CreateCategoryViewModel>(
-                        builder: (_, category, __) {
-                          return _buildCategory(category, product);
-                        },
-                      ),
-                      SizedBox(height: DimensManager.dimens.setHeight(10)),
-                      _buildInfNutri(),
-                      SizedBox(height: DimensManager.dimens.setHeight(20)),
-                      const UIButtonPrimary(text: "Create Product"),
-                      SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    ],
-                  );
-                },
+              child: Column(
+                children: [
+                  Consumer<CreateProductViewModel>(
+                    builder: (_, product, __) {
+                      return _buildAddImage(product);
+                    },
+                  ),
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  _buildBasicInf(),
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  Consumer<CreateCategoryViewModel>(
+                    builder: (_, category, __) {
+                      return _buildCategory(category);
+                    },
+                  ),
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  _buildInfNutri(),
+                  SizedBox(height: DimensManager.dimens.setHeight(20)),
+                  const UIButtonPrimary(text: "Create Product"),
+                  SizedBox(height: DimensManager.dimens.setHeight(20)),
+                ],
               ),
             ),
           )),
     );
   }
 
-  Widget _buildAddImage(CreateProductViewModel product) {
+  Widget _buildAddImage(CreateProductViewModel productViewModel) {
     return GestureDetector(
       onTap: () {
-        _buildAddImageBottomSheet(product);
+        _buildAddImageBottomSheet(productViewModel);
       },
       child: Container(
         padding: EdgeInsets.symmetric(
             horizontal: DimensManager.dimens.setWidth(20),
             vertical: DimensManager.dimens.setHeight(10)),
-        child: product.selectedFileName.isEmpty
+        child: productViewModel.selectedFileName.isEmpty
             ? Container(
           decoration: BoxDecoration(
             borderRadius:
@@ -128,7 +112,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.file(File(product.file!.path),
+              child: Image.file(File(productViewModel.file!.path),
                   width: DimensManager.dimens.setWidth(100),
                   height: DimensManager.dimens.setHeight(100),
                   fit: BoxFit.cover),
@@ -139,33 +123,6 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
         ),
       ),
     );
-  }
-
-  void _buildAddImageBottomSheet(CreateProductViewModel product) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_camera),
-                title: const UIText("Camera"),
-                onTap: () {
-                  product.selectFile(false);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const UIText("Gallery"),
-                onTap: () {
-                  product.selectFile(true);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
   }
 
   Widget _buildBasicInf() {
@@ -197,7 +154,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
     );
   }
 
-  Widget _buildCategory(CreateCategoryViewModel category, CreateProductViewModel product) {
+  Widget _buildCategory(CreateCategoryViewModel category){
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: DimensManager.dimens.setWidth(20),
@@ -219,7 +176,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
               color: UIColors.text,
             ),
             onTap: () {
-              _buildCategoryBottomSheet(category, product);
+              BottomSheetDialog.showCategoryDialog(context: context);
             },
           )
         ],
@@ -284,64 +241,30 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
     );
   }
 
-  Future<void> _buildCategoryBottomSheet(CreateCategoryViewModel category, CreateProductViewModel product) {
-    // var valueProvider = Provider.of<CreateCategoryViewModel>(context, listen: false);
-    return showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(DimensManager.dimens.setRadius(20)))),
+  void _buildAddImageBottomSheet(CreateProductViewModel productViewModel) {
+    showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Column(
+          return Wrap(
             children: [
-              _buildHeaderBottomSheet(),
-              Expanded(child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                    return ListView.builder(
-                        itemCount: category.categories.length,
-                        itemBuilder: (context, index) {
-                          final itemCategory = category.categories[index];
-                          return RadioListTile(
-                            controlAffinity: ListTileControlAffinity.trailing,
-                            groupValue: product.selected,
-                            title: Text(itemCategory.name),
-                            onChanged: (value) {
-                              // setState(() {
-                              //   product.selected = value;
-                              //   print("Hi ${itemCategory.id}");
-                              // });
-                              product.setSelectedCategory(value);
-                            },
-                            value: index,
-                          );
-                        });
-                  }))
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const UIText("Camera"),
+                onTap: () {
+                  productViewModel.selectFile(false);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const UIText("Gallery"),
+                onTap: () {
+                  productViewModel.selectFile(true);
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           );
         });
-  }
-
-  Widget _buildHeaderBottomSheet() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context, '');
-                },
-                icon: const Icon(Icons.keyboard_arrow_left_rounded, size: 24),
-              ),
-              const UITilte(UIStrings.category),
-              const SizedBox(width: 44),
-            ],
-          ),
-        ),
-        Divider(color: UIColors.text),
-      ],
-    );
   }
 }
