@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class UITextInput extends StatelessWidget {
   final String textDisplay;
@@ -13,7 +14,7 @@ class UITextInput extends StatelessWidget {
         this.color = const Color(0xFF82AA06),
         this.colorCursor = const Color(0xFFFFFFFF),
         this.isPassWordType = false,
-        this.controller
+        this.controller,
       });
 
   @override

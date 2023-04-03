@@ -5,7 +5,7 @@ import '../../assets/asset_images.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
-import '../../widget/ui_button.dart';
+import '../../widget/ui_button_primary.dart';
 import '../../widget/ui_text.dart';
 import '../../widget/ui_textinput_icon.dart';
 import '../home/home_view.dart';
@@ -96,7 +96,7 @@ Widget _buildTextField(TextEditingController email, TextEditingController pass) 
 Widget _buildSignUp(BuildContext context, TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
-      UIButton(text: UIStrings.logup,
+      UIButtonPrimary(text: UIStrings.logup,
       onPress: () {
         FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email.text,

@@ -8,7 +8,7 @@ import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../assets/asset_images.dart';
 import '../../constants/ui_color.dart';
-import '../../widget/ui_button.dart';
+import '../../widget/ui_button_primary.dart';
 import '../../widget/ui_textinput_icon.dart';
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -92,7 +92,7 @@ Widget _buildTextField(TextEditingController email, TextEditingController pass) 
 Widget _buildLogin(BuildContext context, TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
-      UIButton(text: UIStrings.login,
+      UIButtonPrimary(text: UIStrings.login,
           onPress: () {
             FirebaseAuth.instance.signInWithEmailAndPassword(
                 email: email.text,

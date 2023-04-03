@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import 'package:sahami_app/views/widget/ui_button.dart';
+import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_textinput.dart';
 import 'package:sahami_app/views/widget/ui_textinput_icon.dart';
@@ -73,7 +73,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
       children: [
         Expanded(child: UITextInputIcon(controller: _controllerName, text: "")),
         SizedBox(width: DimensManager.dimens.setWidth(10)),
-        UIButton(
+        UIButtonPrimary(
           text: UIStrings.add,
           size: DimensManager.dimens.setHeight(18),
           onPress: () {
@@ -155,7 +155,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: UIColors.primary
                 ),
-                child: UIText(UIStrings.ok, color: UIColors.white),
+                child: const UIText(UIStrings.ok, color: UIColors.white),
               )
             ],
           );
@@ -171,7 +171,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
             borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
           ),
           title: const UITilte(UIStrings.titleConfirm),
-          content: UIText(UIStrings.confirmDelete),
+          content: const UIText(UIStrings.confirmDelete),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
@@ -190,7 +190,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: UIColors.primary
               ),
-              child: UIText(UIStrings.ok, color: UIColors.white),
+              child: const UIText(UIStrings.ok, color: UIColors.white),
             )
           ],
         )

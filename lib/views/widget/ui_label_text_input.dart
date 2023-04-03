@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import '../../enums/fonts.dart';
-import '../constants/dimens_manager.dart';
 import '../constants/ui_color.dart';
 
 class UILabelTextInput extends StatelessWidget {
@@ -9,9 +8,10 @@ class UILabelTextInput extends StatelessWidget {
   final TextEditingController? controller;
   final bool? notNull;
   final String? unit;
+  final bool? inputNumber;
 
   const UILabelTextInput(
-      {super.key, required this.title, this.controller, this.notNull = true, this.unit = ''});
+      {super.key, required this.title, this.controller, this.notNull = true, this.unit = '', this.inputNumber = false});
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +56,18 @@ class UILabelTextInput extends StatelessWidget {
             ),)
           ],
         ),
+        inputNumber == false ?
         TextField(
           controller: controller,
           cursorColor: UIColors.text,
+        )
+        : TextField(
+          controller: controller,
+          cursorColor: UIColors.text,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          keyboardType: TextInputType.number,
         )
       ],
     );

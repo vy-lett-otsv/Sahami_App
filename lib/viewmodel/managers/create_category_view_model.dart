@@ -41,11 +41,27 @@ class CreateCategoryViewModel extends BaseViewModel {
     getAllCategory();
   }
 
-  // late final List<Map>
+  Future<CategoryEntity> fetchCategory(int index) async{
+    final querySnapshot = await FirebaseFirestore.instance.collection('category').orderBy('name').get();
+    final cats = querySnapshot.docs.map((doc) => CategoryEntity.fromJson(doc.data())).toList().elementAt(index);
+    return cats;
+  }
 
-  // Future<CategoryEntity> fetchCategory(int index) async {
-  //   return CategoryEntity.fromJson(categories[index]);
+
+  // int selectedButton = 0;
+  // void setSelectedButton() {
+  //
   // }
 
-  ChangeNotifier a = ChangeNotifier();
+  // int selectedButton = 0; //giữ giá trị của nút radio nào được chọn
+  // String liked = ' ';
+  // CategoryEntity categoryEntity = CategoryEntity(name: '');
+  //
+  // void setSelectedButton(int? index) async{
+  //   selectedButton = index?? selectedButton;
+  //   CategoryEntity response = await fetchCategory(selectedButton);
+  //   categoryEntity = CategoryEntity(name: response.name);
+  //   liked = response.name;
+  //   notifyListeners();
+  // }
 }

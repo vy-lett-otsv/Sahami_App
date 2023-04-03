@@ -25,6 +25,8 @@ class UIStrings {
   static const String search = "Search";
   static const String ok = "OK";
   static const String cancel = "Cancel";
+  static const String edit = "Edit";
+  static const String delete = "Delete";
 
   static const String manageCategory = "Manage Category";
   static const String manageProduct = "Manage Product";
@@ -40,10 +42,15 @@ class UIStrings {
   static const String sugars = "Sugars";
   static const String caffeine = "Caffeine";
 
+  //unit
   static const String kcal = "kcal";
   static const String g = "g";
   static const String mg = "mg";
   static const String vnd = "VND";
+
+  static const String inKcal = "(kcal)";
+  static const String inG = "(g)";
+  static const String inMg = "(mg)";
 
   static const String notYet = "Chưa có";
 

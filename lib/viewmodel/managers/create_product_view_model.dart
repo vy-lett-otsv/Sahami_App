@@ -1,32 +1,32 @@
-import 'dart:html';
-import 'dart:ui';
-
-import 'package:sahami_app/data/remote/entity/category_entity.dart';
-import 'package:sahami_app/viewmodel/managers/create_category_view_model.dart';
-
 import '../base_view_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cross_file/cross_file.dart';
 
 class CreateProductViewModel extends BaseViewModel{
-  final CreateCategoryViewModel categoryViewModel = CreateCategoryViewModel();
-  late int selectedButton;
-  late TextStyle? _style;
-  late CategoryEntity _categoryEntity;
-  late int liked;
-  int get totalResponses => categoryViewModel.categories.length;
+  final int _selected = 0;
+  int get selected => _selected;
 
+  String selectedFileName = '';
+  XFile? file;
 
-
-  TextStyle get style => _style ?? TextStyle();
-
-  CreateProductViewModel() {
-    selectedButton = 0;
-    liked = 0;
-    _categoryEntity = CategoryEntity(name: ' ');
-
+  @override
+  void updateUI() {
+    super.updateUI();
+  }
+  selectFile(bool imageFrom) async {
+    file = await ImagePicker().pickImage(
+        source: imageFrom ? ImageSource.gallery : ImageSource.camera);
+    if (file != null) {
+        selectedFileName = file!.name;
+        notifyListeners();
+    }
+    print(file!.name);
   }
 
-  void setSelectedButton(int? index) async {
-    selectedButton = index ?? selectedButton;
-
+  int selectedButton = 0;
+  void setSelectedCategory(int? index) {
+    selectedButton = index?? selectedButton;
+    // updateUI();
+    notifyListeners();
   }
 }
