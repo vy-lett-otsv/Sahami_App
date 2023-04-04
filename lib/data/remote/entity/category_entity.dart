@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class CategoryEntity {
-  String id;
-  final String name;
+  String categoryId;
+  final String categoryName;
 
-  CategoryEntity({this.id = '', required this.name});
+  CategoryEntity({this.categoryId = '', required this.categoryName});
 
-  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+  Map<String, dynamic> toJson() => {'id': categoryId, 'name': categoryName};
 
   //
   // static CategoryEntity fromJson(Map<String, dynamic> json) => CategoryEntity(
@@ -15,8 +13,8 @@ class CategoryEntity {
   // );
   factory CategoryEntity.fromJson(Map<String, dynamic> json) {
     return CategoryEntity(
-      id: json['id'],
-      name: json['name'],
+      categoryId: json['id'],
+      categoryName: json['name'],
     );
   }
 }

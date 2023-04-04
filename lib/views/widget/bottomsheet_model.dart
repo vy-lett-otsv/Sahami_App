@@ -18,7 +18,6 @@ class BottomSheetDialog {
   static Future<void> showCategoryDialog({
     required BuildContext context,
     CategoryEntity? entity,
-    Function(CategoryEntity?)? onSelectCategory,
   }) {
     CreateCategoryViewModel dialogViewModel = CreateCategoryViewModel()
     ..onInitView(context)
@@ -62,10 +61,12 @@ class BottomSheetDialog {
                               return RadioListTile(
                                 controlAffinity: ListTileControlAffinity.trailing,
                                 groupValue: category.selectedButton,
-                                title: Text(itemCategory.name),
+                                title: Text(itemCategory.categoryName),
                                 onChanged: (value) {
                                   category.setSelectedCategory(value);
-                                  print("Hi ${itemCategory.id}");
+                                  print("Hi ${itemCategory.categoryId}");
+                                  print("Hello ${category.selectedCategoryName}");
+                                  // Navigator.pop(context, category.selectedCategoryName);
                                 },
                                 value: index,
                               );

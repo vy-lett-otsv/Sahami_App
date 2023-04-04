@@ -22,7 +22,7 @@ class CreateCategoryViewModel extends BaseViewModel {
 
   Future<void> createCategory(CategoryEntity category, TextEditingController controllerName) async {
     final docCategory = FirebaseFirestore.instance.collection('category').doc();
-    category.id = docCategory.id;
+    category.categoryId = docCategory.id;
     final json = category.toJson();
     await docCategory.set(json);
     clearText(controllerName);
@@ -30,13 +30,13 @@ class CreateCategoryViewModel extends BaseViewModel {
   }
 
   Future<void> updateCategory(CategoryEntity category, String text) async {
-    final docCategory = FirebaseFirestore.instance.collection('category').doc(category.id);
+    final docCategory = FirebaseFirestore.instance.collection('category').doc(category.categoryId);
     await docCategory.update({'name': text});
     getAllCategory();
   }
 
   Future<void> deleteCategory(CategoryEntity category) async {
-    final docCategory = FirebaseFirestore.instance.collection('category').doc(category.id);
+    final docCategory = FirebaseFirestore.instance.collection('category').doc(category.categoryId);
     await docCategory.delete();
     getAllCategory();
   }
@@ -49,8 +49,16 @@ class CreateCategoryViewModel extends BaseViewModel {
 
 
   int selectedButton = 0;
+  var _selectedCategoryId = " ";
+  get selectedCategoryId => _selectedCategoryId;
+  String _selectedCategoryName = " ";
+  String get selectedCategoryName => _selectedCategoryName;
+
   void setSelectedCategory(int? index) {
     selectedButton = index?? selectedButton;
+    final categoryIndex = categories[index!];
+    _selectedCategoryId = categoryIndex.categoryId;
+    _selectedCategoryName = categoryIndex.categoryName;
     // updateUI();
     notifyListeners();
   }
@@ -63,7 +71,6 @@ class CreateCategoryViewModel extends BaseViewModel {
     getAllCategory();
   }
 
-
   CategoryEntity? _selected;
   bool _filterAll = false;
   bool get filterAll => _filterAll;
@@ -72,19 +79,8 @@ class CreateCategoryViewModel extends BaseViewModel {
     _filterAll = (_selected == null);
   }
 
-  // void setSelectedButton() {
-  //
-  // }
+  // final itemCategory = categories.elementAt(index);
 
-  // int selectedButton = 0; //giữ giá trị của nút radio nào được chọn
-  // String liked = ' ';
-  // CategoryEntity categoryEntity = CategoryEntity(name: '');
-  //
-  // void setSelectedButton(int? index) async{
-  //   selectedButton = index?? selectedButton;
-  //   CategoryEntity response = await fetchCategory(selectedButton);
-  //   categoryEntity = CategoryEntity(name: response.name);
-  //   liked = response.name;
-  //   notifyListeners();
-  // }
+
+
 }

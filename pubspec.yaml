@@ -48,6 +48,7 @@ dependencies:
   google_sign_in: ^4.5.1
   cross_file: ^0.3.3+4
   image_picker: ^0.8.7+1
+  firebase_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:

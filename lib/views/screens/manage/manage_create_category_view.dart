@@ -77,7 +77,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
           text: UIStrings.add,
           size: DimensManager.dimens.setHeight(18),
           onPress: () {
-            final category = CategoryEntity(name: _controllerName.text);
+            final category = CategoryEntity(categoryName: _controllerName.text);
             _categoryViewModel.createCategory(category, _controllerName);
             FocusManager.instance.primaryFocus?.unfocus();
           },
@@ -94,7 +94,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
             itemBuilder: (context, index) {
               final itemCategory = category.categories[index];
               return ListTile(
-                title: Text(itemCategory.name),
+                title: Text(itemCategory.categoryName),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -125,7 +125,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
   }
 
   Future<void> _buildDialogEdit(BuildContext context, CategoryEntity itemCategory, CreateCategoryViewModel category) {
-    print(itemCategory.name);
+    print(itemCategory.categoryName);
     // print(_controllerNameUpdate.text);
     return showDialog(
         context: context,
@@ -135,7 +135,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
               borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
             ),
             content:
-            UITextInput(textDisplay: itemCategory.name, colorCursor: UIColors.black, controller: _controllerNameUpdate, color: UIColors.black),
+            UITextInput(textDisplay: itemCategory.categoryName, colorCursor: UIColors.black, controller: _controllerNameUpdate, color: UIColors.black),
             // UITextInput(text: itemCategory.name, colorCursor: UIColors.black, color: UIColors.black),
             actions: <Widget>[
               ElevatedButton(

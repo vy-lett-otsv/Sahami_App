@@ -1,3 +1,8 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
+import 'package:sahami_app/viewmodel/managers/create_category_view_model.dart';
 import '../base_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cross_file/cross_file.dart';
@@ -23,10 +28,34 @@ class CreateProductViewModel extends BaseViewModel{
     print(file!.name);
   }
 
-  int selectedButton = 0;
-  void setSelectedCategory(int? index) {
-    selectedButton = index?? selectedButton;
-    // updateUI();
-    notifyListeners();
+
+  String _imageUrl = " ";
+  String get imageUrl => _imageUrl;
+
+  CreateCategoryViewModel categoryViewModel = CreateCategoryViewModel();
+  Future<void> createProduct(ProductEntity product) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child('product').child('/${file!.name}');
+      _imageUrl = await ref.getDownloadURL();
+      print('Upload image url$_imageUrl');
+      final docProduct = FirebaseFirestore.instance.collection('product').doc();
+      product.productId = docProduct.id;
+      product.image = _imageUrl;
+      product.categoryId = categoryViewModel.selectedCategoryId;
+      final json = product.toJson();
+      await docProduct.set(json);
+
+    } catch (e) {
+      print(e);
+    }
+    // clearText(controllerName);
+    // getAllCategory();
   }
+
+  void setTest() async{
+    final docProduct = FirebaseFirestore.instance;
+    await docProduct.collection("product").doc("image").set({"name": "Chicago"});
+  }
+
 }

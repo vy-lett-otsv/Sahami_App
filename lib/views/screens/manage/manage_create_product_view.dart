@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
@@ -15,7 +16,6 @@ import '../../../viewmodel/managers/create_category_view_model.dart';
 import '../../../viewmodel/managers/create_product_view_model.dart';
 import '../../widget/bottomsheet_model.dart';
 
-
 class ManageCreateProductView extends StatefulWidget {
   const ManageCreateProductView({Key? key}) : super(key: key);
 
@@ -27,6 +27,15 @@ class ManageCreateProductView extends StatefulWidget {
 class _ManageCreateProductViewState extends State<ManageCreateProductView> {
   final CreateCategoryViewModel _categoryViewModel = CreateCategoryViewModel();
   final CreateProductViewModel _productViewModel = CreateProductViewModel();
+  final _controllerName = TextEditingController();
+  final _controllerPrice = TextEditingController();
+  final _controllerDes = TextEditingController();
+  final _controllerServingSize = TextEditingController();
+  final _controllerSaturatedFat = TextEditingController();
+  final _controllerProtein = TextEditingController();
+  final _controllerSodium = TextEditingController();
+  final _controllerSugar = TextEditingController();
+  final _controllerCaffeine = TextEditingController();
 
   @override
   void initState() {
@@ -53,27 +62,42 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
               padding: EdgeInsets.symmetric(
                   horizontal: DimensManager.dimens.setWidth(20),
                   vertical: DimensManager.dimens.setHeight(10)),
-              child: Column(
-                children: [
-                  Consumer<CreateProductViewModel>(
-                    builder: (_, product, __) {
-                      return _buildAddImage(product);
-                    },
-                  ),
-                  SizedBox(height: DimensManager.dimens.setHeight(10)),
-                  _buildBasicInf(),
-                  SizedBox(height: DimensManager.dimens.setHeight(10)),
-                  Consumer<CreateCategoryViewModel>(
-                    builder: (_, category, __) {
-                      return _buildCategory(category);
-                    },
-                  ),
-                  SizedBox(height: DimensManager.dimens.setHeight(10)),
-                  _buildInfNutri(),
-                  SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  const UIButtonPrimary(text: "Create Product"),
-                  SizedBox(height: DimensManager.dimens.setHeight(20)),
-                ],
+              child: Consumer<CreateProductViewModel>(
+                builder: (_, product, __) {
+                  return Column(
+                    children: [
+                      _buildAddImage(product),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      _buildBasicInf(),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      Consumer<CreateCategoryViewModel>(
+                        builder: (_, category, __) {
+                          return _buildCategory(category);
+                        },
+                      ),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      _buildInfNutri(),
+                      SizedBox(height: DimensManager.dimens.setHeight(20)),
+                      Consumer<CreateCategoryViewModel>(
+                        builder: (_, category, __) {
+                          return UIButtonPrimary(
+                              text: "Create Product",
+                              onPress: () {
+                                final productEntity = ProductEntity(
+                                  productName: _controllerName.text,
+                                  description: _controllerDes.text,
+                                  price: double.parse(_controllerPrice.text),
+                                );
+                                _productViewModel.createProduct(productEntity);
+                                // _productViewModel.setTest();
+                              });
+                        },
+                      ),
+                      SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    ],
+                  );
+                },
+                // child:
               ),
             ),
           )),
@@ -85,43 +109,56 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
       onTap: () {
         _buildAddImageBottomSheet(productViewModel);
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(20),
-            vertical: DimensManager.dimens.setHeight(10)),
-        child: productViewModel.selectedFileName.isEmpty
-            ? Container(
-          decoration: BoxDecoration(
-            borderRadius:
-            BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-            color: UIColors.white,
-          ),
-          child: Row(
-            children: [
-              Image.asset(AssetIcons.iconAddImage,
-                  width: DimensManager.dimens.setWidth(50)),
-              SizedBox(
-                width: DimensManager.dimens.setWidth(10),
+      child: productViewModel.selectedFileName.isEmpty
+          ? Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: DimensManager.dimens.setWidth(20),
+                  vertical: DimensManager.dimens.setHeight(10)),
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(DimensManager.dimens.setRadius(10)),
+                color: UIColors.white,
               ),
-              const UIText(UIStrings.addNewImage)
-            ],
-          ),
-        )
-            : Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.file(File(productViewModel.file!.path),
-                  width: DimensManager.dimens.setWidth(100),
-                  height: DimensManager.dimens.setHeight(100),
-                  fit: BoxFit.cover),
+              child: Row(
+                children: [
+                  Image.asset(AssetIcons.iconAddImage,
+                      width: DimensManager.dimens.setWidth(50)),
+                  SizedBox(
+                    width: DimensManager.dimens.setWidth(10),
+                  ),
+                  const UIText(UIStrings.addNewImage)
+                ],
+              ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(File(productViewModel.file!.path),
+                      width: DimensManager.dimens.setWidth(100),
+                      height: DimensManager.dimens.setHeight(100),
+                      fit: BoxFit.cover),
+                ),
+                SizedBox(
+                  width: DimensManager.dimens.setWidth(20),
+                ),
+                Row(
+                  children: [
+                    UIButtonSmall(
+                      text: UIStrings.edit,
+                      onPress: () {
+                        _buildAddImageBottomSheet(productViewModel);
+                      },
+                    ),
+                    SizedBox(
+                      width: DimensManager.dimens.setWidth(10),
+                    ),
+                    const UIButtonSmall(text: UIStrings.delete),
+                  ],
+                )
+              ],
             ),
-            const UIButtonSmall(text: UIStrings.edit),
-            const UIButtonSmall(text: UIStrings.delete),
-          ],
-        ),
-      ),
     );
   }
 
@@ -136,25 +173,28 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
       ),
       child: Column(
         children: [
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.name,
+            controller: _controllerName,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.price,
             unit: UIStrings.vnd,
             inputNumber: true,
+            controller: _controllerPrice,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.des,
+            controller: _controllerDes,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCategory(CreateCategoryViewModel category){
+  Widget _buildCategory(CreateCategoryViewModel category) {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: DimensManager.dimens.setWidth(20),
@@ -168,7 +208,9 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
         children: [
           const UILabel(title: UIStrings.category),
           const Spacer(),
-          const UIText(UIStrings.notYet),
+          category.selectedCategoryName == " "
+              ? const UIText(UIStrings.notYet)
+              : UIText(category.selectedCategoryName),
           GestureDetector(
             child: Icon(
               Icons.keyboard_arrow_right_rounded,
