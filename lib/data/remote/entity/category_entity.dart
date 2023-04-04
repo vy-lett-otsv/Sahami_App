@@ -1,8 +1,8 @@
 class CategoryEntity {
   String categoryId;
-  final String categoryName;
+  String categoryName;
 
-  CategoryEntity({this.categoryId = '', required this.categoryName});
+  CategoryEntity({this.categoryId = '', this.categoryName = ' '});
 
   Map<String, dynamic> toJson() => {'id': categoryId, 'name': categoryName};
 

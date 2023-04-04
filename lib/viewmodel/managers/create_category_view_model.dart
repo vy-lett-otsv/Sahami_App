@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sahami_app/viewmodel/base_view_model.dart';
+import 'package:sahami_app/views/widget/bottomsheet_model.dart';
 import '../../data/remote/entity/category_entity.dart';
 
 class CreateCategoryViewModel extends BaseViewModel {
@@ -47,6 +48,9 @@ class CreateCategoryViewModel extends BaseViewModel {
     return cats;
   }
 
+  CategoryEntity? _category;
+  CategoryEntity? get category => _category;
+
 
   int selectedButton = 0;
   var _selectedCategoryId = " ";
@@ -62,6 +66,9 @@ class CreateCategoryViewModel extends BaseViewModel {
     // updateUI();
     notifyListeners();
   }
+
+
+
 
   bool hasSubmitted = false;
   @override

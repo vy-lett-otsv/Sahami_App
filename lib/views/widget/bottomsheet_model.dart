@@ -15,14 +15,15 @@ class BottomSheetDialog {
       )
   );
 
-  static Future<void> showCategoryDialog({
+  static Future<String?> showCategoryDialog({
     required BuildContext context,
     CategoryEntity? entity,
+    Function(String)? getNameCategory,
   }) {
     CreateCategoryViewModel dialogViewModel = CreateCategoryViewModel()
     ..onInitView(context)
     ..initializeCategory(entity);
-    return showModalBottomSheet<CategoryEntity?>(
+    return showModalBottomSheet<String?>(
         shape: shape,
         context: context,
         builder: (_) {
@@ -64,9 +65,9 @@ class BottomSheetDialog {
                                 title: Text(itemCategory.categoryName),
                                 onChanged: (value) {
                                   category.setSelectedCategory(value);
-                                  print("Hi ${itemCategory.categoryId}");
                                   print("Hello ${category.selectedCategoryName}");
-                                  // Navigator.pop(context, category.selectedCategoryName);
+                                  getNameCategory?.call(category.selectedCategoryName);
+                                  Navigator.of(context).pop(category.selectedCategoryName);
                                 },
                                 value: index,
                               );

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sahami_app/data/remote/entity/category_entity.dart';
 import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
@@ -36,11 +37,13 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
   final _controllerSodium = TextEditingController();
   final _controllerSugar = TextEditingController();
   final _controllerCaffeine = TextEditingController();
+  late TextEditingController _categoryController;
 
   @override
   void initState() {
     super.initState();
     DimensManager();
+    _categoryController = TextEditingController();
     _categoryViewModel.getAllCategory();
   }
 
@@ -72,7 +75,10 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
                       SizedBox(height: DimensManager.dimens.setHeight(10)),
                       Consumer<CreateCategoryViewModel>(
                         builder: (_, category, __) {
-                          return _buildCategory(category);
+                          return _buildCategory(
+                            controller: _categoryController,
+                            categoryViewModel: category
+                          );
                         },
                       ),
                       SizedBox(height: DimensManager.dimens.setHeight(10)),
@@ -89,7 +95,6 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
                                   price: double.parse(_controllerPrice.text),
                                 );
                                 _productViewModel.createProduct(productEntity);
-                                // _productViewModel.setTest();
                               });
                         },
                       ),
@@ -194,7 +199,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
     );
   }
 
-  Widget _buildCategory(CreateCategoryViewModel category) {
+  Widget _buildCategory({required TextEditingController controller, required CreateCategoryViewModel categoryViewModel}) {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: DimensManager.dimens.setWidth(20),
@@ -208,17 +213,31 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
         children: [
           const UILabel(title: UIStrings.category),
           const Spacer(),
-          category.selectedCategoryName == " "
-              ? const UIText(UIStrings.notYet)
-              : UIText(category.selectedCategoryName),
+          UIText(
+              controller.text.isEmpty
+                  ? UIStrings.notYet
+                  :controller.text
+          ),
+          // controller.text = " "
+          //     ? const UIText(UIStrings.notYet)
+          //     : UIText(_text),
           GestureDetector(
             child: Icon(
               Icons.keyboard_arrow_right_rounded,
               size: 24,
               color: UIColors.text,
             ),
-            onTap: () {
-              BottomSheetDialog.showCategoryDialog(context: context);
+            onTap: () async {
+              final result = await BottomSheetDialog.showCategoryDialog(
+                  context: context,
+              );
+              if(result!=null) {
+                controller.text = result;
+                print("Tesst thuwr" + controller.text);
+              }
+              setState(() {
+                _categoryController.text = result!;
+              });
             },
           )
         ],
