@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
+import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
+import 'package:sahami_app/views/screens/manage/product_home_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 
 class NavigationServices {
@@ -20,6 +22,8 @@ class NavigationServices {
   static const String SPLASH_PROGRESS_ROUTE = "/SPLASH_PROGRESS_ROUTE";
   static const String HOME_ROUTE = "/HOME_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
+  static const String PRODUCT_HOME_VIEW_ROUTE = "/PRODUCT_HOME_VIEW_ROUTE";
+  static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
 
@@ -31,6 +35,10 @@ class NavigationServices {
         return MaterialPageRoute(builder: (_) => MainView());
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => StatisticsView());
+      case PRODUCT_HOME_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => ProductHomeView());
+      case PRODUCT_CREATE_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => ProductCreateView());
       default:
         return MaterialPageRoute(builder: (_) => SplashView());
     }
@@ -38,5 +46,11 @@ class NavigationServices {
 
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, HOME_ROUTE, (route) => false);
+  }
+  void navigationToProductHomeScreen(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, PRODUCT_HOME_VIEW_ROUTE, (route) => false);
+  }
+  void navigationToProductCreateScreen(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, PRODUCT_CREATE_VIEW_ROUTE, (route) => false);
   }
 }

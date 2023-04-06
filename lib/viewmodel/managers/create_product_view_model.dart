@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/viewmodel/managers/create_category_view_model.dart';
 import '../base_view_model.dart';
@@ -33,29 +34,30 @@ class CreateProductViewModel extends BaseViewModel{
   String get imageUrl => _imageUrl;
 
   CreateCategoryViewModel categoryViewModel = CreateCategoryViewModel();
-  Future<void> createProduct(ProductEntity product) async {
+  Future<void> createProduct(ProductEntity product, String categoryId) async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child('product').child('/${file!.name}');
+      UploadTask uploadTask = ref.putFile(File(file!.path));
+      await uploadTask.whenComplete(() => null);
       _imageUrl = await ref.getDownloadURL();
       print('Upload image url$_imageUrl');
       final docProduct = FirebaseFirestore.instance.collection('product').doc();
       product.productId = docProduct.id;
       product.image = _imageUrl;
-      product.categoryId = categoryViewModel.selectedCategoryId;
+      product.categoryId = categoryId;
       final json = product.toJson();
       await docProduct.set(json);
-
     } catch (e) {
       print(e);
     }
     // clearText(controllerName);
-    // getAllCategory();
   }
+
 
   void setTest() async{
     final docProduct = FirebaseFirestore.instance;
-    await docProduct.collection("product").doc("image").set({"name": "Chicago"});
+    await docProduct.collection("product").doc("image1").set({"name": "Chicago"});
   }
 
 }

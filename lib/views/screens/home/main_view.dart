@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
+import 'package:sahami_app/views/screens/manage/product_home_view.dart';
 
 import '../../constants/ui_color.dart';
 class MainView extends StatefulWidget {
@@ -14,7 +16,7 @@ class _MainViewState extends State<MainView> {
   List pages=[
     StatisticsView(),
     Container(child: Center(child: Text("Customer"))),
-    Container(child: Center(child: Text("Product"))),
+    ProductHomeView(),
     Container(child: Center(child: Text("Order"))),
   ];
 
@@ -31,8 +33,10 @@ class _MainViewState extends State<MainView> {
         selectedItemColor: UIColors.primary,
         unselectedItemColor: UIColors.text,
         showSelectedLabels: false,
+        showUnselectedLabels: false,
         currentIndex: _selectedIndex, //để pick vào nó đổi màu
         onTap: onTapNav,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -43,11 +47,12 @@ class _MainViewState extends State<MainView> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.park),
+            icon: ImageIcon(AssetImage(AssetIcons.iconProduct)),
+            activeIcon: ImageIcon(AssetImage(AssetIcons.iconProductPick)),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.note),
+            icon: Icon(Icons.article),
             label: "Home",
           ),
         ],

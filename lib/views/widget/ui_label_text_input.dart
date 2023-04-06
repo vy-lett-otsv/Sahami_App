@@ -9,9 +9,16 @@ class UILabelTextInput extends StatelessWidget {
   final bool? notNull;
   final String? unit;
   final bool? inputNumber;
+  final FocusNode? focusNode;
 
   const UILabelTextInput(
-      {super.key, required this.title, this.controller, this.notNull = true, this.unit = '', this.inputNumber = false});
+      {super.key,
+      required this.title,
+      this.controller,
+      this.notNull = true,
+      this.unit = '',
+      this.inputNumber = false,
+      this.focusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -34,41 +41,43 @@ class UILabelTextInput extends StatelessWidget {
                   children: <InlineSpan>[
                     notNull == true
                         ? TextSpan(
-                        text: ' *',
-                        style: TextStyle(
-                          color: UIColors.red,
-                          fontSize: 16,
-                          letterSpacing: 0.75,
-                          fontFamily: Fonts.Outfit,
-                          fontWeight: FontWeight.w400,
-                        ))
+                            text: ' *',
+                            style: TextStyle(
+                              color: UIColors.red,
+                              fontSize: 16,
+                              letterSpacing: 0.75,
+                              fontFamily: Fonts.Outfit,
+                              fontWeight: FontWeight.w400,
+                            ))
                         : const TextSpan(
-                      text: '',
-                    )
+                            text: '',
+                          )
                   ])),
             ),
-             Text(unit!, style: TextStyle(
-              color: UIColors.text,
-              fontSize: 16,
-              letterSpacing: 0.75,
-              fontFamily: Fonts.Outfit,
-              fontWeight: FontWeight.w400,
-            ),)
+            Text(
+              unit!,
+              style: TextStyle(
+                color: UIColors.text,
+                fontSize: 16,
+                letterSpacing: 0.75,
+                fontFamily: Fonts.Outfit,
+                fontWeight: FontWeight.w400,
+              ),
+            )
           ],
         ),
-        inputNumber == false ?
-        TextField(
-          controller: controller,
-          cursorColor: UIColors.text,
-        )
-        : TextField(
-          controller: controller,
-          cursorColor: UIColors.text,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          keyboardType: TextInputType.number,
-        )
+        inputNumber == false
+            ? TextField(
+                controller: controller,
+                cursorColor: UIColors.text,
+                focusNode: focusNode,
+              )
+            : TextField(
+                controller: controller,
+                cursorColor: UIColors.text,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+              )
       ],
     );
   }

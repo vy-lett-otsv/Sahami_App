@@ -31,6 +31,15 @@ class UIStrings {
   static const String manageCategory = "Manage Category";
   static const String manageProduct = "Manage Product";
 
+  static const String addProduct = "Add Product";
+  static const String addOrder = "Add Order";
+  static const String addCustomer = "Add Customer";
+
+  static const String totalProduct = "Total Product";
+  static const String totalOrder = "Total Order";
+  static const String totalCustomer = "Total Customer";
+  static const String totalRevenue = "Total Revenue";
+
   static const String name = "Name";
   static const String price = "Price";
   static const String des = "Description";

@@ -4,82 +4,75 @@ import 'package:sahami_app/data/remote/entity/category_entity.dart';
 import 'package:sahami_app/viewmodel/managers/create_category_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/ui_color.dart';
 import '../constants/ui_strings.dart';
 
 class BottomSheetDialog {
-  static ShapeBorder shape =  RoundedRectangleBorder(
+  static ShapeBorder shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(DimensManager.dimens.setWidth(20)),
-          topRight: Radius.circular(DimensManager.dimens.setWidth(20)),
-      )
-  );
+    topLeft: Radius.circular(DimensManager.dimens.setWidth(20)),
+    topRight: Radius.circular(DimensManager.dimens.setWidth(20)),
+  ));
 
-  static Future<String?> showCategoryDialog({
+  static Future<int?> showCategoryDialog({
     required BuildContext context,
-    CategoryEntity? entity,
-    Function(String)? getNameCategory,
+    required List<CategoryEntity> categories,
+    required int selectedIndex,
   }) {
-    CreateCategoryViewModel dialogViewModel = CreateCategoryViewModel()
-    ..onInitView(context)
-    ..initializeCategory(entity);
-    return showModalBottomSheet<String?>(
+    return showModalBottomSheet(
         shape: shape,
         context: context,
-        builder: (_) {
-          return FractionallySizedBox(
-            heightFactor: 0.8,
-            child: ChangeNotifierProvider.value(
-                value: dialogViewModel,
-              child: Consumer<CreateCategoryViewModel>(
-                builder: (_, category, __) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
+        builder: (context) {
+          return StatefulBuilder(builder: (context, innerSetState) {
+            return FractionallySizedBox(
+                heightFactor: 0.8,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: DimensManager.dimens.setHeight(10)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_left_rounded,
+                                size: 24),
+                          ),
+                          const UITilte(UIStrings.category),
+                          const SizedBox(width: 44),
+                        ],
+                      ),
+                    ),
+                    Divider(color: UIColors.text),
+                    Expanded(
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final itemCategory = categories[index];
+                            return RadioListTile(
+                              controlAffinity: ListTileControlAffinity.trailing,
+                              groupValue: selectedIndex,
+                              title: Text(itemCategory.categoryName),
+                              onChanged: (value) {
+                                selectedIndex = value!;
+                                innerSetState(() {});
+                                Future.delayed(const Duration(milliseconds: 1000), () {
+                                  Navigator.of(context).pop(value);
+                                });
                               },
-                              icon: const Icon(Icons.keyboard_arrow_left_rounded, size: 24),
-                            ),
-                            const UITilte(UIStrings.category),
-                            const SizedBox(width: 44),
-                          ],
-                        ),
-                      ),
-                      Divider(color: UIColors.text),
-                      Expanded(
-                        child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: category.categories.length,
-                            itemBuilder: (context, index) {
-                              final itemCategory = category.categories[index];
-                              return RadioListTile(
-                                controlAffinity: ListTileControlAffinity.trailing,
-                                groupValue: category.selectedButton,
-                                title: Text(itemCategory.categoryName),
-                                onChanged: (value) {
-                                  category.setSelectedCategory(value);
-                                  print("Hello ${category.selectedCategoryName}");
-                                  getNameCategory?.call(category.selectedCategoryName);
-                                  Navigator.of(context).pop(category.selectedCategoryName);
-                                },
-                                value: index,
-                              );
-                            }),
-                      ),
-                    ],
-                  );
-                }
-              ),
-            ),
-          );
-        }
-    );
+                              value: index,
+                            );
+                          }),
+                    ),
+                  ],
+                ));
+          });
+        });
   }
 }

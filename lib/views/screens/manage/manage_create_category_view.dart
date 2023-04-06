@@ -78,7 +78,7 @@ class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
           size: DimensManager.dimens.setHeight(18),
           onPress: () {
             final category = CategoryEntity(categoryName: _controllerName.text);
-            _categoryViewModel.createCategory(category, _controllerName);
+            _categoryViewModel.createCategory(category);
             FocusManager.instance.primaryFocus?.unfocus();
           },
         )

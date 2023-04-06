@@ -12,6 +12,7 @@ class UIColors {
   static final Color errorMessage = HexColor.fromHex("#F23E3E");
   static final Color lightRed = HexColor.fromHex("#FCA896");
   static final Color red = HexColor.fromHex("#D52731");
+  static final Color primarySecond = HexColor.fromHex("#A0C743");
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;

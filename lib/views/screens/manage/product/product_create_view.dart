@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/data/remote/entity/category_entity.dart';
 import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
@@ -13,19 +12,20 @@ import 'package:sahami_app/views/widget/ui_label.dart';
 import 'package:sahami_app/views/widget/ui_label_text_input.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
-import '../../../viewmodel/managers/create_category_view_model.dart';
-import '../../../viewmodel/managers/create_product_view_model.dart';
-import '../../widget/bottomsheet_model.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../viewmodel/managers/create_category_view_model.dart';
+import '../../../../viewmodel/managers/create_product_view_model.dart';
+import '../../../widget/bottomsheet_model.dart';
 
-class ManageCreateProductView extends StatefulWidget {
-  const ManageCreateProductView({Key? key}) : super(key: key);
+class ProductCreateView extends StatefulWidget {
+  const ProductCreateView({Key? key}) : super(key: key);
 
   @override
-  State<ManageCreateProductView> createState() =>
-      _ManageCreateProductViewState();
+  State<ProductCreateView> createState() =>
+      _ProductCreateViewState();
 }
 
-class _ManageCreateProductViewState extends State<ManageCreateProductView> {
+class _ProductCreateViewState extends State<ProductCreateView> {
   final CreateCategoryViewModel _categoryViewModel = CreateCategoryViewModel();
   final CreateProductViewModel _productViewModel = CreateProductViewModel();
   final _controllerName = TextEditingController();
@@ -38,6 +38,8 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
   final _controllerSugar = TextEditingController();
   final _controllerCaffeine = TextEditingController();
   late TextEditingController _categoryController;
+  String categoryId = " ";
+  late FocusNode myFocusNode;
 
   @override
   void initState() {
@@ -45,6 +47,13 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
     DimensManager();
     _categoryController = TextEditingController();
     _categoryViewModel.getAllCategory();
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,9 +65,15 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
       ],
       child: Scaffold(
           appBar: AppBar(
-            title: const Center(
-                child: UITilte(UIStrings.addNewProduct, color: UIColors.white)),
+            title: const UITilte(UIStrings.addNewProduct, color: UIColors.white),
             backgroundColor: UIColors.primary,
+            leading: GestureDetector(
+                child: const Icon(Icons.arrow_back),
+              onTap: () {
+                NavigationServices.instance.navigationToProductHomeScreen(context);
+              },
+            ),
+            centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Container(
@@ -93,8 +108,16 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
                                   productName: _controllerName.text,
                                   description: _controllerDes.text,
                                   price: double.parse(_controllerPrice.text),
+                                  categoryId: categoryId,
+                                  servingSize: double.parse(_controllerServingSize.text),
+                                  saturatedFat: double.parse(_controllerSaturatedFat.text),
+                                  protein: double.parse(_controllerProtein.text),
+                                  sodium: double.parse(_controllerSodium.text),
+                                  sugars: double.parse(_controllerSugar.text),
+                                  caffeine: double.parse(_controllerCaffeine.text),
                                 );
-                                _productViewModel.createProduct(productEntity);
+                                _productViewModel.createProduct(productEntity, categoryId);
+                                // _productViewModel.setTest();
                               });
                         },
                       ),
@@ -193,6 +216,7 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
           UILabelTextInput(
             title: UIStrings.des,
             controller: _controllerDes,
+            // focusNode: myFocusNode,
           ),
         ],
       ),
@@ -218,9 +242,6 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
                   ? UIStrings.notYet
                   :controller.text
           ),
-          // controller.text = " "
-          //     ? const UIText(UIStrings.notYet)
-          //     : UIText(_text),
           GestureDetector(
             child: Icon(
               Icons.keyboard_arrow_right_rounded,
@@ -230,14 +251,16 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
             onTap: () async {
               final result = await BottomSheetDialog.showCategoryDialog(
                   context: context,
+                  categories: categoryViewModel.categories,
+                  selectedIndex: categoryViewModel.selectedCategory,
               );
               if(result!=null) {
-                controller.text = result;
-                print("Tesst thuwr" + controller.text);
-              }
-              setState(() {
-                _categoryController.text = result!;
-              });
+                final itemCategory = categoryViewModel.categories[result];
+                setState(() {
+                  _categoryController.text = itemCategory.categoryName;
+                  categoryId = itemCategory.categoryId;
+                });
+              };
             },
           )
         ],
@@ -256,46 +279,52 @@ class _ManageCreateProductViewState extends State<ManageCreateProductView> {
       ),
       child: Column(
         children: [
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.servingSize,
             notNull: false,
             unit: UIStrings.inKcal,
             inputNumber: true,
+            controller: _controllerServingSize,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.saturatedFat,
             notNull: false,
             unit: UIStrings.inG,
             inputNumber: true,
+            controller: _controllerSaturatedFat,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.protein,
             notNull: false,
             unit: UIStrings.inG,
             inputNumber: true,
+            controller: _controllerProtein,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.sodium,
             notNull: false,
             unit: UIStrings.inMg,
             inputNumber: true,
+            controller: _controllerSodium,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.sugars,
             notNull: false,
             unit: UIStrings.inG,
             inputNumber: true,
+            controller: _controllerSugar,
           ),
           SizedBox(height: DimensManager.dimens.setHeight(20)),
-          const UILabelTextInput(
+          UILabelTextInput(
             title: UIStrings.caffeine,
             notNull: false,
             unit: UIStrings.inMg,
             inputNumber: true,
+            controller: _controllerCaffeine,
           ),
         ],
       ),
