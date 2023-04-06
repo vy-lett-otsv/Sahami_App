@@ -4,7 +4,7 @@ import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
-import 'package:sahami_app/views/screens/manage/product_home_view.dart';
+import 'package:sahami_app/views/screens/home/product_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 
 class NavigationServices {
@@ -36,7 +36,7 @@ class NavigationServices {
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => StatisticsView());
       case PRODUCT_HOME_VIEW_ROUTE:
-        return MaterialPageRoute(builder: (_) => ProductHomeView());
+        return MaterialPageRoute(builder: (_) => ProductView());
       case PRODUCT_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => ProductCreateView());
       default:
@@ -45,12 +45,9 @@ class NavigationServices {
   }
 
   void navigationToHomeScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, HOME_ROUTE, (route) => false);
-  }
-  void navigationToProductHomeScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, PRODUCT_HOME_VIEW_ROUTE, (route) => false);
+    Navigator.pushNamed(context, HOME_ROUTE);
   }
   void navigationToProductCreateScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, PRODUCT_CREATE_VIEW_ROUTE, (route) => false);
+    Navigator.pushNamed(context, PRODUCT_CREATE_VIEW_ROUTE);
   }
 }

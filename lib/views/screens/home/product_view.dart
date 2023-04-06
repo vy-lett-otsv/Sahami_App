@@ -3,14 +3,14 @@ import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_textinput_icon.dart';
 
 import '../../../services/navigation_service.dart';
-class ProductHomeView extends StatefulWidget {
-  const ProductHomeView({Key? key}) : super(key: key);
+class ProductView extends StatefulWidget {
+  const ProductView({Key? key}) : super(key: key);
 
   @override
-  State<ProductHomeView> createState() => _ProductHomeViewState();
+  State<ProductView> createState() => _ProductViewState();
 }
 
-class _ProductHomeViewState extends State<ProductHomeView> {
+class _ProductViewState extends State<ProductView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +21,7 @@ class _ProductHomeViewState extends State<ProductHomeView> {
         actions: [
           GestureDetector(
             onTap: () {
+             FocusScope.of(context).requestFocus(FocusNode());
              NavigationServices.instance.navigationToProductCreateScreen(context);
             },
               child: const Icon(Icons.add)

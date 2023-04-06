@@ -14,15 +14,15 @@ import 'package:sahami_app/views/widget/ui_title.dart';
 import '../../../data/remote/entity/category_entity.dart';
 import '../../../viewmodel/managers/create_category_view_model.dart';
 
-class ManageCreateCategoryView extends StatefulWidget {
-  const ManageCreateCategoryView({Key? key}) : super(key: key);
+class CategoryView extends StatefulWidget {
+  const CategoryView({Key? key}) : super(key: key);
 
   @override
-  State<ManageCreateCategoryView> createState() =>
-      _ManageCreateCategoryViewState();
+  State<CategoryView> createState() =>
+      _CategoryViewState();
 }
 
-class _ManageCreateCategoryViewState extends State<ManageCreateCategoryView> {
+class _CategoryViewState extends State<CategoryView> {
   final _controllerName = TextEditingController();
   TextEditingController _controllerNameUpdate = TextEditingController();
   final CreateCategoryViewModel _categoryViewModel = CreateCategoryViewModel();

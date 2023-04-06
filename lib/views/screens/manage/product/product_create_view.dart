@@ -70,7 +70,7 @@ class _ProductCreateViewState extends State<ProductCreateView> {
             leading: GestureDetector(
                 child: const Icon(Icons.arrow_back),
               onTap: () {
-                NavigationServices.instance.navigationToProductHomeScreen(context);
+                Navigator.of(context).pop();
               },
             ),
             centerTitle: true,
