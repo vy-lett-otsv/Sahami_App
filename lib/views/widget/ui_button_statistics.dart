@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import '../assets/asset_icons.dart';
 import '../constants/ui_color.dart';
@@ -13,24 +14,24 @@ class UIButtonStatistics extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15
+          padding: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(10),
+              vertical: DimensManager.dimens.setHeight(10)
           ),
           decoration: BoxDecoration(
               color: UIColors.primarySecond,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
               border: Border.all(
-                  width: 1,
-                  color: UIColors.text
+                  width: 2,
+                  color: UIColors.primary
               )
           ),
           child: image != null ?
           ImageIcon(AssetImage(image!),color: Colors.white, size: 40)
           : Icon(icon, color: Colors.white, size: 40),
         ),
-        const SizedBox(height: 10),
-        UIText(title, size: 12)
+        SizedBox(height: DimensManager.dimens.setHeight(10)),
+        UIText(title, size: 10)
       ],
     );
   }

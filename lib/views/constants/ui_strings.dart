@@ -10,6 +10,8 @@ class UIStrings {
   static const String phone = "Phone number";
 
   static const String product = "Product";
+  static const String order = "Order";
+  static const String revenue = "Revenue";
 
   static const String desSignIn = "Sign in to account";
   static const String isAccount = "Have an account?";
@@ -34,6 +36,7 @@ class UIStrings {
   static const String addProduct = "Add Product";
   static const String addOrder = "Add Order";
   static const String addCustomer = "Add Customer";
+  static const String addCategory = "Add Category";
 
   static const String totalProduct = "Total Product";
   static const String totalOrder = "Total Order";

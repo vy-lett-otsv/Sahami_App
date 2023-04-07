@@ -4,7 +4,8 @@ class UIColors {
   UIColors._();
   static final Color primary = HexColor.fromHex("#82AA06");
   static final Color inputBackground = HexColor.fromHex("#D9D9D9");
-  static final Color background = HexColor.fromHex("#F9F9FB");
+  static final Color background = HexColor.fromHex("#F3F4F6");
+  static final Color primaryBackground = HexColor.fromHex("#F4F4F5");
   static final Color text = HexColor.fromHex("#6E6E6E");
   static final Color star = HexColor.fromHex("#F7DC69");
   static final Color label = HexColor.fromHex("#F2F2FF");

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sahami_app/services/navigation_service.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
 
 
 void main() async{
@@ -15,12 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: UIStrings.appName,
       debugShowCheckedModeBanner: false,
-      // home: ProductHomeView(),
+      // home: HomeView(),
       onGenerateRoute: NavigationServices.instance.routeBuilders,
     );
   }

@@ -1,11 +1,16 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sahami_app/data/fake_data.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
+import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_button_statistics.dart';
 import 'package:sahami_app/views/widget/ui_card_statistics.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../widget/indicator.dart';
+import '../../widget/ui_header_chart.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({Key? key}) : super(key: key);
@@ -16,170 +21,219 @@ class StatisticsView extends StatefulWidget {
 
 class _StatisticsViewState extends State<StatisticsView> {
   int touchedIndex = -1;
+  String dropdownValueOrder = FakeData().listOrder.first;
+  String dropdownValueRevenue = FakeData().listRevenue.first;
+
+  List<RevenueData> _chartMonthData = [];
+  List<RevenueData> _chartYearData = [];
+
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    _chartMonthData = FakeData().getMonthRevenueData();
+    _chartYearData = FakeData().getYearRevenueData();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UIColors.background,
         body: Column(
-      children: [
-        Container(
-          color: UIColors.primarySecond,
-          padding:
-              const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 10),
-          child: Row(
-            children: [
-              const CircleAvatar(
-                radius: 30,
-                backgroundImage: NetworkImage(
-                    "https://image.istarbucks.co.kr/upload/store/skuimg/2022/09/[9200000004294]_20220906081219976.jpg"),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                children: const [
-                  UIText("Le Vy",
-                      color: UIColors.white, fontWeight: FontWeight.bold),
-                  SizedBox(height: 5),
-                  UIText("Admin", color: UIColors.white, size: 14)
-                ],
-              )
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    UIButtonStatistics(
-                        title: UIStrings.addProduct,
-                        image: AssetIcons.iconProductWhite),
-                    UIButtonStatistics(
-                        icon: Icons.article, title: UIStrings.addOrder),
-                    UIButtonStatistics(
-                        icon: Icons.person, title: UIStrings.addCustomer)
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1.9,
-                physics: const AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: const [
-                  UICardStatistics(title: UIStrings.totalProduct, data: "10"),
-                  UICardStatistics(
-                      title: UIStrings.totalRevenue, data: "10.000K"),
-                  UICardStatistics(title: UIStrings.totalCustomer, data: "50"),
-                  UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
-                ],
-              ),
-              Container(
-                color: UIColors.white,
-                child: AspectRatio(
-                    aspectRatio: 1.3,
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: AspectRatio(
-                                aspectRatio: 1,
-                                child: PieChart(
-                                  PieChartData(
-                                    pieTouchData: PieTouchData(
-                                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                        setState(() {
-                                          if (!event.isInterestedForInteractions ||
-                                              pieTouchResponse == null ||
-                                              pieTouchResponse.touchedSection == null) {
-                                            touchedIndex = -1;
-                                            return;
-                                          }
-                                          touchedIndex = pieTouchResponse
-                                              .touchedSection!
-                                              .touchedSectionIndex;
-                                        }
-                                        );
-                                      },
-                                    ),
-                                    borderData: FlBorderData(
-                                      show: false,
-                                    ),
-                                    sectionsSpace: 0,
-                                    centerSpaceRadius: 40,
-                                    sections: showingSections(),
-                                  ),
-                                )
-                            )
-                        ),
-                      ],
-                    )
-                ),
-              )
-            ],
-          ),
-        )
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.zero,
+              children: [
+                SizedBox(height: DimensManager.dimens.setHeight(10)),
+                _buildCreateButton(),
+                SizedBox(height: DimensManager.dimens.setHeight(20)),
+                _buildStatistics(),
+                SizedBox(height: DimensManager.dimens.setHeight(20)),
+                _buildPieChart(),
+                SizedBox(height: DimensManager.dimens.setHeight(20)),
+                _buildLineChart()
+              ],
+            ),
+          )
       ],
-    )
+    ));
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      color: UIColors.primarySecond,
+      padding: EdgeInsets.only(
+          top: DimensManager.dimens.setHeight(50),
+          left: DimensManager.dimens.setWidth(20),
+          right: DimensManager.dimens.setWidth(20),
+          bottom: DimensManager.dimens.setHeight(10)
+      ),
+      height: DimensManager.dimens.setHeight(140),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const CircleAvatar(
+            radius: 30,
+            backgroundImage: NetworkImage(
+                "https://i.pinimg.com/564x/f2/ea/e3/f2eae3588fcc42b353ad999daae23d79.jpg"
+            ),
+          ),
+          SizedBox(width: DimensManager.dimens.setWidth(10)),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              UIText("Le Vy",
+                  color: UIColors.white, fontWeight: FontWeight.bold, size: 20),
+              SizedBox(height: 5),
+              UIText("Admin", color: UIColors.white, size: 16)
+            ],
+          )
+        ],
+      ),
     );
   }
 
-  List<PieChartSectionData> showingSections() {
-    return List.generate(3, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: UIColors.inputBackground,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: UIColors.text,
-              shadows: shadows,
+  Widget _buildCreateButton() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
+      child: Padding(
+        padding: EdgeInsets.all(DimensManager.dimens.setWidth(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            UIButtonStatistics(title: UIStrings.addProduct, image: AssetIcons.iconProductWhite),
+            UIButtonStatistics(icon: Icons.article, title: UIStrings.addOrder),
+            UIButtonStatistics(icon: Icons.person, title: UIStrings.addCustomer),
+            UIButtonStatistics(icon: Icons.category, title: UIStrings.addCategory)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatistics() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        childAspectRatio: 1.9,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        children: const [
+          UICardStatistics(title: UIStrings.totalProduct, data: "10"),
+          UICardStatistics(title: UIStrings.totalRevenue, data: "10.000K"),
+          UICardStatistics(title: UIStrings.totalCustomer, data: "50"),
+          UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPieChart() {
+    return Container(
+      margin: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+        color: UIColors.white,
+      ),
+      height: DimensManager.dimens.setHeight(250),
+      child: Container(
+        padding: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            StatisticsHeaderWidget(
+              title: UIStrings.order,
+              dropdownValue: dropdownValueOrder,
+              onChange: (String? value) {
+                setState(() {
+                  dropdownValueOrder = value!;
+                });
+              }, list: FakeData().listOrder,
             ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: UIColors.inputBackground,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: UIColors.text,
-              shadows: shadows,
+            SizedBox(height: DimensManager.dimens.setHeight(10)),
+            Flexible(
+              flex: 6,
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: PieChart(
+                        PieChartData(
+                            sections: FakeData().getSections(touchedIndex),
+                            sectionsSpace: 0
+                        )
+                    ),
+                  ),
+                  SizedBox(width: DimensManager.dimens.setHeight(15)),
+                  const Flexible(
+                    flex: 1,
+                    child: Indicator(),
+                  ),
+                ],
+              ),
             ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: UIColors.inputBackground,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: UIColors.text,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLineChart() {
+    return Container(
+        margin: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+          color: UIColors.white,
+        ),
+        height: DimensManager.dimens.setHeight(500),
+        child: Container(
+          padding: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              StatisticsHeaderWidget(
+                title: UIStrings.revenue,
+                dropdownValue: dropdownValueRevenue,
+                onChange: (String? value) {
+                  setState(() {
+                    dropdownValueRevenue = value!;
+                  });
+                }, list: FakeData().listRevenue,
+              ),
+              SizedBox(height: DimensManager.dimens.setHeight(10)),
+              Flexible(
+                flex: 10,
+                child: SfCartesianChart(
+                  tooltipBehavior: _tooltipBehavior,
+                  series: <ChartSeries>[
+                    LineSeries<RevenueData, double>(
+                      name: UIStrings.revenue,
+                      color: UIColors.primary,
+                      dataSource: dropdownValueRevenue == "Month" ? _chartMonthData : _chartYearData,
+                      xValueMapper: (RevenueData revenue, _) => revenue.time,
+                      yValueMapper: (RevenueData revenue, _) => revenue.revenue,
+                    )
+                  ],
+                  primaryXAxis: NumericAxis(
+                    edgeLabelPlacement: EdgeLabelPlacement.shift,
+                    interval: 1,
+                  ),
+                  primaryYAxis: NumericAxis(labelFormat: '{value}M'),
+                ),
+              ),
+            ],
+          ),
+        )
+    );
   }
 }
