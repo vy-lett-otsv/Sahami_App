@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
@@ -10,7 +8,6 @@ import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_textinput.dart';
 import 'package:sahami_app/views/widget/ui_textinput_icon.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
-
 import '../../../data/remote/entity/category_entity.dart';
 import '../../../viewmodel/managers/create_category_view_model.dart';
 

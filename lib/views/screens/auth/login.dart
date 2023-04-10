@@ -10,6 +10,7 @@ import '../../assets/asset_images.dart';
 import '../../constants/ui_color.dart';
 import '../../widget/ui_button_primary.dart';
 import '../../widget/ui_textinput_icon.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -23,6 +24,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
+    super.initState();
     DimensManager();
   }
 
@@ -59,13 +61,13 @@ Widget _buildHeader() {
           child: Column(
             children: [
               Image.asset(AssetImages.logo, width: DimensManager.dimens.setWidth(100)),
-              UIText(UIStrings.appName, size: 30, fontWeight: FontWeight.w300),
+              const UIText(UIStrings.appName, size: 30, fontWeight: FontWeight.w300),
             ],
           )
       ),
       SizedBox(height: DimensManager.dimens.setHeight(30)),
-      UIText(UIStrings.welcome, size: 40, color: UIColors.black, fontWeight: FontWeight.w600),
-      UIText(UIStrings.desSignIn, size: 18, color: UIColors.black, fontWeight: FontWeight.w300),
+      const UIText(UIStrings.welcome, size: 40, color: UIColors.black, fontWeight: FontWeight.w600),
+      const UIText(UIStrings.desSignIn, size: 18, color: UIColors.black, fontWeight: FontWeight.w300),
     ],
   );
 }
@@ -99,7 +101,7 @@ Widget _buildLogin(BuildContext context, TextEditingController email, TextEditin
                 password: pass.text)
                 .then((value) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeView()));
+                  MaterialPageRoute(builder: (context) => const HomeView()));
             }).onError((error, stackTrace) {
               print("Error ${error.toString()}");
             });
@@ -115,7 +117,7 @@ Widget _buildLogin(BuildContext context, TextEditingController email, TextEditin
                       style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                       recognizer: TapGestureRecognizer()..onTap = () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => RegisterView())
+                            MaterialPageRoute(builder: (context) => const RegisterView())
                         );
                       }
                   )

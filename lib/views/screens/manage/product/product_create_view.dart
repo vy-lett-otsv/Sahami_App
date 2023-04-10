@@ -6,6 +6,7 @@ import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/widget/ui_add_image.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_button_small.dart';
 import 'package:sahami_app/views/widget/ui_label.dart';
@@ -65,10 +66,10 @@ class _ProductCreateViewState extends State<ProductCreateView> {
       ],
       child: Scaffold(
           appBar: AppBar(
-            title: const UITilte(UIStrings.addNewProduct, color: UIColors.white),
+            title: const Text(UIStrings.addNewProduct),
             backgroundColor: UIColors.primary,
             leading: GestureDetector(
-                child: const Icon(Icons.arrow_back),
+                child: const Icon(Icons.arrow_back_ios),
               onTap: () {
                 Navigator.of(context).pop();
               },
@@ -102,7 +103,7 @@ class _ProductCreateViewState extends State<ProductCreateView> {
                       Consumer<CreateCategoryViewModel>(
                         builder: (_, category, __) {
                           return UIButtonPrimary(
-                              text: "Create Product",
+                              text: UIStrings.createProduct,
                               onPress: () {
                                 final productEntity = ProductEntity(
                                   productName: _controllerName.text,
@@ -138,26 +139,7 @@ class _ProductCreateViewState extends State<ProductCreateView> {
         _buildAddImageBottomSheet(productViewModel);
       },
       child: productViewModel.selectedFileName.isEmpty
-          ? Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: DimensManager.dimens.setWidth(20),
-                  vertical: DimensManager.dimens.setHeight(10)),
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-                color: UIColors.white,
-              ),
-              child: Row(
-                children: [
-                  Image.asset(AssetIcons.iconAddImage,
-                      width: DimensManager.dimens.setWidth(50)),
-                  SizedBox(
-                    width: DimensManager.dimens.setWidth(10),
-                  ),
-                  const UIText(UIStrings.addNewImage)
-                ],
-              ),
-            )
+          ? const UIAddImage()
           : Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

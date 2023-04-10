@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sahami_app/data/remote/entity/category_entity.dart';
-import 'package:sahami_app/viewmodel/managers/create_category_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
+import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/ui_color.dart';
 import '../constants/ui_strings.dart';
 
@@ -26,7 +24,7 @@ class BottomSheetDialog {
         builder: (context) {
           return StatefulBuilder(builder: (context, innerSetState) {
             return FractionallySizedBox(
-                heightFactor: 0.8,
+                heightFactor: DimensManager.dimens.setHeight(0.8),
                 child: Column(
                   children: [
                     Padding(
@@ -43,7 +41,7 @@ class BottomSheetDialog {
                                 size: 24),
                           ),
                           const UITilte(UIStrings.category),
-                          const SizedBox(width: 44),
+                          SizedBox(width: DimensManager.dimens.setWidth(44)),
                         ],
                       ),
                     ),
@@ -73,6 +71,61 @@ class BottomSheetDialog {
                   ],
                 ));
           });
+        });
+  }
+
+  static showCustomerDialog({
+    required BuildContext context,
+  }) {
+    return showModalBottomSheet(
+        shape: shape,
+        context: context,
+        builder: (context) {
+          return FractionallySizedBox(
+            heightFactor: DimensManager.dimens.setHeight(0.5),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: DimensManager.dimens.setWidth(20)
+                  ),
+                  child: Center(child: UITilte(UIStrings.filter, color: UIColors.primary)),
+                ),
+                Divider(color: UIColors.text),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const UIText(UIStrings.city),
+                          IconButton(
+                            onPressed: () {
+
+                            },
+                            icon: Icon(Icons.keyboard_arrow_right_rounded, size: 24, color: UIColors.text),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const UIText(UIStrings.label),
+                          IconButton(
+                            onPressed: () {
+
+                            },
+                            icon: Icon(Icons.keyboard_arrow_right_rounded, size: 24, color: UIColors.text),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
         });
   }
 }

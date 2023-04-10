@@ -141,10 +141,10 @@ class _HomeViewState extends State<HomeView> {
                                   children: List.generate(5, (index) { return Icon(Icons.star, color: UIColors.star, size: 15,);}),
                                 ),
                                 SizedBox(width: DimensManager.dimens.setWidth(10)),
-                                UIText("5.0"),
+                                const UIText("5.0"),
                               ],
                             ),
-                            UIText("38 Comment"),
+                            const UIText("38 Comment"),
                           ],
                         )
                       ],
@@ -245,7 +245,7 @@ Widget _buildProduct() {
                             children: [
                               const UITilte("Blonde Vanila Latte"),
                               SizedBox(height: DimensManager.dimens.setHeight(10)),
-                              UIText("Hot Coffee"),
+                              const UIText("Hot Coffee"),
                               SizedBox(height: DimensManager.dimens.setHeight(10)),
                               const SizedBox(
                                 width: 210,

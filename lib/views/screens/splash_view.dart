@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import 'dart:async';
-
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);

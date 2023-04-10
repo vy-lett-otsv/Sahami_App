@@ -12,6 +12,8 @@ class UIStrings {
   static const String product = "Product";
   static const String order = "Order";
   static const String revenue = "Revenue";
+  static const String statistics = "Statistic";
+  static const String customer = "Customer";
 
   static const String desSignIn = "Sign in to account";
   static const String isAccount = "Have an account?";
@@ -20,18 +22,21 @@ class UIStrings {
   static const String confirmDelete = "Do you really want to delete these records? This process cannot be undone.";
 
   static const String addNewProduct = "Add New Product";
+  static const String addNewCustomer = "Add New Customer";
   static const String addNewImage = "Add new image";
 
   static const String add = "Add";
   static const String create = "Create";
-  static const String search = "Search";
+  static const String search = "Search...";
   static const String ok = "OK";
   static const String cancel = "Cancel";
   static const String edit = "Edit";
   static const String delete = "Delete";
+  static const String filter = "Filter";
 
   static const String manageCategory = "Manage Category";
   static const String manageProduct = "Manage Product";
+  static const String manageCustomer = "Manage Customer";
 
   static const String addProduct = "Add Product";
   static const String addOrder = "Add Order";
@@ -43,10 +48,24 @@ class UIStrings {
   static const String totalCustomer = "Total Customer";
   static const String totalRevenue = "Total Revenue";
 
+  //customer
+  static const String fullName = "Full Name";
+  static const String contact = "Contact";
+  static const String addAddress = "Add address";
+
+  static const String createCustomer = "Create Customer";
+  static const String createProduct = "Create Product";
+
+  static const String city = "City";
+  static const String label = "Label";
+
+
+  //product
   static const String name = "Name";
   static const String price = "Price";
   static const String des = "Description";
   static const String category = "Category";
+
   static const String servingSize = "Serving Size";
   static const String saturatedFat = "Saturated Fat";
   static const String protein = "Protein";
@@ -65,8 +84,6 @@ class UIStrings {
   static const String inMg = "(mg)";
 
   static const String notYet = "Chưa có";
-
-
 
 
   //product

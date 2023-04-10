@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/home/product_view.dart';
-
 import '../../constants/ui_color.dart';
+
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
 
@@ -14,10 +16,10 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   int _selectedIndex = 0;
   List pages=[
-    StatisticsView(),
-    Container(child: Center(child: Text("Customer"))),
-    ProductView(),
-    Container(child: Center(child: Text("Order"))),
+    const StatisticsView(),
+    const CustomerView(),
+    const ProductView(),
+    const Center(child: Text("Order")),
   ];
 
   void onTapNav(int index) {
@@ -37,23 +39,23 @@ class _MainViewState extends State<MainView> {
         currentIndex: _selectedIndex, //để pick vào nó đổi màu
         onTap: onTapNav,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items:  const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Home",
+            label: UIStrings.statistics,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "Home",
+            label: UIStrings.customer,
           ),
           BottomNavigationBarItem(
             icon: ImageIcon(AssetImage(AssetIcons.iconProduct)),
             activeIcon: ImageIcon(AssetImage(AssetIcons.iconProductPick)),
-            label: "Home",
+            label: UIStrings.product,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.article),
-            label: "Home",
+            label: UIStrings.order,
           ),
         ],
       ),

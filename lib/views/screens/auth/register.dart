@@ -10,6 +10,7 @@ import '../../widget/ui_text.dart';
 import '../../widget/ui_textinput_icon.dart';
 import '../home/home_view.dart';
 import 'login.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
@@ -58,7 +59,7 @@ Widget _buildLogo() {
       child: Column(
         children: [
           Image.asset(AssetImages.logo, width: DimensManager.dimens.setWidth(100)),
-          UIText(UIStrings.appName, size: 30, fontWeight: FontWeight.w300),
+          const UIText(UIStrings.appName, size: 30, fontWeight: FontWeight.w300),
         ],
       )
   );
@@ -102,7 +103,7 @@ Widget _buildSignUp(BuildContext context, TextEditingController email, TextEditi
             email: email.text,
             password: pass.text)
             .then((value) {
-          print("Created New Account");
+          // print("Created New Account");
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => HomeView()));
         }).onError((error, stackTrace) {

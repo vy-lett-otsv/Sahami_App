@@ -28,7 +28,7 @@ class ProductEntity {
     this.caffeine = 0,
     this.image = '',
     this.status = '',
-    this.categoryId = ''
+    required this.categoryId
   });
 
   Map<String, dynamic> toJson() => {

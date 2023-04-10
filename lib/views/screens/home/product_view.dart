@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_textinput_icon.dart';
 
 import '../../../services/navigation_service.dart';
@@ -15,9 +16,10 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Product"),
+        title: const Text(UIStrings.manageProduct),
         backgroundColor: UIColors.primary,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         actions: [
           GestureDetector(
             onTap: () {

@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sahami_app/viewmodel/base_view_model.dart';
-import 'package:sahami_app/views/widget/bottomsheet_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/remote/entity/category_entity.dart';
 
-class CreateCategoryViewModel extends BaseViewModel {
+class CreateCategoryViewModel extends ChangeNotifier {
 
   List<CategoryEntity> _categories = [];
   List<CategoryEntity> get categories => _categories;
 
-  int _selectedCategory = 0;
+  final int _selectedCategory = 0;
   int get selectedCategory => _selectedCategory;
 
   void getAllCategory() async {
@@ -54,6 +51,4 @@ class CreateCategoryViewModel extends BaseViewModel {
     await docCategory.delete();
     getAllCategory();
   }
-
-
 }
