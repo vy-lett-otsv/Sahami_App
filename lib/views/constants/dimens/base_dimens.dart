@@ -21,14 +21,14 @@ abstract class BaseDimens<T> {
   double paddingHorizontal = 0.0;
 
   //Width & Height with SafeArea
-  void calculatorRatio<T>() {
+  void calculatorRatio() {
     final devicePixelRatio = window.devicePixelRatio;
     fullWidth = window.physicalSize.width / devicePixelRatio;
     fullHeight = window.physicalSize.height / devicePixelRatio;
     indicatorBarHeight = window.viewPadding.bottom / devicePixelRatio;
-    print("homeIndicatorHeight: $indicatorBarHeight");
-    print("fullWidth: $fullWidth");
-    print("fullHeight: $fullHeight");
+    // print("homeIndicatorHeight: $indicatorBarHeight");
+    // print("fullWidth: $fullWidth");
+    // print("fullHeight: $fullHeight");
 
     if (orientation == Orientation.portrait) {
       statusBarHeight = window.viewPadding.top / devicePixelRatio;
@@ -45,11 +45,11 @@ abstract class BaseDimens<T> {
     headerHeight = kToolbarHeight;
     headerHeightWithStatusBar = headerHeight + statusBarHeight;
 
-    initialDimens<T>();
+    initialDimens();
   }
 
   //Size determination for each screen
-  void initialDimens<T>();
+  void initialDimens();
 
   void allowCalculatorSize({
     required BuildContext context,

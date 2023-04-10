@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 import '../constants/ui_color.dart';
 
@@ -24,8 +25,8 @@ class UICardStatistics extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: UITilte(title, size: 14),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: DimensManager.dimens.setHeight(10),
               ),
               Align(
                 alignment: Alignment.bottomRight,

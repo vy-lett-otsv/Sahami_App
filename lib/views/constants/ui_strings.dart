@@ -4,14 +4,16 @@ class UIStrings {
   static const String welcome = "Hello";
   static const String userName = "User name";
   static const String password = "Password";
-  static const String login = "Sign in";
-  static const String logup = "Sign up";
+  static const String signUp = "Sign in";
+  static const String signIn = "Sign up";
   static const String email = "Email";
   static const String phone = "Phone number";
 
   static const String product = "Product";
   static const String order = "Order";
   static const String revenue = "Revenue";
+  static const String statistics = "Statistic";
+  static const String customer = "Customer";
 
   static const String desSignIn = "Sign in to account";
   static const String isAccount = "Have an account?";
@@ -65,9 +67,6 @@ class UIStrings {
   static const String inMg = "(mg)";
 
   static const String notYet = "Chưa có";
-
-
-
 
   //product
   static const String product1 = "Cool Lime Physio";

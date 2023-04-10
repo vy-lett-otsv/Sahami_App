@@ -6,7 +6,7 @@ class FakeData {
   List<String> listOrder = <String>['Today', 'Week', 'Month', 'Year'];
   List<String> listRevenue = <String>['Month', 'Year'];
   
-  static List<OrderData> dataPiechart = [
+  static List<OrderData> dataPieChart = [
     OrderData(name: "Pending order", percent: 25, color: UIColors.lightRed),
     OrderData(name: "Pending payment", percent: 12, color: UIColors.star),
     OrderData(name: "Confirm", percent: 63, color: UIColors.primary),
@@ -39,7 +39,7 @@ class FakeData {
     ];
     return chartData;
   }
-  List<PieChartSectionData> getSections(int touchedIndex) => dataPiechart
+  List<PieChartSectionData> getSections(int touchedIndex) => dataPieChart
       .asMap()
       .map<int, PieChartSectionData>((index, data) {
 

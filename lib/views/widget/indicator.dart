@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/data/fake_data.dart';
-
 import '../constants/dimens_manager.dart';
 
 class Indicator extends StatelessWidget {
@@ -11,7 +10,7 @@ class Indicator extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
-      children: FakeData.dataPiechart.map((data) => Container(
+      children: FakeData.dataPieChart.map((data) => Container(
         child: buildIndicator(
           color: data.color,
           text: data.name,
