@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "564946441321",
+    "project_id": "sahami-app",
+    "storage_bucket": "sahami-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564946441321:android:39c28c2d8c596655d97ef8",
+        "android_client_info": {
+          "package_name": "com.example.sahami_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564946441321-f4kgq5n6ik4677kgi9tu592frgtv4srm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb545oeoKBYY4UyAM4JUuUnbv57l9J3TM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564946441321-f4kgq5n6ik4677kgi9tu592frgtv4srm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
