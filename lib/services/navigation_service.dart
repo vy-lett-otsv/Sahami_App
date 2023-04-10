@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
@@ -24,13 +25,13 @@ class NavigationServices {
   Route<dynamic> routeBuilders(RouteSettings settings) {
     switch(settings.name) {
       case SPLASH_PROGRESS_ROUTE:
-        return MaterialPageRoute(builder: (_) => SplashView());
+        return MaterialPageRoute(builder: (_) => const SplashView());
       case HOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => MainView());
+        return MaterialPageRoute(builder: (_) => const MainView());
       case STATISTICS_VIEW_ROUTE:
-        return MaterialPageRoute(builder: (_) => StatisticsView());
+        return MaterialPageRoute(builder: (_) => const StatisticsView());
       default:
-        return MaterialPageRoute(builder: (_) => SplashView());
+        return MaterialPageRoute(builder: (_) => const SplashView());
     }
   }
 
