@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import '../../constants/ui_color.dart';
 
@@ -15,7 +16,7 @@ class _MainViewState extends State<MainView> {
   int _selectedIndex = 0;
   List pages= const[
      StatisticsView(),
-     Center(child: Text("Customer")),
+     CustomerView(),
      Center(child: Text("Product")),
      Center(child: Text("Order")),
   ];
