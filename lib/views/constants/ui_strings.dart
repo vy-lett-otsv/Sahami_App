@@ -14,6 +14,8 @@ class UIStrings {
   static const String revenue = "Revenue";
   static const String statistics = "Statistic";
   static const String customer = "Customer";
+  static const String camera = "Camera";
+  static const String gallery = "Gallery";
 
   static const String desSignIn = "Sign in to account";
   static const String isAccount = "Have an account?";
@@ -23,6 +25,7 @@ class UIStrings {
 
   static const String addNewProduct = "Add New Product";
   static const String addNewImage = "Add new image";
+  static const String addNewCustomer = "Add New Customer";
 
   static const String add = "Add";
   static const String create = "Create";
@@ -51,6 +54,13 @@ class UIStrings {
   //customer
   static const String city = "City";
   static const String label = "Label";
+
+  static const String fullName = "Full Name";
+  static const String contact = "Contact";
+  static const String addAddress = "Add address";
+
+  static const String createCustomer = "Create Customer";
+  static const String createProduct = "Create Product";
 
   static const String name = "Name";
   static const String price = "Price";

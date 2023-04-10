@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
+
+import '../views/screens/manage/customer/customer_create_view.dart';
 
 class NavigationServices {
   static NavigationServices _instance = const NavigationServices._internal();
@@ -19,6 +20,7 @@ class NavigationServices {
   static const String SPLASH_PROGRESS_ROUTE = "/SPLASH_PROGRESS_ROUTE";
   static const String HOME_ROUTE = "/HOME_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
+  static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
 
@@ -30,6 +32,8 @@ class NavigationServices {
         return MaterialPageRoute(builder: (_) => const MainView());
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const StatisticsView());
+      case CUSTOMER_CREATE_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const CustomerCreateView());
       default:
         return MaterialPageRoute(builder: (_) => const SplashView());
     }
@@ -37,5 +41,8 @@ class NavigationServices {
 
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, HOME_ROUTE);
+  }
+  void navigationToCustomerCreateScreen(BuildContext context) {
+    Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);
   }
 }
