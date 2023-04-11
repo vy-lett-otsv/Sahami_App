@@ -21,9 +21,12 @@ class NavigationServices {
   static const String SPLASH_PROGRESS_ROUTE = "/SPLASH_PROGRESS_ROUTE";
   static const String HOME_ROUTE = "/HOME_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
+
   static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
   static const String CUSTOMER_ADD_ADDRESS_VIEW_ROUTE = "/CUSTOMER_ADD_ADDRESS_VIEW_ROUTE";
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
+
+
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
 
