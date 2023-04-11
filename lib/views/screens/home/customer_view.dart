@@ -99,36 +99,42 @@ class _CustomerViewState extends State<CustomerView> {
                     const Spacer(),
                   ],
                 ),
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: DimensManager.dimens.setWidth(20),
-                      vertical: DimensManager.dimens.setHeight(10)
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-                      color: UIColors.white
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(DimensManager.dimens.setWidth(5)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-                          child:  Image.network("https://i.pinimg.com/564x/e7/e2/d4/e7e2d422ccab3af6bb92cbd7dd099018.jpg",
-                              width: DimensManager.dimens.setWidth(80),
-                              height: DimensManager.dimens.setHeight(80)),
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    NavigationServices.instance.navigationToCustomerDetailScreen(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: DimensManager.dimens.setWidth(20),
+                        vertical: DimensManager.dimens.setHeight(10)
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
+                        color: UIColors.white
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(DimensManager.dimens.setWidth(5)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
+                            child:  Image.network("https://i.pinimg.com/564x/e7/e2/d4/e7e2d422ccab3af6bb92cbd7dd099018.jpg",
+                                width: DimensManager.dimens.setWidth(80),
+                                height: DimensManager.dimens.setHeight(80)),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: DimensManager.dimens.setWidth(10)),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:[
-                          const UITilte("Nguyen Van A", size: 18),
-                          SizedBox(height: DimensManager.dimens.setHeight(10)),
-                          const UIText("0924353647")
-                        ],
-                      )
-                    ],
+                        SizedBox(width: DimensManager.dimens.setWidth(10)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children:[
+                            const UITilte("Nguyen Van A", size: 18),
+                            SizedBox(height: DimensManager.dimens.setHeight(10)),
+                            const UIText("0924353647")
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );

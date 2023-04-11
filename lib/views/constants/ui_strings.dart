@@ -52,6 +52,9 @@ class UIStrings {
   static const String totalRevenue = "Total Revenue";
 
   //customer
+  static const String customerDetail = "Customer Detail";
+  static const String orderEmpty = "Your order is empty";
+
   static const String city = "City";
   static const String label = "Label";
   static const String deliverAddress = "Deliver address";
@@ -64,6 +67,7 @@ class UIStrings {
 
   static const String fullName = "Full Name";
   static const String contact = "Contact";
+  static const String address = "Address";
   static const String addAddress = "Add address";
 
   static const String createCustomer = "Create Customer";

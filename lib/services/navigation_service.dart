@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_add_address_view.dart';
+import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 import '../views/screens/manage/customer/customer_create_view.dart';
 
@@ -22,6 +23,7 @@ class NavigationServices {
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
   static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
   static const String CUSTOMER_ADD_ADDRESS_VIEW_ROUTE = "/CUSTOMER_ADD_ADDRESS_VIEW_ROUTE";
+  static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
 
@@ -37,6 +39,8 @@ class NavigationServices {
         return MaterialPageRoute(builder: (_) => const CustomerCreateView());
       case CUSTOMER_ADD_ADDRESS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CustomerAddAddressView());
+      case CUSTOMER_DETAIL_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const CustomerDetailView());
       default:
         return MaterialPageRoute(builder: (_) => const SplashView());
     }
@@ -50,5 +54,9 @@ class NavigationServices {
   }
   void navigationToCustomerAddAddressScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_ADD_ADDRESS_VIEW_ROUTE);
+  }
+
+  void navigationToCustomerDetailScreen(BuildContext context) {
+    Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE);
   }
 }
