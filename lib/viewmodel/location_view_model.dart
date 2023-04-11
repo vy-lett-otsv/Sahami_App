@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class LocationViewModel extends ChangeNotifier{
-  List<String> _addressTypeList = ["home", "company", "other"];
+  final List<String> _addressTypeList = ["home", "company", "other"];
   List<String> get addressTypeList => _addressTypeList;
   int _addressLocationIndex = 0;
   int get addressLocationIndex => _addressLocationIndex;

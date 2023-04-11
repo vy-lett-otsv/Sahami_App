@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/location_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
+import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../../constants/ui_color.dart';
 import '../../../constants/ui_strings.dart';
 import '../../../widget/ui_label_text_input_icon.dart';
@@ -17,15 +16,7 @@ class CustomerAddAddressView extends StatefulWidget {
 }
 
 class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
-  // final LocationViewModel locationViewModel = LocationViewModel();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static const LatLng sourceLocation = LatLng(37.42796133580664, -122.085749655962);
+  bool light = true;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -53,33 +44,13 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: DimensManager.dimens.setWidth(20),
+                        vertical: DimensManager.dimens.setHeight(30)
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(20)),
-                            height: DimensManager.dimens.setHeight(250),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
-                                border: Border.all(color: UIColors.primary, width: 2)
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
-                              child: GoogleMap(
-                                initialCameraPosition: _kGooglePlex,
-                                onMapCreated: (GoogleMapController controller) {
-                                  _controller.complete(controller);
-                                },
-                                markers: {
-                                  const Marker(
-                                      markerId: MarkerId("source"),
-                                      position: sourceLocation
-                                  ),
-                                },
-                              ),
-                            ),
-                          ),
                           SizedBox(
                             height: DimensManager.dimens.setHeight(50),
                             child: ListView.builder(
@@ -112,22 +83,30 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
                             ),
                           ),
                           SizedBox(height: DimensManager.dimens.setHeight(20)),
-                          const UILabelTextInputIcon(title: UIStrings.deliverAddress, icon: Icons.location_on),
-                          const UILabelTextInputIcon(title: UIStrings.deliverAddress, icon: Icons.location_on),
-                          const UILabelTextInputIcon(title: UIStrings.deliverAddress, icon: Icons.location_on)
+                          const UILabelTextInputIcon(title: UIStrings.cityDistrict, icon: Icons.location_on_outlined),
+                          const UILabelTextInputIcon(title: UIStrings.homeAddress, icon: Icons.location_on_outlined),
+                          const UILabelTextInputIcon(title: UIStrings.contactName, icon: Icons.person_2_outlined),
+                          const UILabelTextInputIcon(title: UIStrings.contactNumber, icon: Icons.phone_outlined),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const UIText("Set a default"),
+                              Switch(
+                                  value: light,
+                                  activeColor: UIColors.primary,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      light = value;
+                                    });
+                                  }
+                              )
+
+                            ],
+                          ),
+                          SizedBox(height: DimensManager.dimens.setHeight(50)),
+                          const UIButtonPrimary(text: UIStrings.saveAddress),
                         ],
                       ),
-                    ),
-                    Container(
-                      height: DimensManager.dimens.setHeight(120),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(DimensManager.dimens.setRadius(40)),
-                            topLeft: Radius.circular(DimensManager.dimens.setRadius(40)),
-                          ),
-                          color: UIColors.backgroundBottom
-                      ),
-                      child: const UIButtonPrimary(text: UIStrings.saveAddress),
                     ),
                   ],
                 );

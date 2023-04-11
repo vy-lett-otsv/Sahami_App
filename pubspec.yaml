@@ -53,9 +53,6 @@ dependencies:
   fl_chart: 0.61.0
   syncfusion_flutter_charts: 21.1.38
   flutter_slidable: 2.0.0
-  google_maps_flutter: 2.2.5
-  geocoding: 2.1.0
-  geolocator: 9.0.2
 
 dev_dependencies:
   flutter_test:

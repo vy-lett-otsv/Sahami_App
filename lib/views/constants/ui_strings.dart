@@ -55,6 +55,8 @@ class UIStrings {
   static const String city = "City";
   static const String label = "Label";
   static const String deliverAddress = "Deliver address";
+  static const String cityDistrict = "City/ District";
+  static const String homeAddress = "Home Address";
   static const String contactName = "Contact person name";
   static const String contactNumber = "Contact person number";
   static const String saveAddress = "Save address";
