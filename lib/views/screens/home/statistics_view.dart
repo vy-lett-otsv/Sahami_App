@@ -9,6 +9,7 @@ import 'package:sahami_app/views/widget/ui_button_statistics.dart';
 import 'package:sahami_app/views/widget/ui_card_statistics.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../../services/navigation_service.dart';
 import '../../widget/indicator.dart';
 import '../../widget/ui_header_chart.dart';
 
@@ -107,11 +108,18 @@ class _StatisticsViewState extends State<StatisticsView> {
         padding: EdgeInsets.all(DimensManager.dimens.setWidth(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            UIButtonStatistics(title: UIStrings.addProduct, image: AssetIcons.iconProductWhite),
-            UIButtonStatistics(icon: Icons.article, title: UIStrings.addOrder),
-            UIButtonStatistics(icon: Icons.person, title: UIStrings.addCustomer),
-            UIButtonStatistics(icon: Icons.category, title: UIStrings.addCategory)
+          children: [
+            UIButtonStatistics(title: UIStrings.addProduct, image: AssetIcons.iconProductWhite, onTap: () {}),
+            UIButtonStatistics(icon: Icons.article, title: UIStrings.addOrder, onTap: () {}),
+            UIButtonStatistics(
+                icon: Icons.person,
+                title: UIStrings.addCustomer,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  NavigationServices.instance.navigationToCustomerCreateScreen(context);
+                }
+            ),
+            UIButtonStatistics(icon: Icons.category, title: UIStrings.addCategory, onTap: () {})
           ],
         ),
       ),

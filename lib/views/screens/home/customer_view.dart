@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
+import '../../../services/navigation_service.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
 import '../../widget/bottomsheet_model.dart';
@@ -28,6 +29,7 @@ class _CustomerViewState extends State<CustomerView> {
           GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
+                NavigationServices.instance.navigationToCustomerCreateScreen(context);
               },
               child: const Icon(Icons.add)
           ),
