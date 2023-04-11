@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_strings.dart';
 import '../../../widget/ui_button_primary.dart';
@@ -86,27 +87,33 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
                 ),
               ),
               SizedBox(height: DimensManager.dimens.setHeight(20)),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: DimensManager.dimens.setWidth(20),
-                    vertical: DimensManager.dimens.setHeight(20)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      DimensManager.dimens.setRadius(10)),
-                  color: UIColors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const UILabel(title: UIStrings.addAddress, notNull: false),
-                    const Spacer(),
-                    const UIText(UIStrings.notYet),
-                    Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      size: DimensManager.dimens.setSp(24),
-                      color: UIColors.text,
-                    )
-                  ],
+              GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  NavigationServices.instance.navigationToCustomerAddAddressScreen(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: DimensManager.dimens.setWidth(20),
+                      vertical: DimensManager.dimens.setHeight(20)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        DimensManager.dimens.setRadius(10)),
+                    color: UIColors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const UILabel(title: UIStrings.addAddress, notNull: false),
+                      const Spacer(),
+                      const UIText(UIStrings.notYet),
+                      Icon(
+                        Icons.keyboard_arrow_right_rounded,
+                        size: DimensManager.dimens.setSp(24),
+                        color: UIColors.text,
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: DimensManager.dimens.setHeight(50)),

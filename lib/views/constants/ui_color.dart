@@ -14,11 +14,11 @@ class UIColors {
   static final Color lightRed = HexColor.fromHex("#FCA896");
   static final Color red = HexColor.fromHex("#D52731");
   static final Color primarySecond = HexColor.fromHex("#A0C743");
+  static final Color border = HexColor.fromHex("#D9D9D9");
+  static final Color backgroundBottom = HexColor.fromHex("#E5E5E5");
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;
-
-
 }
 
 extension HexColor on Color {
