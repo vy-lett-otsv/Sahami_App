@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../enums/fonts.dart';
 import '../constants/ui_color.dart';
 
 class UITextInputIcon extends StatelessWidget {
@@ -22,9 +23,13 @@ class UITextInputIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(15),
             color: UIColors.white,
-            border: Border.all(color: UIColors.inputBackground)),
+            border: Border.all(color: UIColors.inputBackground),
+          boxShadow: [
+            BoxShadow(color: UIColors.border, blurRadius: 7, offset: const Offset(2,2))
+          ]
+        ),
         padding: const EdgeInsets.only(left: 16, right: 4),
         child: TextField(
             controller: controller,
@@ -32,7 +37,9 @@ class UITextInputIcon extends StatelessWidget {
             obscureText: isPassWordType!,
             enableSuggestions: isPassWordType!,
             autocorrect: isPassWordType!,
-            // textAlignVertical: TextAlignVertical.center,
+            style: const TextStyle(
+              fontFamily: Fonts.Outfit,
+            ),
             decoration: icon != null
                 ? InputDecoration(
                     labelText: text,

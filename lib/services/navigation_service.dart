@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/screens/auth/login.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_add_address_view.dart';
@@ -26,6 +27,8 @@ class NavigationServices {
   static const String CUSTOMER_ADD_ADDRESS_VIEW_ROUTE = "/CUSTOMER_ADD_ADDRESS_VIEW_ROUTE";
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
 
+  static const String LOGIN_VIEW_ROUTE = "/LOGIN_VIEW_ROUTE";
+
 
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
@@ -34,6 +37,8 @@ class NavigationServices {
     switch(settings.name) {
       case SPLASH_PROGRESS_ROUTE:
         return MaterialPageRoute(builder: (_) => const SplashView());
+      case LOGIN_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const LoginView());
       case HOME_ROUTE:
         return MaterialPageRoute(builder: (_) => const MainView());
       case STATISTICS_VIEW_ROUTE:
@@ -51,6 +56,9 @@ class NavigationServices {
 
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, HOME_ROUTE);
+  }
+  void navigationToLoginScreen(BuildContext context) {
+    Navigator.pushNamed(context, LOGIN_VIEW_ROUTE);
   }
   void navigationToCustomerCreateScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);

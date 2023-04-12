@@ -4,7 +4,7 @@ class UIStrings {
   static const String welcome = "Hello";
   static const String userName = "User name";
   static const String password = "Password";
-  static const String signUp = "Sign in";
+  static const String signUp = "Log in";
   static const String signIn = "Sign up";
   static const String email = "Email";
   static const String phone = "Phone number";

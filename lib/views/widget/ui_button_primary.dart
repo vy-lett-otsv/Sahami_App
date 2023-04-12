@@ -19,17 +19,12 @@ class UIButtonPrimary extends StatelessWidget {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(UIColors.primary),
               padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                  horizontal: DimensManager.dimens.setWidth(50),
+                  horizontal: DimensManager.dimens.setWidth(80),
                   vertical: DimensManager.dimens.setWidth(15))),
-              // textStyle: MaterialStateProperty.all(
-              //     TextStyle(
-              //         fontSize: size,
-              //         color: Colors.white,
-              //         fontFamily: Fonts.Outfit)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                          DimensManager.dimens.setRadius(20))))),
+                          DimensManager.dimens.setRadius(30))))),
           onPressed: onPress,
           child: Text(text,
               style: const TextStyle(
