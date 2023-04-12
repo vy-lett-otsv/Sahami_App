@@ -39,7 +39,7 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
           margin: EdgeInsets.all(DimensManager.dimens.setWidth(20)),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 _buildAddImage(),
                 SizedBox(height: DimensManager.dimens.setHeight(20)),
