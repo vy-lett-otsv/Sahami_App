@@ -9,4 +9,5 @@ class AssetIcons {
   static const String iconProduct = "assets/icons/ic-product.png";
   static const String iconProductPick = "assets/icons/ic-product-pick.png";
   static const String iconProductWhite = "assets/icons/ic-product-white.png";
+  static const String iconCartEmpty = "assets/icons/ic-cart-empty.png";
 }
