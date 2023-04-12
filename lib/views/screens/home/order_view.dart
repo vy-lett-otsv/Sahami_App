@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:sahami_app/views/constants/dimens_manager.dart';
-import '../../../services/navigation_service.dart';
+import 'package:sahami_app/views/widget/ui_text.dart';
+import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
-import '../../widget/bottomsheet_model.dart';
 
-class CustomerView extends StatefulWidget {
-  const CustomerView({Key? key}) : super(key: key);
+class OrderView extends StatefulWidget {
+  const OrderView({Key? key}) : super(key: key);
 
   @override
-  State<CustomerView> createState() => _CustomerViewState();
+  State<OrderView> createState() => _OrderViewState();
 }
 
-class _CustomerViewState extends State<CustomerView> {
+class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +24,7 @@ class _CustomerViewState extends State<CustomerView> {
         automaticallyImplyLeading: false,
         actions: [
           GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                NavigationServices.instance.navigationToCustomerCreateScreen(context);
-              },
+              onTap: () {},
               child: const Icon(Icons.add)
           ),
           SizedBox(width: DimensManager.dimens.setWidth(20))
@@ -66,9 +62,7 @@ class _CustomerViewState extends State<CustomerView> {
             flex: 1,
             child: GestureDetector(
               child: Icon(Icons.filter_list, color: UIColors.text),
-              onTap: () {
-                BottomSheetDialog.showCustomerDialog(context: context);
-              },
+              onTap: () {},
             ),
           )
         ],
@@ -98,10 +92,7 @@ class _CustomerViewState extends State<CustomerView> {
                   ],
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    NavigationServices.instance.navigationToCustomerDetailScreen(context);
-                  },
+                  onTap: () {},
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: DimensManager.dimens.setWidth(20),
@@ -115,32 +106,34 @@ class _CustomerViewState extends State<CustomerView> {
                         borderRadius: BorderRadius.circular(DimensManager.dimens.setSp(20)),
                         color: UIColors.white
                     ),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(DimensManager.dimens.setSp(20)),
-                          child:  Image.network("https://i.pinimg.com/564x/e7/e2/d4/e7e2d422ccab3af6bb92cbd7dd099018.jpg",
-                            width: DimensManager.dimens.setWidth(80),
-                            height: DimensManager.dimens.setHeight(80),),
-                        ),
-                        SizedBox(width: DimensManager.dimens.setWidth(20)),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        const UIText("Order ID #100001", color: UIColors.black),
+                        SizedBox(height: DimensManager.dimens.setHeight(10)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                "Nguyễn Văn A",
-                                style: TextStyle(fontSize: DimensManager.dimens.setSp(18), color: UIColors.black)
-                            ),
-                            SizedBox(height: DimensManager.dimens.setHeight(10)
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: DimensManager.dimens.setHeight(5)
-                              ),
-                              child: Text("0323344345", style: TextStyle(color: UIColors.text)),
-                            )
+                            UIText("11-April-2023, 3:00 PM", size: DimensManager.dimens.setSp(14)),
+                            const UIText("2 items")
                           ],
-                        )
+                        ),
+                        SizedBox(height: DimensManager.dimens.setHeight(10)),
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(DimensManager.dimens.setSp(10)),
+                                border: Border.all(width: 1, color: UIColors.primary)
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: DimensManager.dimens.setWidth(10),
+                                vertical: DimensManager.dimens.setHeight(5)
+                            ),
+                            child: UIText("New", color: UIColors.primary, size: DimensManager.dimens.setSp(14))
+                        ),
+                       const Align(
+                         alignment: Alignment.bottomRight,
+                           child: UIText("105, 000 VNĐ")
+                       )
                       ],
                     ),
                   ),

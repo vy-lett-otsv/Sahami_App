@@ -76,12 +76,17 @@ class _ProductViewState extends State<ProductView> {
                           ],
                         ),
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: DimensManager.dimens.setWidth(40),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: DimensManager.dimens.setWidth(20),
                               vertical: DimensManager.dimens.setWidth(10)
+                          ),
+                          margin: EdgeInsets.symmetric(
+                              vertical: DimensManager.dimens.setHeight(10),
+                              horizontal: DimensManager.dimens.setWidth(20),
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(DimensManager.dimens.setSp(20)),
+                            color: UIColors.white
                           ),
                           child: Row(
                             children: [

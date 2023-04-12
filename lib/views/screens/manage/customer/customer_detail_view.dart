@@ -145,7 +145,7 @@ class _CustomerDetailViewState extends State<CustomerDetailView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const UIText("Order#: 100001", color: UIColors.black),
+                                  const UIText("Order #100001", color: UIColors.black),
                                   UIText("11-April-2023, 3:00 PM", size: DimensManager.dimens.setSp(14)),
                                   UIText("Pending payment", color: UIColors.primary)
                                 ],
