@@ -25,7 +25,7 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin{
 
     Timer(
       const Duration(seconds: 3),
-        () => NavigationServices.instance.navigationToHomeScreen(context)
+        () => NavigationServices.instance.navigationToLoginScreen(context)
     );
     DimensManager();
   }
