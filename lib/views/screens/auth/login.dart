@@ -4,6 +4,7 @@ import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../../enums/fonts.dart';
+import '../../../services/navigation_service.dart';
 import '../../assets/asset_images.dart';
 import '../../constants/ui_color.dart';
 import '../../widget/ui_button_primary.dart';
@@ -101,7 +102,7 @@ Widget _buildLogin(BuildContext context, TextEditingController email, TextEditin
   return Column(
     children: [
       UIButtonPrimary(
-          text: UIStrings.signUp,
+          text: UIStrings.signIn,
           onPress: () {}
       ),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
@@ -118,7 +119,9 @@ Widget _buildLogin(BuildContext context, TextEditingController email, TextEditin
                   TextSpan(
                       text: UIStrings.create,
                       style: TextStyle(fontSize: DimensManager.dimens.setSp(18),fontWeight: FontWeight.bold, fontFamily: Fonts.Outfit, color: UIColors.text),
-                      recognizer: TapGestureRecognizer()..onTap = () {}
+                      recognizer: TapGestureRecognizer()..onTap = () {
+                        NavigationServices.instance.navigationToRegisterScreen(context);
+                      }
                   )
                 ]
             )
