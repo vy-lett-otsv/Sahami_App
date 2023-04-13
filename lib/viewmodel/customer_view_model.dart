@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 class CustomerViewModel extends ChangeNotifier{
   final int _selected = 0;
   int get selected => _selected;
@@ -25,7 +26,7 @@ class CustomerViewModel extends ChangeNotifier{
   String _imageUrl = " ";
   String get imageUrl => _imageUrl;
 
-  Future<void> createCustomer(UserEntity userEntity) async {
+  Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child('user').child('/${file!.name}');
@@ -37,6 +38,7 @@ class CustomerViewModel extends ChangeNotifier{
       userEntity.image = _imageUrl;
       final json = userEntity.toJson();
       await docUser.set(json);
+      NavigationServices.instance.navigationToCustomerScreen(context);
     } catch (e) {
       print(e);
     }

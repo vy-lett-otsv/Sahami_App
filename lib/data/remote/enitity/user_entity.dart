@@ -1,5 +1,3 @@
-import 'address_entity.dart';
-
 class UserEntity {
   String userId;
   String userName;
@@ -9,7 +7,7 @@ class UserEntity {
   String gender;
   String role;
   String image;
-  AddressEntity? address;
+  String address;
 
   UserEntity({
     this.userId = '',
@@ -20,7 +18,7 @@ class UserEntity {
     this.gender = '',
     this.role = 'user',
     this.image = '',
-    this.address
+    this.address = ''
   });
 
   Map<String, dynamic> toJson() => {

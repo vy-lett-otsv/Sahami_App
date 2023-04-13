@@ -5,12 +5,10 @@ import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
-import '../../../../services/navigation_service.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_strings.dart';
 import '../../../widget/ui_button_primary.dart';
 import '../../../widget/ui_button_small.dart';
-import '../../../widget/ui_label.dart';
 import '../../../widget/ui_label_text_input.dart';
 import '../../../widget/ui_text.dart';
 
@@ -27,6 +25,7 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
   final _nameController = TextEditingController();
   final _contactController = TextEditingController();
   final _emailController = TextEditingController();
+  final _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,68 +53,23 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
                   children: [
                     _buildAddImage(customer),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    _buildInformation(fullName: _nameController, contact: _contactController, email: _emailController),
-                    SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: DimensManager.dimens.setHeight(20),
-                          vertical: DimensManager.dimens.setWidth(10)),
-                      height: DimensManager.dimens.setHeight(150),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            DimensManager.dimens.setRadius(10)),
-                        color: UIColors.white,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: DimensManager.dimens.setHeight(25),
-                            child: Row(
-                              children: [
-                                const UIText("Lê Vy", color: UIColors.black),
-                                VerticalDivider(
-                                  color: UIColors.text,
-                                  thickness: 1,
-                                  endIndent: 3,
-                                  indent: 3,
-                                ),
-                                const UIText("0453454536")
-                              ],
-                            ),
-                          ),
-                          const UIText("102 Hải Hồ", size: 12),
-                          const UIText(
-                              "Phường Thanh Bình, Quận Hải Châu, Đà Nẵng",
-                              size: 12
-                          ),
-                          SizedBox(height: DimensManager.dimens.setHeight(5)),
-                          Container(
-                            padding: EdgeInsets.all(
-                                DimensManager.dimens.setHeight(5)),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    DimensManager.dimens.setRadius(5)),
-                                border: Border.all(
-                                    color: UIColors.primary, width: 1)),
-                            child: const UIText("Default", size: 12),
-                          )
-                        ],
-                      ),
+                    _buildInformation(
+                        fullName: _nameController,
+                        contact: _contactController,
+                        email: _emailController,
+                        address: _addressController
                     ),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    _buildAddAddress(),
-                    SizedBox(height: DimensManager.dimens.setHeight(50)),
                     UIButtonPrimary(
                         text: UIStrings.createCustomer,
                         onPress: () {
                           final customerEntity = UserEntity(
                               userName: _nameController.text,
                               contact: _contactController.text,
-                              email: _emailController.text
+                              email: _emailController.text,
+                              address: _addressController.text
                           );
-                          _customerViewModel.createCustomer(customerEntity);
+                          _customerViewModel.createCustomer(customerEntity, context);
                           // _productViewModel.setTest();
                         })
                   ],
@@ -167,7 +121,11 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
           );
   }
 
-  Widget _buildInformation({required TextEditingController fullName, required TextEditingController contact, required TextEditingController email}) {
+  Widget _buildInformation({
+    required TextEditingController fullName,
+    required TextEditingController contact,
+    required TextEditingController email,
+    required TextEditingController address}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
@@ -192,38 +150,10 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
               title: UIStrings.email,
               controller: email,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddAddress() {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-        NavigationServices.instance
-            .navigationToCustomerAddAddressScreen(context);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(20),
-            vertical: DimensManager.dimens.setHeight(20)),
-        decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-          color: UIColors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const UILabel(title: UIStrings.addAddress, notNull: false),
-            const Spacer(),
-            Icon(
-              Icons.keyboard_arrow_right_rounded,
-              size: DimensManager.dimens.setSp(24),
-              color: UIColors.text,
-            )
+            UILabelTextInput(
+              title: UIStrings.address,
+              controller: address,
+            ),
           ],
         ),
       ),
