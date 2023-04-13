@@ -12,7 +12,7 @@ class AuthViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> createProduct(UserEntity userEntity, String? userId, String username, String phone, String email) async {
+  Future<void> createUser(UserEntity userEntity, String? userId, String username, String phone, String email) async {
       String newDocId = userId!;
       final docUser = FirebaseFirestore.instance.collection('user').doc(newDocId);
       userEntity.userId = userId;

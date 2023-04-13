@@ -126,7 +126,7 @@ Widget _buildSignUp(
             FirebaseAuth.instance.createUserWithEmailAndPassword(
                 email: email.text,
                 password: pass.text).then((value) {
-                  authViewModel.createProduct(userEntity, value.user?.uid, user.text, phone.text, email.text);
+                  authViewModel.createUser(userEntity, value.user?.uid, user.text, phone.text, email.text);
                   NavigationServices.instance.navigationToHomeScreen(context);
                 }).onError((error, stackTrace) {
               // print("Error ${error.toString()}");

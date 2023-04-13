@@ -27,9 +27,7 @@ class CustomerViewModel extends ChangeNotifier{
   String get imageUrl => _imageUrl;
 
   Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
-    try {
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref = storage.ref().child('user').child('/${file!.name}');
+      Reference ref = FirebaseStorage.instance.ref().child('user').child('/${file!.name}');
       UploadTask uploadTask = ref.putFile(File(file!.path));
       await uploadTask.whenComplete(() => null);
       _imageUrl = await ref.getDownloadURL();
@@ -39,8 +37,5 @@ class CustomerViewModel extends ChangeNotifier{
       final json = userEntity.toJson();
       await docUser.set(json);
       NavigationServices.instance.navigationToCustomerScreen(context);
-    } catch (e) {
-      print(e);
-    }
   }
 }
