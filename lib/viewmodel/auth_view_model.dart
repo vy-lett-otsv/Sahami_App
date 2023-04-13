@@ -13,7 +13,6 @@ class AuthViewModel extends ChangeNotifier{
   }
 
   Future<void> createProduct(UserEntity userEntity, String? userId, String username, String phone, String email) async {
-    try {
       String newDocId = userId!;
       final docUser = FirebaseFirestore.instance.collection('user').doc(newDocId);
       userEntity.userId = userId;
@@ -22,14 +21,10 @@ class AuthViewModel extends ChangeNotifier{
       userEntity.email = email;
       final json = userEntity.toJson();
       await docUser.set(json);
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future<void> roleUser(BuildContext context, String idUser) async {
-    final docRef = FirebaseFirestore.instance.collection("user").doc(idUser);
-    docRef.get().then(
+    FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
           (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         String role = data['role'];
