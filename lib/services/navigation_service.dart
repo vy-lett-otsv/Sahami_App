@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/auth/login.dart';
-import 'package:sahami_app/views/screens/home/main_view.dart';
+import 'package:sahami_app/views/screens/auth/register.dart';
+import 'package:sahami_app/views/screens/home/customer_view.dart';
+import 'package:sahami_app/views/screens/home/home_view.dart';
+import 'package:sahami_app/views/screens/home/main_admin_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
-import 'package:sahami_app/views/screens/manage/customer/customer_add_address_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 import '../views/screens/manage/customer/customer_create_view.dart';
@@ -21,13 +23,16 @@ class NavigationServices {
 
   static const String SPLASH_PROGRESS_ROUTE = "/SPLASH_PROGRESS_ROUTE";
   static const String HOME_ROUTE = "/HOME_ROUTE";
+  static const String MAIN_ADMIN_ROUTE = "/MAIN_ADMIN_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
 
   static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
-  static const String CUSTOMER_ADD_ADDRESS_VIEW_ROUTE = "/CUSTOMER_ADD_ADDRESS_VIEW_ROUTE";
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
 
   static const String LOGIN_VIEW_ROUTE = "/LOGIN_VIEW_ROUTE";
+  static const String REGISTER_VIEW_ROUTE = "/REGISTER_VIEW_ROUTE";
+
+  static const String CUSTOMER_VIEW_ROUTE = "/CUSTOMER_VIEW_ROUTE";
 
 
 
@@ -37,16 +42,20 @@ class NavigationServices {
     switch(settings.name) {
       case SPLASH_PROGRESS_ROUTE:
         return MaterialPageRoute(builder: (_) => const SplashView());
+      case HOME_ROUTE:
+        return MaterialPageRoute(builder: (_) => const HomeView());
       case LOGIN_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const LoginView());
-      case HOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => const MainView());
+      case REGISTER_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const RegisterView());
+      case MAIN_ADMIN_ROUTE:
+        return MaterialPageRoute(builder: (_) => const MainAdminView());
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const StatisticsView());
+      case CUSTOMER_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const CustomerView());
       case CUSTOMER_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CustomerCreateView());
-      case CUSTOMER_ADD_ADDRESS_VIEW_ROUTE:
-        return MaterialPageRoute(builder: (_) => const CustomerAddAddressView());
       case CUSTOMER_DETAIL_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CustomerDetailView());
       default:
@@ -57,16 +66,21 @@ class NavigationServices {
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, HOME_ROUTE);
   }
+  void navigationToMainAdminScreen(BuildContext context) {
+    Navigator.pushNamed(context, MAIN_ADMIN_ROUTE);
+  }
   void navigationToLoginScreen(BuildContext context) {
     Navigator.pushNamed(context, LOGIN_VIEW_ROUTE);
+  }
+  void navigationToRegisterScreen(BuildContext context) {
+    Navigator.pushNamed(context, REGISTER_VIEW_ROUTE);
+  }
+  void navigationToCustomerScreen(BuildContext context) {
+    Navigator.pushNamed(context, CUSTOMER_VIEW_ROUTE);
   }
   void navigationToCustomerCreateScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);
   }
-  void navigationToCustomerAddAddressScreen(BuildContext context) {
-    Navigator.pushNamed(context, CUSTOMER_ADD_ADDRESS_VIEW_ROUTE);
-  }
-
   void navigationToCustomerDetailScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE);
   }

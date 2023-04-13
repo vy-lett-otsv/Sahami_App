@@ -7,14 +7,14 @@ import 'package:sahami_app/views/screens/home/product_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import '../../constants/ui_color.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+class MainAdminView extends StatefulWidget {
+  const MainAdminView({Key? key}) : super(key: key);
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<MainAdminView> createState() => _MainAdminViewState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainAdminViewState extends State<MainAdminView> {
   int _selectedIndex = 0;
   List pages= const[
       StatisticsView(),
