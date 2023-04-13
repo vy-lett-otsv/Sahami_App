@@ -9,6 +9,8 @@ class UITextInputIcon extends StatelessWidget {
   final Color? colorCursor;
   final bool? isPassWordType;
   final TextEditingController? controller;
+  final FormFieldValidator? validation;
+  final Widget? suffixIcon;
 
   const UITextInputIcon(
       {super.key,
@@ -17,7 +19,9 @@ class UITextInputIcon extends StatelessWidget {
       this.color = const Color(0xFF82AA06),
       this.colorCursor = const Color(0xFFD9D9D9),
       this.isPassWordType = false,
-      this.controller});
+      this.controller,
+      this.validation,
+      this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,14 @@ class UITextInputIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             color: UIColors.white,
             border: Border.all(color: UIColors.inputBackground),
-          boxShadow: [
-            BoxShadow(color: UIColors.border, blurRadius: 7, offset: const Offset(2,2))
-          ]
-        ),
+            boxShadow: [
+              BoxShadow(
+                  color: UIColors.border,
+                  blurRadius: 7,
+                  offset: const Offset(2, 2))
+            ]),
         padding: const EdgeInsets.only(left: 16, right: 4),
-        child: TextField(
+        child: TextFormField(
             controller: controller,
             cursorColor: colorCursor,
             obscureText: isPassWordType!,
@@ -40,17 +46,15 @@ class UITextInputIcon extends StatelessWidget {
             style: const TextStyle(
               fontFamily: Fonts.Outfit,
             ),
-            decoration: icon != null
-                ? InputDecoration(
-                    labelText: text,
-                    prefixIcon: Icon(icon, color: color),
-                    border: InputBorder.none,
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    contentPadding: EdgeInsets.zero,
-                  )
-                : const InputDecoration(
-                    border: InputBorder.none,
-                  ),
+            validator: validation,
+            decoration: InputDecoration(
+              labelText: text,
+              prefixIcon: Icon(icon, color: color),
+              border: InputBorder.none,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              contentPadding: EdgeInsets.zero,
+              suffixIcon: suffixIcon
+            ),
             keyboardType: isPassWordType!
                 ? TextInputType.visiblePassword
                 : TextInputType.emailAddress));

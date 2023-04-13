@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/viewmodel/location_view_model.dart';
+import 'package:sahami_app/viewmodel/address_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
@@ -21,7 +21,7 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LocationViewModel())
+        ChangeNotifierProvider(create: (_) => AddressViewModel())
       ],
       child: Scaffold(
         backgroundColor: UIColors.background,
@@ -38,7 +38,7 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Consumer<LocationViewModel>(
+            child: Consumer<AddressViewModel>(
               builder: (_, locationViewModel, __) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
