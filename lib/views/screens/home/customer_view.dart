@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import '../../../services/navigation_service.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
 import '../../widget/bottomsheet_model.dart';
+import 'package:provider/provider.dart';
 
 class CustomerView extends StatefulWidget {
   const CustomerView({Key? key}) : super(key: key);
@@ -14,33 +16,53 @@ class CustomerView extends StatefulWidget {
 }
 
 class _CustomerViewState extends State<CustomerView> {
+  final CustomerViewModel _customerViewModel = CustomerViewModel();
+
+  @override
+  void initState() {
+    _customerViewModel.fetchCustomer();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UIColors.background,
-      appBar: AppBar(
-        title: const Text(UIStrings.manageCustomer),
-        backgroundColor: UIColors.primary,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                NavigationServices.instance.navigationToCustomerCreateScreen(context);
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => _customerViewModel)],
+      child: Scaffold(
+        backgroundColor: UIColors.background,
+        appBar: AppBar(
+          title: const Text(UIStrings.manageCustomer),
+          backgroundColor: UIColors.primary,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: [
+            GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  NavigationServices.instance.navigationToCustomerCreateScreen(context);
+                },
+                child: const Icon(Icons.add)
+            ),
+            SizedBox(width: DimensManager.dimens.setWidth(20))
+          ],
+        ),
+        body: SafeArea(
+            child: Consumer<CustomerViewModel> (
+              builder: (_, customerViewModel, __) {
+                return Column(
+                  children: [
+                    _buildSearch(context),
+                    customerViewModel.userList.isEmpty ?
+                    const Expanded(
+                        child: Center(
+                            child: CircularProgressIndicator()
+                        )
+                    )
+                    : _buildListCustomer(context, customerViewModel)
+                  ],
+                );
               },
-              child: const Icon(Icons.add)
-          ),
-          SizedBox(width: DimensManager.dimens.setWidth(20))
-        ],
-      ),
-      body: SafeArea(
-          child: Column(
-            children: [
-              _buildSearch(context),
-              _buildListCustomer()
-            ],
-          )
+            )
+        ),
       ),
     );
   }
@@ -76,12 +98,12 @@ class _CustomerViewState extends State<CustomerView> {
     );
   }
 
-  Widget _buildListCustomer() {
+  Widget _buildListCustomer(BuildContext context, CustomerViewModel customerViewModel) {
     return Expanded(
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: 10,
+            itemCount: customerViewModel.userList.length,
             itemBuilder: (context, index) {
               return Slidable(
                 endActionPane: ActionPane(
@@ -119,16 +141,17 @@ class _CustomerViewState extends State<CustomerView> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(DimensManager.dimens.setSp(20)),
-                          child:  Image.network("https://i.pinimg.com/564x/e7/e2/d4/e7e2d422ccab3af6bb92cbd7dd099018.jpg",
+                          child:  Image.network(customerViewModel.userList[index].image,
                             width: DimensManager.dimens.setWidth(80),
-                            height: DimensManager.dimens.setHeight(80),),
+                            height: DimensManager.dimens.setHeight(80),
+                            fit: BoxFit.cover),
                         ),
                         SizedBox(width: DimensManager.dimens.setWidth(20)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "Nguyễn Văn A",
+                                customerViewModel.userList[index].userName,
                                 style: TextStyle(fontSize: DimensManager.dimens.setSp(18), color: UIColors.black)
                             ),
                             SizedBox(height: DimensManager.dimens.setHeight(10)
@@ -137,7 +160,8 @@ class _CustomerViewState extends State<CustomerView> {
                               padding: EdgeInsets.symmetric(
                                   vertical: DimensManager.dimens.setHeight(5)
                               ),
-                              child: Text("0323344345", style: TextStyle(color: UIColors.text)),
+                              child: Text(customerViewModel.userList[index].contact,
+                                  style: TextStyle(color: UIColors.text)),
                             )
                           ],
                         )

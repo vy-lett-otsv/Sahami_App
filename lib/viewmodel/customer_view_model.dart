@@ -5,12 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/services/navigation_service.dart';
+
 class CustomerViewModel extends ChangeNotifier{
+
   final int _selected = 0;
   int get selected => _selected;
 
   String selectedFileName = '';
   XFile? file;
+
+  String _imageUrl = " ";
+  String get imageUrl => _imageUrl;
+
+  List<UserEntity> _userList =[];
+  List<UserEntity> get userList => _userList;
 
   selectFile(bool imageFrom) async {
     file = await ImagePicker().pickImage(
@@ -19,12 +27,7 @@ class CustomerViewModel extends ChangeNotifier{
       selectedFileName = file!.name;
       notifyListeners();
     }
-    print(file!.name);
   }
-
-
-  String _imageUrl = " ";
-  String get imageUrl => _imageUrl;
 
   Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
       Reference ref = FirebaseStorage.instance.ref().child('user').child('/${file!.name}');
@@ -37,5 +40,23 @@ class CustomerViewModel extends ChangeNotifier{
       final json = userEntity.toJson();
       await docUser.set(json);
       NavigationServices.instance.navigationToCustomerScreen(context);
+  }
+
+  Future <void> fetchCustomer() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .where('role', isEqualTo: 'user')
+        .get();
+    List<UserEntity> users = querySnapshot.docs.map((docSnapshot) {
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      return UserEntity(
+          userName: data['name'],
+          contact: data['contact'],
+          email: data['email'],
+          image: data['image']
+      );
+    }).toList();
+    _userList = users;
+    notifyListeners();
   }
 }
