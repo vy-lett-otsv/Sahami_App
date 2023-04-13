@@ -39,7 +39,7 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Consumer<AddressViewModel>(
-              builder: (_, locationViewModel, __) {
+              builder: (_, addressViewModel, __) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -56,11 +56,11 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: locationViewModel.addressTypeList.length,
+                                itemCount: addressViewModel.addressTypeList.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      locationViewModel.setAddressTypeIndex(index);
+                                      addressViewModel.setAddressTypeIndex(index);
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(right: DimensManager.dimens.setWidth(10)),
@@ -75,7 +75,7 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
                                       ),
                                       child: Icon(
                                         index==0?Icons.home:index==1?Icons.work:Icons.location_on,
-                                        color: locationViewModel.addressLocationIndex == index? UIColors.primary : UIColors.text,
+                                        color: addressViewModel.addressLocationIndex == index? UIColors.primary : UIColors.text,
                                       ),
                                     ),
                                   );
@@ -83,8 +83,8 @@ class _CustomerAddAddressViewState extends State<CustomerAddAddressView> {
                             ),
                           ),
                           SizedBox(height: DimensManager.dimens.setHeight(20)),
-                          const UILabelTextInputIcon(title: UIStrings.cityDistrict, icon: Icons.location_on_outlined),
                           const UILabelTextInputIcon(title: UIStrings.homeAddress, icon: Icons.location_on_outlined),
+                          const UILabelTextInputIcon(title: UIStrings.cityDistrict, icon: Icons.location_on_outlined),
                           const UILabelTextInputIcon(title: UIStrings.contactName, icon: Icons.person_2_outlined),
                           const UILabelTextInputIcon(title: UIStrings.contactNumber, icon: Icons.phone_outlined),
                           Row(

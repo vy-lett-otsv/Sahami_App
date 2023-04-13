@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/data/remote/enitity/user_enitity.dart';
-
+import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import '../services/navigation_service.dart';
 
 class AuthViewModel extends ChangeNotifier{

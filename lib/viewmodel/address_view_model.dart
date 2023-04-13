@@ -9,4 +9,6 @@ class AddressViewModel extends ChangeNotifier{
     _addressLocationIndex = index;
     notifyListeners();
   }
+
+
 }

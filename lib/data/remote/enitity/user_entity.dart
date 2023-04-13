@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'address_entity.dart';
 
 class UserEntity {
   String userId;
@@ -8,15 +8,19 @@ class UserEntity {
   String dob;
   String gender;
   String role;
+  String image;
+  AddressEntity? address;
 
   UserEntity({
-   this.userId = '',
+    this.userId = '',
     required this.userName,
     required this.contact,
-    this.email ='',
+    required this.email,
     this.dob = '',
     this.gender = '',
-    this.role = 'user'
+    this.role = 'user',
+    this.image = '',
+    this.address
   });
 
   Map<String, dynamic> toJson() => {
@@ -26,7 +30,9 @@ class UserEntity {
     'email': email,
     'dob': dob,
     'gender': gender,
-    'role':role
+    'role':role,
+    'image': image,
+    'address': address
   };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -37,23 +43,9 @@ class UserEntity {
       email: json['email'],
       dob: json['dob'],
       gender: json['gender'],
-      role: json['role']
-    );
-  }
-
-  factory UserEntity.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options,
-      ) {
-    final data = snapshot.data();
-    return UserEntity(
-        userId: data?['id'],
-        userName: data?['name'],
-        contact: data?['contact'],
-        email: data?['email'],
-        dob: data?['dob'],
-        gender: data?['gender'],
-        role: data?['role']
+      role: json['role'],
+      image: json['image'],
+      address: json['address']
     );
   }
 }

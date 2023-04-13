@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/data/remote/enitity/user_enitity.dart';
+import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/viewmodel/auth_view_model.dart';
 import '../../../enums/fonts.dart';
 import '../../../services/navigation_service.dart';
@@ -27,7 +27,7 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
   final AuthViewModel _authViewModel = AuthViewModel();
-  final UserEntity _userEntity = UserEntity(userName: '', contact: '');
+  final UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
 
   @override
   Widget build(BuildContext context) {
