@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
+import 'package:sahami_app/views/widget/ui_text.dart';
+import '../../../enums/view_state.dart';
 import '../../../services/navigation_service.dart';
+import '../../../utils/constants.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
 import '../../widget/bottomsheet_model.dart';
@@ -51,7 +54,7 @@ class _CustomerViewState extends State<CustomerView> {
                 return Column(
                   children: [
                     _buildSearch(context),
-                    customerViewModel.userList.isEmpty ?
+                    customerViewModel.viewState == ViewState.busy?
                     const Expanded(
                         child: Center(
                             child: CircularProgressIndicator()
@@ -99,7 +102,12 @@ class _CustomerViewState extends State<CustomerView> {
   }
 
   Widget _buildListCustomer(BuildContext context, CustomerViewModel customerViewModel) {
-    return Expanded(
+    return customerViewModel.userList.isEmpty ?
+      Container(
+        margin: EdgeInsets.only(top: DimensManager.dimens.setHeight(20)),
+          child: const UIText(UIStrings.isEmptyCustomer)
+      )
+    :Expanded(
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -114,7 +122,9 @@ class _CustomerViewState extends State<CustomerView> {
                         backgroundColor: UIColors.background,
                         foregroundColor: UIColors.lightRed,
                         icon: Icons.delete,
-                        onPressed: (context) {}
+                        onPressed: (context) {
+                            _customerViewModel.deleteCustomer(customerViewModel.userList[index].userId);
+                        }
                     ),
                     const Spacer(),
                   ],
@@ -122,7 +132,12 @@ class _CustomerViewState extends State<CustomerView> {
                 child: GestureDetector(
                   onTap: () {
                     FocusScope.of(context).requestFocus(FocusNode());
-                    NavigationServices.instance.navigationToCustomerDetailScreen(context);
+                    NavigationServices.instance.navigationToCustomerDetailScreen(
+                      context,
+                      arguments: {
+                        Constants.ENTITY: customerViewModel.userList.elementAt(index),
+                      },
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(

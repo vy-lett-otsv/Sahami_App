@@ -5,6 +5,7 @@ import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_strings.dart';
 import '../../../widget/ui_button_primary.dart';
@@ -69,7 +70,8 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
                               email: _emailController.text,
                               address: _addressController.text
                           );
-                          _customerViewModel.createCustomer(customerEntity, context);
+                          _customerViewModel.createCustomer(customerEntity);
+                          NavigationServices.instance.goBack(context);
                           // _productViewModel.setTest();
                         })
                   ],
@@ -132,9 +134,7 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
         color: UIColors.white,
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(30),
-            vertical: DimensManager.dimens.setHeight(30)),
+        padding: EdgeInsets.all(DimensManager.dimens.setWidth(30)),
         child: Column(
           children: [
             UILabelTextInput(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
@@ -23,7 +24,9 @@ class _ProductViewState extends State<ProductView> {
         automaticallyImplyLeading: false,
         actions: [
           GestureDetector(
-              onTap: () {},
+              onTap: () {
+                NavigationServices.instance.navigationToProductCreateScreen(context);
+              },
               child: const Icon(Icons.add)
           ),
           SizedBox(width: DimensManager.dimens.setWidth(20))
