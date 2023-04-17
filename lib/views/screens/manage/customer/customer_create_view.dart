@@ -70,8 +70,7 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
                               email: _emailController.text,
                               address: _addressController.text
                           );
-                          _customerViewModel.createCustomer(customerEntity);
-                          NavigationServices.instance.goBack(context);
+                          _customerViewModel.createCustomer(customerEntity, context);
                           // _productViewModel.setTest();
                         })
                   ],

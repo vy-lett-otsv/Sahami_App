@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
-
+import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';
 import '../enums/view_state.dart';
 
 class CustomerViewModel extends ChangeNotifier{
@@ -39,7 +39,7 @@ class CustomerViewModel extends ChangeNotifier{
     }
   }
 
-  Future<void> createCustomer(UserEntity userEntity) async {
+  Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
       Reference ref = FirebaseStorage.instance.ref().child('user').child('/${file!.name}');
       UploadTask uploadTask = ref.putFile(File(file!.path));
       await uploadTask.whenComplete(() => null);
@@ -53,7 +53,9 @@ class CustomerViewModel extends ChangeNotifier{
         email: userEntity.email,
         password: "123456"
       );
-      notifyListeners();
+      fetchCustomer();
+      Navigator.pop(context, userEntity);
+      // Navigator.pop(context);
   }
 
   Future <void> fetchCustomer() async {
@@ -93,5 +95,14 @@ class CustomerViewModel extends ChangeNotifier{
           });
         },
     );
+  }
+
+  Future<void> goToScreenCreateCustomerView(BuildContext context) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CustomerCreateView()),
+    );
+    createCustomer(result, context);
+    fetchCustomer();
   }
 }

@@ -41,7 +41,7 @@ class _CustomerViewState extends State<CustomerView> {
             GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  NavigationServices.instance.navigationToCustomerCreateScreen(context);
+                  _customerViewModel.goToScreenCreateCustomerView(context);
                 },
                 child: const Icon(Icons.add)
             ),

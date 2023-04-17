@@ -89,9 +89,7 @@ class NavigationServices {
   void navigationToCustomerScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_VIEW_ROUTE);
   }
-  void navigationToCustomerCreateScreen(BuildContext context, {
-    Object? arguments,
-  }) {
+  void navigationToCustomerCreateScreen(BuildContext context) async {
     Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);
   }
   void navigationToCustomerDetailScreen(
@@ -103,9 +101,5 @@ class NavigationServices {
 
   void navigationToProductCreateScreen(BuildContext context) {
     Navigator.pushNamed(context, PRODUCT_CREATE_VIEW_ROUTE);
-  }
-
-  void goBack(BuildContext context) {
-    Navigator.pop(context);
   }
 }
