@@ -107,9 +107,6 @@ class CustomerViewModel extends ChangeNotifier{
       MaterialPageRoute(builder: (context) => const CustomerCreateView()),
     );
     createCustomer(result, context);
-    // ScaffoldMessenger.of(context)
-    //   ..removeCurrentSnackBar()
-    //   ..showSnackBar(SnackBar(content: Text('Success')));
     Flushbar(
       message:  "Success",
       messageColor: UIColors.primary,
@@ -121,7 +118,6 @@ class CustomerViewModel extends ChangeNotifier{
       ),
       backgroundColor: UIColors.background,
     )..show(context);
-
     fetchCustomer();
   }
 }
