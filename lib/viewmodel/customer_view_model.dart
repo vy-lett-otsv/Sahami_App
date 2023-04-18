@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';
 import '../enums/view_state.dart';
 
@@ -44,18 +46,19 @@ class CustomerViewModel extends ChangeNotifier{
       UploadTask uploadTask = ref.putFile(File(file!.path));
       await uploadTask.whenComplete(() => null);
       _imageUrl = await ref.getDownloadURL();
-      final docUser = FirebaseFirestore.instance.collection('user').doc();
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: userEntity.email,
+        password: "123456",
+      );
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final docUser = FirebaseFirestore.instance.collection('user').doc(uid);
       userEntity.userId = docUser.id;
       userEntity.image = _imageUrl;
       final json = userEntity.toJson();
       await docUser.set(json);
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: userEntity.email,
-        password: "123456"
-      );
+
       fetchCustomer();
       Navigator.pop(context, userEntity);
-      // Navigator.pop(context);
   }
 
   Future <void> fetchCustomer() async {
@@ -95,6 +98,7 @@ class CustomerViewModel extends ChangeNotifier{
           });
         },
     );
+    notifyListeners();
   }
 
   Future<void> goToScreenCreateCustomerView(BuildContext context) async {
@@ -103,6 +107,21 @@ class CustomerViewModel extends ChangeNotifier{
       MaterialPageRoute(builder: (context) => const CustomerCreateView()),
     );
     createCustomer(result, context);
+    // ScaffoldMessenger.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text('Success')));
+    Flushbar(
+      message:  "Success",
+      messageColor: UIColors.primary,
+      duration:  Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+      icon: Icon(
+        Icons.task_alt,
+        color: UIColors.primary,
+      ),
+      backgroundColor: UIColors.background,
+    )..show(context);
+
     fetchCustomer();
   }
 }

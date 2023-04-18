@@ -8,6 +8,7 @@ class UITextInputIcon extends StatelessWidget {
   final Color? color;
   final Color? colorCursor;
   final bool? isPassWordType;
+  final bool? isNumber;
   final TextEditingController? controller;
   final FormFieldValidator? validation;
   final Widget? suffixIcon;
@@ -19,6 +20,7 @@ class UITextInputIcon extends StatelessWidget {
       this.color = const Color(0xFF82AA06),
       this.colorCursor = const Color(0xFFD9D9D9),
       this.isPassWordType = false,
+      this.isNumber = false,
       this.controller,
       this.validation,
       this.suffixIcon});
@@ -48,15 +50,14 @@ class UITextInputIcon extends StatelessWidget {
             ),
             validator: validation,
             decoration: InputDecoration(
-              labelText: text,
-              prefixIcon: Icon(icon, color: color),
-              border: InputBorder.none,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding: EdgeInsets.zero,
-              suffixIcon: suffixIcon
-            ),
+                labelText: text,
+                prefixIcon: Icon(icon, color: color),
+                border: InputBorder.none,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: EdgeInsets.zero,
+                suffixIcon: suffixIcon),
             keyboardType: isPassWordType!
                 ? TextInputType.visiblePassword
-                : TextInputType.emailAddress));
+                : isNumber! ? TextInputType.number : TextInputType.emailAddress));
   }
 }

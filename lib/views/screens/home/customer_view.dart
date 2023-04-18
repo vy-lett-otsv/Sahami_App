@@ -10,6 +10,7 @@ import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
 import '../../widget/bottomsheet_model.dart';
 import 'package:provider/provider.dart';
+import '../../widget/ui_title.dart';
 
 class CustomerView extends StatefulWidget {
   const CustomerView({Key? key}) : super(key: key);
@@ -123,7 +124,37 @@ class _CustomerViewState extends State<CustomerView> {
                         foregroundColor: UIColors.lightRed,
                         icon: Icons.delete,
                         onPressed: (context) {
-                            _customerViewModel.deleteCustomer(customerViewModel.userList[index].userId);
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
+                                ),
+                                title: const UITilte(UIStrings.titleConfirm),
+                                content: const UIText(UIStrings.confirmDelete),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: UIColors.white
+                                    ),
+                                    child: UIText(UIStrings.cancel, color: UIColors.primary),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _customerViewModel.deleteCustomer(customerViewModel.userList[index].userId);
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: UIColors.primary
+                                    ),
+                                    child: const UIText(UIStrings.ok, color: UIColors.white),
+                                  )
+                                ],
+                              )
+                          );
                         }
                     ),
                     const Spacer(),

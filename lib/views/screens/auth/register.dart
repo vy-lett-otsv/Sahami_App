@@ -105,6 +105,7 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
         text: UIStrings.phone,
         icon: Icons.phone,
         controller: phone,
+        isNumber: true,
       ),
     ],
   );
