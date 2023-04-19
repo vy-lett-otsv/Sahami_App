@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/viewmodel/auth_view_model.dart';
+import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
@@ -23,7 +23,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
 
-  final AuthViewModel _authViewModel = AuthViewModel();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +37,14 @@ class _LoginViewState extends State<LoginView> {
             vertical: DimensManager.dimens.setHeight(10),
           ),
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(),
               SizedBox(height: DimensManager.dimens.setHeight(30)),
               _buildTextField(_emailTextController, _passwordTextController,
-                  _authViewModel),
+                  _authService),
               SizedBox(height: DimensManager.dimens.setHeight(50)),
               _buildLogin(
-                  context, _emailTextController, _passwordTextController, _authViewModel)
+                  context, _emailTextController, _passwordTextController, _authService)
             ],
           ),
         ),
@@ -84,7 +83,7 @@ Widget _buildHeader() {
 }
 
 Widget _buildTextField(TextEditingController email, TextEditingController pass,
-    AuthViewModel authViewModel) {
+    AuthService authService) {
   return Column(
     children: [
       UITextInputIcon(
@@ -123,7 +122,7 @@ Widget _buildLogin(
     BuildContext context,
     TextEditingController email,
     TextEditingController pass,
-    AuthViewModel authViewModel
+    AuthService authService
     ) {
   return Column(
     children: [
@@ -134,9 +133,7 @@ Widget _buildLogin(
                 email: email.text,
                 password: pass.text
             ).then((value) async {
-              authViewModel.roleUser(context, value.user!.uid);
-            }).onError((error, stackTrace) {
-              print("Error ${error.toString()}");
+              authService.roleUser(context, value.user!.uid);
             });
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),

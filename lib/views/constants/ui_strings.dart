@@ -8,6 +8,7 @@ class UIStrings {
   static const String signIn = "Sign in";
   static const String email = "Email";
   static const String phone = "Phone number";
+  static const  String logout = "Log out";
 
   static const String product = "Product";
   static const String order = "Order";

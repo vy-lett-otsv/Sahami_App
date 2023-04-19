@@ -4,6 +4,7 @@ import 'package:sahami_app/views/screens/auth/register.dart';
 import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/screens/home/main_admin_view.dart';
+import 'package:sahami_app/views/screens/home/setting_admin_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
@@ -27,6 +28,7 @@ class NavigationServices {
   static const String HOME_ROUTE = "/HOME_ROUTE";
   static const String MAIN_ADMIN_ROUTE = "/MAIN_ADMIN_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
+  static const String SETTING_VIEW_ROUTE = "/SETTING_VIEW_ROUTE";
 
   static const String LOGIN_VIEW_ROUTE = "/LOGIN_VIEW_ROUTE";
   static const String REGISTER_VIEW_ROUTE = "/REGISTER_VIEW_ROUTE";
@@ -68,6 +70,8 @@ class NavigationServices {
         );
       case PRODUCT_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const ProductCreateView());
+      case SETTING_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const SettingAdminView());
       default:
         return MaterialPageRoute(builder: (_) => const SplashView());
     }
@@ -101,5 +105,9 @@ class NavigationServices {
 
   void navigationToProductCreateScreen(BuildContext context) {
     Navigator.pushNamed(context, PRODUCT_CREATE_VIEW_ROUTE);
+  }
+
+  void navigationToSettingAdminScreen(BuildContext context) {
+    Navigator.pushNamed(context, SETTING_VIEW_ROUTE);
   }
 }

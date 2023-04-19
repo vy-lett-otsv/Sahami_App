@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
-import '../services/navigation_service.dart';
 
 class AuthViewModel extends ChangeNotifier{
   final bool _isObscure = true;
@@ -23,19 +22,5 @@ class AuthViewModel extends ChangeNotifier{
       await docUser.set(json);
   }
 
-  Future<void> roleUser(BuildContext context, String idUser) async {
-    FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
-          (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        String role = data['role'];
-        if(role == "admin") {
-          NavigationServices.instance.navigationToMainAdminScreen(context);
-        } else {
-          NavigationServices.instance.navigationToHomeScreen(context);
-        }
-        print(role);
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-  }
+
 }
