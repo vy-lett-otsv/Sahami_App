@@ -53,6 +53,7 @@ dependencies:
   fl_chart: 0.61.0
   syncfusion_flutter_charts: 21.1.38
   flutter_slidable: 2.0.0
+  another_flushbar: 1.12.29
 
 dev_dependencies:
   flutter_test:

@@ -132,9 +132,7 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
         color: UIColors.white,
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(30),
-            vertical: DimensManager.dimens.setHeight(30)),
+        padding: EdgeInsets.all(DimensManager.dimens.setWidth(30)),
         child: Column(
           children: [
             UILabelTextInput(

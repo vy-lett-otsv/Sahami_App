@@ -6,7 +6,9 @@ import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/screens/home/main_admin_view.dart';
 import 'package:sahami_app/views/screens/home/statistics_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
+import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
+import '../utils/constants.dart';
 import '../views/screens/manage/customer/customer_create_view.dart';
 
 class NavigationServices {
@@ -26,13 +28,14 @@ class NavigationServices {
   static const String MAIN_ADMIN_ROUTE = "/MAIN_ADMIN_ROUTE";
   static const String STATISTICS_VIEW_ROUTE = "/STATISTICS_VIEW_ROUTE";
 
-  static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
-  static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
-
   static const String LOGIN_VIEW_ROUTE = "/LOGIN_VIEW_ROUTE";
   static const String REGISTER_VIEW_ROUTE = "/REGISTER_VIEW_ROUTE";
 
   static const String CUSTOMER_VIEW_ROUTE = "/CUSTOMER_VIEW_ROUTE";
+  static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
+  static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
+  static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
+
 
 
 
@@ -57,7 +60,14 @@ class NavigationServices {
       case CUSTOMER_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CustomerCreateView());
       case CUSTOMER_DETAIL_VIEW_ROUTE:
-        return MaterialPageRoute(builder: (_) => const CustomerDetailView());
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => CustomerDetailView(
+              userEntity: args[Constants.ENTITY],
+            )
+        );
+      case PRODUCT_CREATE_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const ProductCreateView());
       default:
         return MaterialPageRoute(builder: (_) => const SplashView());
     }
@@ -75,13 +85,21 @@ class NavigationServices {
   void navigationToRegisterScreen(BuildContext context) {
     Navigator.pushNamed(context, REGISTER_VIEW_ROUTE);
   }
+
   void navigationToCustomerScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_VIEW_ROUTE);
   }
-  void navigationToCustomerCreateScreen(BuildContext context) {
+  void navigationToCustomerCreateScreen(BuildContext context) async {
     Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);
   }
-  void navigationToCustomerDetailScreen(BuildContext context) {
-    Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE);
+  void navigationToCustomerDetailScreen(
+      BuildContext context, {
+      Object? arguments,
+  }) {
+    Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE, arguments: arguments);
+  }
+
+  void navigationToProductCreateScreen(BuildContext context) {
+    Navigator.pushNamed(context, PRODUCT_CREATE_VIEW_ROUTE);
   }
 }

@@ -46,4 +46,9 @@ class UserEntity {
       address: json['address']
     );
   }
+
+  @override
+  String toString() {
+    return 'UserEntity{userName: $userName, contact: $contact, email: $email, image: $image}';
+  }
 }

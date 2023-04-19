@@ -84,6 +84,10 @@ class UIStrings {
   static const String sugars = "Sugars";
   static const String caffeine = "Caffeine";
 
+  //empty
+  static const String isEmptyCustomer = "You don't have any customer";
+  static const String isEmptyProduct = "You don't have any product";
+
   //unit
   static const String kcal = "kcal";
   static const String g = "g";
