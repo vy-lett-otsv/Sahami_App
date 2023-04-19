@@ -14,12 +14,12 @@ class UILabelTextInput extends StatelessWidget {
 
   const UILabelTextInput(
       {super.key,
-        required this.title,
-        this.controller,
-        this.notNull = true,
-        this.unit = '',
-        this.inputNumber = false,
-        this.focusNode});
+      required this.title,
+      this.controller,
+      this.notNull = true,
+      this.unit = '',
+      this.inputNumber = false,
+      this.focusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +44,17 @@ class UILabelTextInput extends StatelessWidget {
                     children: <InlineSpan>[
                       notNull == true
                           ? TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: UIColors.red,
-                            fontSize: 16,
-                            letterSpacing: 0.75,
-                            fontFamily: Fonts.Outfit,
-                            fontWeight: FontWeight.w400,
-                          ))
+                              text: ' *',
+                              style: TextStyle(
+                                color: UIColors.red,
+                                fontSize: 16,
+                                letterSpacing: 0.75,
+                                fontFamily: Fonts.Outfit,
+                                fontWeight: FontWeight.w400,
+                              ))
                           : const TextSpan(
-                        text: '',
-                      )
+                              text: '',
+                            )
                     ])),
               ),
               Text(
@@ -71,16 +71,16 @@ class UILabelTextInput extends StatelessWidget {
           ),
           inputNumber == false
               ? TextField(
-            controller: controller,
-            cursorColor: UIColors.text,
-            focusNode: focusNode,
-          )
+                  controller: controller,
+                  cursorColor: UIColors.text,
+                  focusNode: focusNode,
+                )
               : TextField(
-            controller: controller,
-            cursorColor: UIColors.text,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            keyboardType: TextInputType.number,
-          )
+                  controller: controller,
+                  cursorColor: UIColors.text,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                )
         ],
       ),
     );

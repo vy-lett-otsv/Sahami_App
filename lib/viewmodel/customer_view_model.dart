@@ -25,11 +25,9 @@ class CustomerViewModel extends ChangeNotifier{
   List<UserEntity> get userList => _userList;
 
   final UserEntity _customerDetail = UserEntity(userName: "", contact: " ", email: " ");
-
   UserEntity get customer => _customerDetail;
 
   ViewState _viewState = ViewState.idle;
-
   ViewState get viewState => _viewState;
 
   selectFile(bool imageFrom) async {
@@ -58,7 +56,7 @@ class CustomerViewModel extends ChangeNotifier{
       await docUser.set(json);
 
       fetchCustomer();
-      Navigator.pop(context, userEntity);
+      if(context.mounted) Navigator.pop(context, userEntity);
   }
 
   Future <void> fetchCustomer() async {
@@ -92,7 +90,6 @@ class CustomerViewModel extends ChangeNotifier{
               .authStateChanges()
               .listen((User? user) {
             if (user != null) {
-              print(user);
               user.delete();
             }
           });
@@ -106,18 +103,20 @@ class CustomerViewModel extends ChangeNotifier{
       context,
       MaterialPageRoute(builder: (context) => const CustomerCreateView()),
     );
-    createCustomer(result, context);
-    Flushbar(
-      message:  "Success",
-      messageColor: UIColors.primary,
-      duration:  Duration(seconds: 3),
-      flushbarPosition: FlushbarPosition.TOP,
-      icon: Icon(
-        Icons.task_alt,
-        color: UIColors.primary,
-      ),
-      backgroundColor: UIColors.background,
-    )..show(context);
+    if(context.mounted) {
+      createCustomer(result, context);
+      Flushbar(
+        message:  "Success",
+        messageColor: UIColors.primary,
+        duration:  const Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.TOP,
+        icon: Icon(
+          Icons.task_alt,
+          color: UIColors.primary,
+        ),
+        backgroundColor: UIColors.background,
+      ).show(context);
+    }
     fetchCustomer();
   }
 }

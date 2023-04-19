@@ -5,7 +5,6 @@ import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
-import '../../../../services/navigation_service.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_strings.dart';
 import '../../../widget/ui_button_primary.dart';
