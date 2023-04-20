@@ -34,7 +34,6 @@ class UITextInput extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.never,
           contentPadding: const EdgeInsets.only(left: 10),
         ),
-        expands: true,
         keyboardType: isPassWordType!
             ? TextInputType.visiblePassword
             : TextInputType.emailAddress);

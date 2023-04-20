@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/data/fake_data.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/services/navigation_service.dart';
+import 'package:sahami_app/viewmodel/customer_view_model.dart';
+import 'package:sahami_app/viewmodel/product_view_model.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
@@ -32,6 +34,8 @@ class _StatisticsViewState extends State<StatisticsView> {
   late TooltipBehavior _tooltipBehavior;
 
   final AuthService _authService = AuthService();
+  final ProductViewModel _productViewModel = ProductViewModel();
+  final CustomerViewModel _customerViewModel = CustomerViewModel();
 
   @override
   void initState() {
@@ -94,8 +98,8 @@ class _StatisticsViewState extends State<StatisticsView> {
                     )
                   : CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(
-                          authService.avaAdmin),
+                      backgroundColor: null,
+                      backgroundImage: NetworkImage(authService.avaAdmin),
                     )),
           SizedBox(width: DimensManager.dimens.setWidth(10)),
           Column(
@@ -124,19 +128,28 @@ class _StatisticsViewState extends State<StatisticsView> {
             UIButtonStatistics(
                 title: UIStrings.addProduct,
                 image: AssetIcons.iconProductWhite,
-                onTap: () {}),
+                onTap: () {
+                  _productViewModel.goToScreenCreateProductView(context);
+                }
+            ),
             UIButtonStatistics(
-                icon: Icons.article, title: UIStrings.addOrder, onTap: () {}),
+                icon: Icons.article,
+                title: UIStrings.addOrder,
+                onTap: () {}
+            ),
             UIButtonStatistics(
                 icon: Icons.person,
                 title: UIStrings.addCustomer,
                 onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  _customerViewModel.goToScreenCreateCustomerView(context);
                 }),
             UIButtonStatistics(
                 icon: Icons.category,
                 title: UIStrings.addCategory,
-                onTap: () {})
+                onTap: () {
+                  NavigationServices.instance.navigationToCategoryScreen(context);
+                }
+            )
           ],
         ),
       ),

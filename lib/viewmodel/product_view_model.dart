@@ -75,7 +75,6 @@ class ProductViewModel extends ChangeNotifier {
     _category = categoryName;
     final json = product.toJson();
     await docProduct.set(json);
-
     fetchProduct();
     if (context.mounted) Navigator.pop(context, product);
   }

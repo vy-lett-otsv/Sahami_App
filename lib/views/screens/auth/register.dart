@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
-import 'package:sahami_app/viewmodel/auth_view_model.dart';
+import 'package:sahami_app/services/auth_service.dart';
 import '../../../enums/fonts.dart';
 import '../../../services/navigation_service.dart';
 import '../../assets/asset_icons.dart';
@@ -26,7 +26,7 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
-  final AuthViewModel _authViewModel = AuthViewModel();
+  final AuthService _authService = AuthService();
   final UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
 
   @override
@@ -53,7 +53,7 @@ class _RegisterViewState extends State<RegisterView> {
                   _emailTextController,
                   _passwordTextController,
                   _phoneTextController,
-                  _authViewModel,
+                  _authService,
                   _userEntity)
             ],
           ),
@@ -117,7 +117,7 @@ Widget _buildSignUp(
     TextEditingController email,
     TextEditingController pass,
     TextEditingController phone,
-    AuthViewModel authViewModel,
+    AuthService authService,
     UserEntity userEntity) {
   return Column(
     children: [
@@ -127,7 +127,7 @@ Widget _buildSignUp(
             FirebaseAuth.instance.createUserWithEmailAndPassword(
                 email: email.text,
                 password: pass.text).then((value) {
-                  authViewModel.createUser(userEntity, value.user?.uid, user.text, phone.text, email.text);
+                  authService.createUser(userEntity, value.user?.uid, user.text, phone.text, email.text);
                   NavigationServices.instance.navigationToHomeScreen(context);
                 }).onError((error, stackTrace) {
               // print("Error ${error.toString()}");

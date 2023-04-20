@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import '../data/remote/enitity/user_entity.dart';
 import 'navigation_service.dart';
 
 class AuthService {
@@ -24,22 +24,30 @@ class AuthService {
 
 
   Future<void> roleUser(BuildContext context, String idUser) async {
-    FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
+    await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
           (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         String role = data['role'];
         _avaAdmin = data['image'];
         _userName = data['name'];
-        print(avaAdmin);
-        print(userName);
         if(role == "admin") {
           NavigationServices.instance.navigationToMainAdminScreen(context);
         } else {
           NavigationServices.instance.navigationToHomeScreen(context);
         }
       },
-      onError: (e) => print("Error getting document: $e"),
     );
+  }
+
+  Future<void> createUser(UserEntity userEntity, String? userId, String username, String phone, String email) async {
+    String newDocId = userId!;
+    final docUser = FirebaseFirestore.instance.collection('user').doc(newDocId);
+    userEntity.userId = userId;
+    userEntity.userName = username;
+    userEntity.contact = phone;
+    userEntity.email = email;
+    final json = userEntity.toJson();
+    await docUser.set(json);
   }
 
   Future<void> signOut() async {

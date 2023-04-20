@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/auth/login.dart';
 import 'package:sahami_app/views/screens/auth/register.dart';
+import 'package:sahami_app/views/screens/home/category_view.dart';
 import 'package:sahami_app/views/screens/home/customer_view.dart';
 import 'package:sahami_app/views/screens/home/home_view.dart';
 import 'package:sahami_app/views/screens/home/main_admin_view.dart';
@@ -37,7 +38,7 @@ class NavigationServices {
   static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
   static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
-
+  static const String CATEGORY_VIEW_ROUTE = "/CATEGORY_VIEW_ROUTE";
 
 
 
@@ -72,6 +73,8 @@ class NavigationServices {
         return MaterialPageRoute(builder: (_) => const ProductCreateView());
       case SETTING_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const SettingAdminView());
+      case CATEGORY_VIEW_ROUTE:
+        return MaterialPageRoute(builder: (_) => const CategoryView());
       default:
         return MaterialPageRoute(builder: (_) => const SplashView());
     }
@@ -109,5 +112,9 @@ class NavigationServices {
 
   void navigationToSettingAdminScreen(BuildContext context) {
     Navigator.pushNamed(context, SETTING_VIEW_ROUTE);
+  }
+
+  void navigationToCategoryScreen(BuildContext context) {
+    Navigator.pushNamed(context, CATEGORY_VIEW_ROUTE);
   }
 }
