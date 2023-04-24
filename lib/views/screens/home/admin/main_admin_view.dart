@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import 'package:sahami_app/views/screens/home/customer_view.dart';
-import 'package:sahami_app/views/screens/home/order_view.dart';
-import 'package:sahami_app/views/screens/home/product_view.dart';
-import 'package:sahami_app/views/screens/home/statistics_view.dart';
-import '../../constants/ui_color.dart';
+import 'package:sahami_app/views/screens/home/admin/product_view.dart';
+import 'package:sahami_app/views/screens/home/admin/statistics_view.dart';
+
+import '../../../constants/ui_color.dart';
+import 'customer_view.dart';
+import 'order_view.dart';
 
 class MainAdminView extends StatefulWidget {
   const MainAdminView({Key? key}) : super(key: key);

@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import '../../../enums/view_state.dart';
-import '../../../viewmodel/product_view_model.dart';
-import '../../widget/ui_text.dart';
-import '../../widget/ui_title.dart';
+import '../../../../enums/view_state.dart';
+import '../../../../viewmodel/product_view_model.dart';
+import '../../../widget/ui_text.dart';
+import '../../../widget/ui_title.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({Key? key}) : super(key: key);

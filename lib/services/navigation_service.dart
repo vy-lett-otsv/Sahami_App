@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sahami_app/views/screens/auth/login.dart';
-import 'package:sahami_app/views/screens/auth/register.dart';
-import 'package:sahami_app/views/screens/home/category_view.dart';
-import 'package:sahami_app/views/screens/home/customer_view.dart';
-import 'package:sahami_app/views/screens/home/home_view.dart';
-import 'package:sahami_app/views/screens/home/main_admin_view.dart';
-import 'package:sahami_app/views/screens/home/setting_admin_view.dart';
-import 'package:sahami_app/views/screens/home/statistics_view.dart';
+import 'package:sahami_app/views/screens/auth/login_view.dart';
+import 'package:sahami_app/views/screens/auth/register_view.dart';
+import 'package:sahami_app/views/screens/home/admin/category_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 import '../utils/constants.dart';
+import '../views/screens/home/admin/customer_view.dart';
+import '../views/screens/home/admin/main_admin_view.dart';
+import '../views/screens/home/admin/setting_admin_view.dart';
+import '../views/screens/home/admin/statistics_view.dart';
+import '../views/screens/home/home_view.dart';
 import '../views/screens/manage/customer/customer_create_view.dart';
 
 class NavigationServices {

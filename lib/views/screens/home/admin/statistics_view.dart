@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sahami_app/data/fake_data.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/services/navigation_service.dart';
@@ -13,8 +14,8 @@ import 'package:sahami_app/views/widget/ui_button_statistics.dart';
 import 'package:sahami_app/views/widget/ui_card_statistics.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../../widget/indicator.dart';
-import '../../widget/ui_header_chart.dart';
+import '../../../widget/indicator.dart';
+import '../../../widget/ui_header_chart.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({Key? key}) : super(key: key);
@@ -33,7 +34,6 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   late TooltipBehavior _tooltipBehavior;
 
-  final AuthService _authService = AuthService();
   final ProductViewModel _productViewModel = ProductViewModel();
   final CustomerViewModel _customerViewModel = CustomerViewModel();
 
@@ -42,39 +42,47 @@ class _StatisticsViewState extends State<StatisticsView> {
     _chartMonthData = FakeData().getMonthRevenueData();
     _chartYearData = FakeData().getYearRevenueData();
     _tooltipBehavior = TooltipBehavior(enable: true);
+    _productViewModel.fetchProduct();
+    _customerViewModel.fetchCustomer();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: UIColors.background,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _buildHeader(_authService),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.zero,
-                children: [
-                  SizedBox(height: DimensManager.dimens.setHeight(10)),
-                  _buildCreateButton(),
-                  SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  _buildStatistics(),
-                  SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  _buildPieChart(),
-                  SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  _buildLineChart()
-                ],
-              ),
-            )
-          ],
-        ));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _productViewModel),
+        ChangeNotifierProvider(create: (_) => _customerViewModel)
+      ],
+      child: Scaffold(
+          backgroundColor: UIColors.background,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    SizedBox(height: DimensManager.dimens.setHeight(10)),
+                    _buildCreateButton(),
+                    SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    _buildStatistics(),
+                    SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    _buildPieChart(),
+                    SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    _buildLineChart()
+                  ],
+                ),
+              )
+            ],
+          )),
+    );
   }
 
-  Widget _buildHeader(AuthService authService) {
+  Widget _buildHeader() {
     return Container(
       color: UIColors.primarySecond,
       padding: EdgeInsets.only(
@@ -88,9 +96,10 @@ class _StatisticsViewState extends State<StatisticsView> {
         children: [
           GestureDetector(
               onTap: () {
-                NavigationServices.instance.navigationToSettingAdminScreen(context);
+                NavigationServices.instance
+                    .navigationToSettingAdminScreen(context);
               },
-              child: authService.avaAdmin.isEmpty
+              child: AuthService().avaAdmin.isEmpty
                   ? const CircleAvatar(
                       radius: 30,
                       backgroundImage: NetworkImage(
@@ -99,13 +108,13 @@ class _StatisticsViewState extends State<StatisticsView> {
                   : CircleAvatar(
                       radius: 30,
                       backgroundColor: null,
-                      backgroundImage: NetworkImage(authService.avaAdmin),
+                      backgroundImage: NetworkImage(AuthService().avaAdmin),
                     )),
           SizedBox(width: DimensManager.dimens.setWidth(10)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              UIText(authService.userName,
+              UIText(AuthService().userName,
                   color: UIColors.white, fontWeight: FontWeight.bold, size: 20),
               const SizedBox(height: 5),
               const UIText("Admin", color: UIColors.white, size: 16)
@@ -130,13 +139,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                 image: AssetIcons.iconProductWhite,
                 onTap: () {
                   _productViewModel.goToScreenCreateProductView(context);
-                }
-            ),
+                }),
             UIButtonStatistics(
-                icon: Icons.article,
-                title: UIStrings.addOrder,
-                onTap: () {}
-            ),
+                icon: Icons.article, title: UIStrings.addOrder, onTap: () {}),
             UIButtonStatistics(
                 icon: Icons.person,
                 title: UIStrings.addCustomer,
@@ -147,9 +152,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                 icon: Icons.category,
                 title: UIStrings.addCategory,
                 onTap: () {
-                  NavigationServices.instance.navigationToCategoryScreen(context);
-                }
-            )
+                  NavigationServices.instance
+                      .navigationToCategoryScreen(context);
+                })
           ],
         ),
       ),
@@ -167,10 +172,18 @@ class _StatisticsViewState extends State<StatisticsView> {
         padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        children: const [
-          UICardStatistics(title: UIStrings.totalProduct, data: "10"),
+        children: [
+          Consumer<ProductViewModel>(builder: (_, productViewModel, __) {
+            return UICardStatistics(
+                title: UIStrings.totalProduct,
+                data: "${productViewModel.productList.length}");
+          }),
           UICardStatistics(title: UIStrings.totalRevenue, data: "10.000K"),
-          UICardStatistics(title: UIStrings.totalCustomer, data: "50"),
+          Consumer<CustomerViewModel>(builder: (_, customerViewModel, __) {
+            return UICardStatistics(
+                title: UIStrings.totalCustomer,
+                data: "${customerViewModel.userList.length}");
+          }),
           UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
         ],
       ),
@@ -227,53 +240,53 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   Widget _buildLineChart() {
     return Container(
-        margin: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
-        decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(DimensManager.dimens.setRadius(20)),
-          color: UIColors.white,
-        ),
-        height: DimensManager.dimens.setHeight(500),
-        child: Container(
-          padding: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              StatisticsHeaderWidget(
-                title: UIStrings.revenue,
-                dropdownValue: dropdownValueRevenue,
-                onChange: (String? value) {
-                  setState(() {
-                    dropdownValueRevenue = value!;
-                  });
-                },
-                list: FakeData().listRevenue,
-              ),
-              SizedBox(height: DimensManager.dimens.setHeight(10)),
-              Flexible(
-                flex: 10,
-                child: SfCartesianChart(
-                  tooltipBehavior: _tooltipBehavior,
-                  series: <ChartSeries>[
-                    LineSeries<RevenueData, double>(
-                      name: UIStrings.revenue,
-                      color: UIColors.primary,
-                      dataSource: dropdownValueRevenue == "Month"
-                          ? _chartMonthData
-                          : _chartYearData,
-                      xValueMapper: (RevenueData revenue, _) => revenue.time,
-                      yValueMapper: (RevenueData revenue, _) => revenue.revenue,
-                    )
-                  ],
-                  primaryXAxis: NumericAxis(
-                    edgeLabelPlacement: EdgeLabelPlacement.shift,
-                    interval: 1,
-                  ),
-                  primaryYAxis: NumericAxis(labelFormat: '{value}M'),
+      margin: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+        color: UIColors.white,
+      ),
+      height: DimensManager.dimens.setHeight(500),
+      child: Container(
+        padding: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            StatisticsHeaderWidget(
+              title: UIStrings.revenue,
+              dropdownValue: dropdownValueRevenue,
+              onChange: (String? value) {
+                setState(() {
+                  dropdownValueRevenue = value!;
+                });
+              },
+              list: FakeData().listRevenue,
+            ),
+            SizedBox(height: DimensManager.dimens.setHeight(10)),
+            Flexible(
+              flex: 10,
+              child: SfCartesianChart(
+                tooltipBehavior: _tooltipBehavior,
+                series: <ChartSeries>[
+                  LineSeries<RevenueData, double>(
+                    name: UIStrings.revenue,
+                    color: UIColors.primary,
+                    dataSource: dropdownValueRevenue == "Month"
+                        ? _chartMonthData
+                        : _chartYearData,
+                    xValueMapper: (RevenueData revenue, _) => revenue.time,
+                    yValueMapper: (RevenueData revenue, _) => revenue.revenue,
+                  )
+                ],
+                primaryXAxis: NumericAxis(
+                  edgeLabelPlacement: EdgeLabelPlacement.shift,
+                  interval: 1,
                 ),
+                primaryYAxis: NumericAxis(labelFormat: '{value}M'),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -12,7 +12,6 @@ import '../../constants/ui_strings.dart';
 import '../../widget/ui_button_primary.dart';
 import '../../widget/ui_text.dart';
 import '../../widget/ui_textinput_icon.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -26,7 +25,6 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
-  final AuthService _authService = AuthService();
   final UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
 
   @override
@@ -53,7 +51,6 @@ class _RegisterViewState extends State<RegisterView> {
                   _emailTextController,
                   _passwordTextController,
                   _phoneTextController,
-                  _authService,
                   _userEntity)
             ],
           ),
@@ -117,21 +114,13 @@ Widget _buildSignUp(
     TextEditingController email,
     TextEditingController pass,
     TextEditingController phone,
-    AuthService authService,
     UserEntity userEntity) {
   return Column(
     children: [
       UIButtonPrimary(
           text: UIStrings.signUp,
           onPress: () {
-            FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: email.text,
-                password: pass.text).then((value) {
-                  authService.createUser(userEntity, value.user?.uid, user.text, phone.text, email.text);
-                  NavigationServices.instance.navigationToHomeScreen(context);
-                }).onError((error, stackTrace) {
-              // print("Error ${error.toString()}");
-            });
+            AuthService().registerUser(context, email.text, pass.text, user.text, phone.text, userEntity);
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
       Center(

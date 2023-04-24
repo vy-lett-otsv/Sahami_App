@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/services/auth_service.dart';
@@ -23,7 +22,6 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
 
-  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +38,9 @@ class _LoginViewState extends State<LoginView> {
             children: [
               _buildHeader(),
               SizedBox(height: DimensManager.dimens.setHeight(30)),
-              _buildTextField(_emailTextController, _passwordTextController,
-                  _authService),
+              _buildTextField(_emailTextController, _passwordTextController),
               SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildLogin(
-                  context, _emailTextController, _passwordTextController, _authService)
+              _buildButtonLogin(context, _emailTextController, _passwordTextController)
             ],
           ),
         ),
@@ -82,8 +78,7 @@ Widget _buildHeader() {
   );
 }
 
-Widget _buildTextField(TextEditingController email, TextEditingController pass,
-    AuthService authService) {
+Widget _buildTextField(TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
       UITextInputIcon(
@@ -118,23 +113,17 @@ Widget _buildTextField(TextEditingController email, TextEditingController pass,
   );
 }
 
-Widget _buildLogin(
+Widget _buildButtonLogin(
     BuildContext context,
     TextEditingController email,
     TextEditingController pass,
-    AuthService authService
     ) {
   return Column(
     children: [
       UIButtonPrimary(
           text: UIStrings.signIn,
           onPress: () {
-            FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: email.text,
-                password: pass.text
-            ).then((value) async {
-              authService.roleUser(context, value.user!.uid);
-            });
+            AuthService().loginUser(context, email.text, pass.text);
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
       Center(

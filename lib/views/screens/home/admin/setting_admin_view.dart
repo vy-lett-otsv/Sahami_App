@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
+import '../../../../services/navigation_service.dart';
 
-import '../../../services/navigation_service.dart';
 class SettingAdminView extends StatefulWidget {
   const SettingAdminView({Key? key}) : super(key: key);
 

@@ -17,20 +17,39 @@ class AuthService {
   }
 
   String _avaAdmin = "";
+
   String get avaAdmin => _avaAdmin;
 
   String _userName = "";
+
   String get userName => _userName;
 
+  Future<void> loginUser(
+      BuildContext context, String email, String pass) async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: pass)
+        .then((value) {
+      AuthService().roleUser(context, value.user!.uid);
+    });
+  }
+
+  Future<void> registerUser(BuildContext context, String email, String pass, String user, String phone, UserEntity userEntity) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: pass)
+        .then((value) {
+      addUserFirestore(userEntity, value.user?.uid, user, phone, email);
+      NavigationServices.instance.navigationToHomeScreen(context);
+    });
+  }
 
   Future<void> roleUser(BuildContext context, String idUser) async {
     await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
-          (DocumentSnapshot doc) {
+      (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         String role = data['role'];
         _avaAdmin = data['image'];
         _userName = data['name'];
-        if(role == "admin") {
+        if (role == "admin") {
           NavigationServices.instance.navigationToMainAdminScreen(context);
         } else {
           NavigationServices.instance.navigationToHomeScreen(context);
@@ -39,7 +58,8 @@ class AuthService {
     );
   }
 
-  Future<void> createUser(UserEntity userEntity, String? userId, String username, String phone, String email) async {
+  Future<void> addUserFirestore(UserEntity userEntity, String? userId,
+      String username, String phone, String email) async {
     String newDocId = userId!;
     final docUser = FirebaseFirestore.instance.collection('user').doc(newDocId);
     userEntity.userId = userId;
