@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "0.0.11"
   dots_indicator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: dots_indicator
       sha256: e59dfc90030ee5a4fd4c53144a8ce97cc7a823c2067b8fb9814960cd1ae63f89

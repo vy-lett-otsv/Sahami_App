@@ -18,6 +18,9 @@ class ProductViewModel extends ChangeNotifier {
 
   List<ProductEntity> get productList => _productList;
 
+  List<ProductEntity> _featureProductList = [];
+  List<ProductEntity> get featureProductList => _featureProductList;
+
   Future<void> fetchProduct() async {
     _viewState = ViewState.busy;
     QuerySnapshot querySnapshot =
@@ -25,12 +28,14 @@ class ProductViewModel extends ChangeNotifier {
     List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
       final data = docSnapshot.data() as Map<String, dynamic>;
       return ProductEntity(
-          productName: data['name'] ?? "",
-          description: data['description'] ?? "",
-          price: data['price'] ?? 0,
-          categoryName: data['category_name'] ?? "",
+          productName: data['name'],
+          description: data['description'],
+          price: data['price'],
+          categoryName: data['category_name'],
           productId: data['id'],
-          image: data['image'] ?? "");
+          image: data['image'],
+          priceSale: data['priceSale'],
+      );
     }).toList();
     _productList = product;
     notifyListeners();
@@ -61,8 +66,7 @@ class ProductViewModel extends ChangeNotifier {
 
   String get category => _category;
 
-  Future<void> createProduct(
-      ProductEntity product, BuildContext context, String categoryName) async {
+  Future<void> createProduct(ProductEntity product, BuildContext context, String categoryName) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child('product').child('/${file!.name}');
     UploadTask uploadTask = ref.putFile(File(file!.path));
@@ -108,4 +112,25 @@ class ProductViewModel extends ChangeNotifier {
         .delete();
     fetchProduct();
   }
+
+  Future<void> fetchFeatureProduct() async {
+    _viewState = ViewState.busy;
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('product').where('status', isEqualTo: "feature").get();
+    List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      return ProductEntity(
+          productName: data['name'],
+          description: data['description'],
+          price: data['price'],
+          categoryName: data['category_name'],
+          productId: data['id'],
+          image: data['image'],
+          priceSale: data['priceSale'],
+      );
+    }).toList();
+    _featureProductList = product;
+    notifyListeners();
+    _viewState = ViewState.success;
+  }
+
 }

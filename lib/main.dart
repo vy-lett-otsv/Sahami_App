@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: UIStrings.appName,
       debugShowCheckedModeBanner: false,
-      // home: HomeView(),
       onGenerateRoute: NavigationServices.instance.routeBuilders,
     );
   }

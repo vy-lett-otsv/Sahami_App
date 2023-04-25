@@ -96,12 +96,12 @@ class _ProductCreateViewState extends State<ProductCreateView> {
                                 description: _controllerDes.text,
                                 price: double.parse(_controllerPrice.text),
                                 categoryName: categoryName,
-                                servingSize: double.parse(_controllerServingSize.text),
-                                saturatedFat: double.parse(_controllerSaturatedFat.text),
-                                protein: double.parse(_controllerProtein.text),
-                                sodium: double.parse(_controllerSodium.text),
-                                sugars: double.parse(_controllerSugar.text),
-                                caffeine: double.parse(_controllerCaffeine.text),
+                                servingSize: double.parse(_controllerServingSize.text.isEmpty ? "0" : _controllerServingSize.text),
+                                saturatedFat: double.parse(_controllerSaturatedFat.text.isEmpty ? "0" : _controllerSaturatedFat.text),
+                                protein: double.parse(_controllerProtein.text.isEmpty ? "0" : _controllerProtein.text),
+                                sodium: double.parse(_controllerSodium.text.isEmpty ? "0" : _controllerSodium.text),
+                                sugars: double.parse(_controllerSugar.text.isEmpty ? "0" : _controllerSugar.text),
+                                caffeine: double.parse(_controllerCaffeine.text.isEmpty ? "0" : _controllerCaffeine.text),
                               );
                               _productViewModel.createProduct(productEntity, context, categoryName);
                               // _productViewModel.setTest();
