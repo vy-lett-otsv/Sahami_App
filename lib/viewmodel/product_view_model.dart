@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
-import '../enums/view_state.dart';
+import '../enums/enum.dart';
 import '../views/constants/ui_color.dart';
 import '../views/screens/manage/product/product_create_view.dart';
 
@@ -19,25 +19,36 @@ class ProductViewModel extends ChangeNotifier {
   List<ProductEntity> get productList => _productList;
 
   List<ProductEntity> _featureProductList = [];
+
   List<ProductEntity> get featureProductList => _featureProductList;
 
-  Future<void> fetchProduct() async {
+  final productCollection = FirebaseFirestore.instance.collection("product").get();
+
+  final featureProductCollection = FirebaseFirestore.instance
+      .collection('product')
+      .where('status', isEqualTo: "feature")
+      .get();
+
+  Future<void> fetchProduct(Future<QuerySnapshot<Map<String, dynamic>>> data) async {
     _viewState = ViewState.busy;
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("product").get();
+    QuerySnapshot querySnapshot = await data;
     List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
       final data = docSnapshot.data() as Map<String, dynamic>;
       return ProductEntity(
-          productName: data['name'],
-          description: data['description'],
-          price: data['price'],
-          categoryName: data['category_name'],
-          productId: data['id'],
-          image: data['image'],
-          priceSale: data['priceSale'],
+        productName: data['name'],
+        description: data['description'],
+        price: data['price'],
+        categoryName: data['category_name'],
+        productId: data['id'],
+        image: data['image'],
+        priceSale: data['priceSale'],
       );
     }).toList();
-    _productList = product;
+    if(data == productCollection) {
+      _productList = product;
+    } else {
+      _featureProductList = product;
+    }
     notifyListeners();
     _viewState = ViewState.success;
   }
@@ -66,7 +77,8 @@ class ProductViewModel extends ChangeNotifier {
 
   String get category => _category;
 
-  Future<void> createProduct(ProductEntity product, BuildContext context, String categoryName) async {
+  Future<void> createProduct(
+      ProductEntity product, BuildContext context, String categoryName) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child('product').child('/${file!.name}');
     UploadTask uploadTask = ref.putFile(File(file!.path));
@@ -79,7 +91,7 @@ class ProductViewModel extends ChangeNotifier {
     _category = categoryName;
     final json = product.toJson();
     await docProduct.set(json);
-    fetchProduct();
+    fetchProduct(productCollection);
     if (context.mounted) Navigator.pop(context, product);
   }
 
@@ -102,7 +114,7 @@ class ProductViewModel extends ChangeNotifier {
         backgroundColor: UIColors.background,
       ).show(context);
     }
-    fetchProduct();
+    fetchProduct(productCollection);
   }
 
   Future<void> deleteProduct(String documentId) async {
@@ -110,27 +122,6 @@ class ProductViewModel extends ChangeNotifier {
         .collection("product")
         .doc(documentId)
         .delete();
-    fetchProduct();
+    fetchProduct(productCollection);
   }
-
-  Future<void> fetchFeatureProduct() async {
-    _viewState = ViewState.busy;
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('product').where('status', isEqualTo: "feature").get();
-    List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
-      final data = docSnapshot.data() as Map<String, dynamic>;
-      return ProductEntity(
-          productName: data['name'],
-          description: data['description'],
-          price: data['price'],
-          categoryName: data['category_name'],
-          productId: data['id'],
-          image: data['image'],
-          priceSale: data['priceSale'],
-      );
-    }).toList();
-    _featureProductList = product;
-    notifyListeners();
-    _viewState = ViewState.success;
-  }
-
 }

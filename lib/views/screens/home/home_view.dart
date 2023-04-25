@@ -26,8 +26,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     _homeViewModel.pageControllerView();
-    _productViewModel.fetchProduct();
-    _productViewModel.fetchFeatureProduct();
+    _productViewModel.fetchProduct(_productViewModel.productCollection);
+    _productViewModel.fetchProduct(_productViewModel.featureProductCollection);
     super.initState();
   }
 
@@ -49,40 +49,47 @@ class _HomeViewState extends State<HomeView> {
                   _buildHeader(),
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
                   Consumer<ProductViewModel>(
-                      builder: (_, productViewModel, __) {
-                    return productViewModel.featureProductList.isEmpty
-                        ? Container(
-                            padding: EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(50)),
-                            child: const Center(child: CircularProgressIndicator()),
-                          )
-                        : Column(
-                            children: [
-                              SizedBox(
-                                height: DimensManager.dimens.setHeight(300),
-                                child: PageView.builder(
-                                    controller: homeViewModel.pageController,
-                                    itemCount: productViewModel.featureProductList.length,
-                                    itemBuilder: (context, index) {
-                                      homeViewModel.matrixSlide(index);
-                                      return _buildPageItem(homeViewModel, productViewModel, index);
-                                    }),
-                              ),
-                              SizedBox(
-                                  height: DimensManager.dimens.setHeight(10)),
-                              DotsIndicator(
-                                dotsCount: productViewModel.featureProductList.length,
-                                position: homeViewModel.currPageValue,
-                                decorator: DotsDecorator(
-                                  activeColor: UIColors.primary,
-                                  size: const Size.square(9.0),
-                                  activeSize: const Size(18.0, 9.0),
-                                  activeShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0)),
+                    builder: (_, productViewModel, __) {
+                      return productViewModel.featureProductList.isEmpty
+                          ? Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: DimensManager.dimens.setHeight(50)),
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
+                            )
+                          : Column(
+                              children: [
+                                SizedBox(
+                                  height: DimensManager.dimens.setHeight(300),
+                                  child: PageView.builder(
+                                      controller: homeViewModel.pageController,
+                                      itemCount: productViewModel
+                                          .featureProductList.length,
+                                      itemBuilder: (context, index) {
+                                        homeViewModel.matrixSlide(index);
+                                        return _buildPageItem(homeViewModel,
+                                            productViewModel, index);
+                                      }),
                                 ),
-                              )
-                            ],
-                          );
-                  }),
+                                SizedBox(
+                                    height: DimensManager.dimens.setHeight(10)),
+                                DotsIndicator(
+                                  dotsCount: productViewModel
+                                      .featureProductList.length,
+                                  position: homeViewModel.currPageValue,
+                                  decorator: DotsDecorator(
+                                    activeColor: UIColors.primary,
+                                    size: const Size.square(9.0),
+                                    activeSize: const Size(18.0, 9.0),
+                                    activeShape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                  ),
+                                )
+                              ],
+                            );
+                    },
+                  ),
                   SizedBox(height: DimensManager.dimens.setHeight(10)),
                   Consumer<ProductViewModel>(
                     builder: (_, productViewModel, __) {
@@ -251,42 +258,43 @@ Widget _buildProduct(ProductViewModel productViewModel) {
                               productViewModel.productList[index].categoryName),
                           SizedBox(height: DimensManager.dimens.setHeight(10)),
                           SizedBox(
-                              width: DimensManager.dimens.setWidth(250),
-                              child: productViewModel
-                                          .productList[index].priceSale !=
-                                      0
-                                  ? Row(
-                                      children: [
-                                        Text(
-                                          "${formatter.format(productViewModel.productList[index].priceSale)} VNĐ",
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          textAlign: TextAlign.end,
+                            width: DimensManager.dimens.setWidth(250),
+                            child: productViewModel
+                                        .productList[index].priceSale !=
+                                    0
+                                ? Row(
+                                    children: [
+                                      Text(
+                                        "${formatter.format(productViewModel.productList[index].priceSale)} VNĐ",
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                        SizedBox(
-                                          width:
-                                              DimensManager.dimens.setWidth(10),
-                                        ),
-                                        Text(
-                                          "${formatter.format(productViewModel.productList[index].price)} VNĐ",
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ],
-                                    )
-                                  : Text(
-                                      "${formatter.format(productViewModel.productList[index].price)} VNĐ",
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
+                                        textAlign: TextAlign.end,
                                       ),
-                                      textAlign: TextAlign.end,
-                                    )),
+                                      SizedBox(
+                                        width:
+                                            DimensManager.dimens.setWidth(10),
+                                      ),
+                                      Text(
+                                        "${formatter.format(productViewModel.productList[index].price)} VNĐ",
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.end,
+                                      ),
+                                    ],
+                                  )
+                                : Text(
+                                    "${formatter.format(productViewModel.productList[index].price)} VNĐ",
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                          ),
                         ],
                       )
                     ],

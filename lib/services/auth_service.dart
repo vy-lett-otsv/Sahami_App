@@ -5,15 +5,10 @@ import '../data/remote/enitity/user_entity.dart';
 import 'navigation_service.dart';
 
 class AuthService {
-  AuthService._();
-
-  static AuthService? _instance;
-
-  static AuthService get instance => AuthService();
+  static final AuthService _singleton = AuthService._internal();
 
   factory AuthService() {
-    _instance ??= AuthService._();
-    return _instance!;
+    return _singleton;
   }
 
   String _avaAdmin = "";
@@ -33,7 +28,8 @@ class AuthService {
     });
   }
 
-  Future<void> registerUser(BuildContext context, String email, String pass, String user, String phone, UserEntity userEntity) async {
+  Future<void> registerUser(BuildContext context, String email, String pass,
+      String user, String phone, UserEntity userEntity) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: pass)
         .then((value) {
@@ -73,4 +69,6 @@ class AuthService {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  AuthService._internal();
 }
