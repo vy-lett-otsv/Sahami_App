@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/viewmodel/main_view_model.dart';
 import '../enums/enum.dart';
 import '../views/constants/ui_color.dart';
 import '../views/screens/manage/product/product_create_view.dart';
@@ -22,14 +23,54 @@ class ProductViewModel extends ChangeNotifier {
 
   List<ProductEntity> get featureProductList => _featureProductList;
 
-  final productCollection = FirebaseFirestore.instance.collection("product").get();
+  final productCollection =
+      FirebaseFirestore.instance.collection("product").get();
 
   final featureProductCollection = FirebaseFirestore.instance
       .collection('product')
       .where('status', isEqualTo: "feature")
       .get();
 
-  Future<void> fetchProduct(Future<QuerySnapshot<Map<String, dynamic>>> data) async {
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerPrice = TextEditingController();
+  TextEditingController controllerDes = TextEditingController();
+  TextEditingController controllerServingSize = TextEditingController();
+  TextEditingController controllerSaturatedFat = TextEditingController();
+  TextEditingController controllerProtein = TextEditingController();
+  TextEditingController controllerSodium = TextEditingController();
+  TextEditingController controllerSugar = TextEditingController();
+  TextEditingController controllerCaffeine = TextEditingController();
+  late TextEditingController categoryController;
+  String categoryName = "";
+
+  ProductEntity _productEntity = ProductEntity(productName: "", description: "", price: 0.0, categoryName: "");
+  ProductEntity get productEntity => _productEntity;
+
+  void addProduct() {
+     _productEntity = ProductEntity(
+      productName: controllerName.text,
+      description: controllerDes.text,
+      price: double.parse(controllerPrice.text),
+      categoryName: categoryName,
+      servingSize: double.parse(controllerServingSize.text.isEmpty
+          ? "0"
+          : controllerServingSize.text),
+      saturatedFat: double.parse(controllerSaturatedFat.text.isEmpty
+          ? "0"
+          : controllerSaturatedFat.text),
+      protein: double.parse(
+          controllerProtein.text.isEmpty ? "0" : controllerProtein.text),
+      sodium: double.parse(
+          controllerSodium.text.isEmpty ? "0" : controllerSodium.text),
+      sugars: double.parse(
+          controllerSugar.text.isEmpty ? "0" : controllerSugar.text),
+      caffeine: double.parse(
+          controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text),
+    );
+  }
+
+  Future<void> fetchProduct(
+      Future<QuerySnapshot<Map<String, dynamic>>> data) async {
     _viewState = ViewState.busy;
     QuerySnapshot querySnapshot = await data;
     List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
@@ -44,7 +85,7 @@ class ProductViewModel extends ChangeNotifier {
         priceSale: data['priceSale'],
       );
     }).toList();
-    if(data == productCollection) {
+    if (data == productCollection) {
       _productList = product;
     } else {
       _featureProductList = product;
@@ -77,6 +118,8 @@ class ProductViewModel extends ChangeNotifier {
 
   String get category => _category;
 
+  final MainViewModel _mainViewModel = MainViewModel();
+
   Future<void> createProduct(
       ProductEntity product, BuildContext context, String categoryName) async {
     FirebaseStorage storage = FirebaseStorage.instance;
@@ -92,7 +135,8 @@ class ProductViewModel extends ChangeNotifier {
     final json = product.toJson();
     await docProduct.set(json);
     fetchProduct(productCollection);
-    if (context.mounted) Navigator.pop(context, product);
+    // if (context.mounted) Navigator.pop(context, product);
+    _mainViewModel.updateCurrentTab(BottomBarItem.productView);
   }
 
   Future<void> goToScreenCreateProductView(BuildContext context) async {

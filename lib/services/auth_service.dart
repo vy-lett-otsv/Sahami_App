@@ -19,12 +19,15 @@ class AuthService {
 
   String get userName => _userName;
 
+  String _roleUserEntity = "";
+  String get roleUserEntity => _roleUserEntity;
+
   Future<void> loginUser(
       BuildContext context, String email, String pass) async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: pass)
         .then((value) {
-      AuthService().roleUser(context, value.user!.uid);
+      AuthService().roleUserTest(context, value.user!.uid);
     });
   }
 
@@ -52,6 +55,24 @@ class AuthService {
         }
       },
     );
+  }
+
+  Future<void> roleUserTest(BuildContext context, String idUser) async {
+    await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
+          (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        String role = data['role'];
+        _avaAdmin = data['image'];
+        _userName = data['name'];
+        if (role == "admin") {
+          _roleUserEntity = "admin";
+        } else {
+          _roleUserEntity = "User";
+        }
+        NavigationServices.instance.navigationToMainAdminScreen(context);
+      },
+    );
+    print(_roleUserEntity);
   }
 
   Future<void> addUserFirestore(UserEntity userEntity, String? userId,
