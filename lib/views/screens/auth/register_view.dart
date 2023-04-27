@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
-import 'package:sahami_app/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:sahami_app/viewmodel/auth_view_model.dart';
 import '../../../enums/fonts.dart';
 import '../../../services/navigation_service.dart';
 import '../../assets/asset_icons.dart';
@@ -21,38 +21,44 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final TextEditingController _userTextController = TextEditingController();
-  final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _passwordTextController = TextEditingController();
-  final TextEditingController _phoneTextController = TextEditingController();
-  final UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
+  final AuthViewModel _authViewModel = AuthViewModel();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UIColors.background,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: DimensManager.dimens.setWidth(20)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: DimensManager.dimens.setHeight(20)),
-              _buildLogo(),
-              SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildTextField(_userTextController, _emailTextController,
-                  _passwordTextController, _phoneTextController),
-              SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildSignUp(
-                  context,
-                  _userTextController,
-                  _emailTextController,
-                  _passwordTextController,
-                  _phoneTextController,
-                  _userEntity)
-            ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _authViewModel),
+      ],
+      child: Scaffold(
+        backgroundColor: UIColors.background,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: DimensManager.dimens.setWidth(20)),
+            child: Consumer<AuthViewModel>(
+              builder: (_, authViewModel, __) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    _buildLogo(),
+                    SizedBox(height: DimensManager.dimens.setHeight(50)),
+                    _buildTextField(
+                      authViewModel.userName,
+                      authViewModel.email,
+                      authViewModel.pass,
+                      authViewModel.phone,
+                    ),
+                    SizedBox(height: DimensManager.dimens.setHeight(50)),
+                    _buildSignUp(
+                      context,
+                      authViewModel,
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -108,19 +114,15 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
   );
 }
 
-Widget _buildSignUp(
-    BuildContext context,
-    TextEditingController user,
-    TextEditingController email,
-    TextEditingController pass,
-    TextEditingController phone,
-    UserEntity userEntity) {
+Widget _buildSignUp(BuildContext context, AuthViewModel authViewModel) {
   return Column(
     children: [
       UIButtonPrimary(
           text: UIStrings.signUp,
           onPress: () {
-            AuthService().registerUser(context, email.text, pass.text, user.text, phone.text, userEntity);
+            // AuthService().registerUser(context, email.text, pass.text,
+            //     user.text, phone.text, userEntity);
+            authViewModel.register(context);
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
       Center(

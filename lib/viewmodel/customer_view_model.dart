@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';
-import '../enums/view_state.dart';
+import '../enums/enum.dart';
 
 class CustomerViewModel extends ChangeNotifier{
 

@@ -18,15 +18,11 @@ class CategoryView extends StatefulWidget {
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  final _controllerName = TextEditingController();
-  TextEditingController _controllerNameUpdate = TextEditingController();
   final CategoryViewModel _categoryViewModel = CategoryViewModel();
-  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    DimensManager();
     _categoryViewModel.getAllCategory();
   }
 
@@ -37,110 +33,114 @@ class _CategoryViewState extends State<CategoryView> {
         ChangeNotifierProvider(create: (_) => _categoryViewModel),
       ],
       child: Scaffold(
-          backgroundColor: UIColors.background,
-          appBar: AppBar(
-            title:
-                const UITilte(UIStrings.manageCategory, color: UIColors.white),
-            backgroundColor: UIColors.primary,
-            centerTitle: true,
-            leading: GestureDetector(
-              child: const Icon(Icons.arrow_back_ios),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
+        backgroundColor: UIColors.background,
+        appBar: AppBar(
+          title: const UITilte(UIStrings.manageCategory, color: UIColors.white),
+          backgroundColor: UIColors.primary,
+          centerTitle: true,
+          leading: GestureDetector(
+            child: const Icon(Icons.arrow_back_ios),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
-          body: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: DimensManager.dimens.setWidth(20),
-                  vertical: DimensManager.dimens.setHeight(10)),
-              child: Column(
+        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(20),
+              vertical: DimensManager.dimens.setHeight(10)),
+          child: Consumer<CategoryViewModel>(
+            builder: (_, categoryViewModel, __) {
+              return Column(
                 children: [
-                  _buildAddCategory(),
+                  _buildAddCategory(categoryViewModel),
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  Consumer<CategoryViewModel>(builder: (_, category, __) {
-                    //
-                    return _buildListView(category);
-                  })
+                  _buildListView(categoryViewModel)
                 ],
-              ))),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildAddCategory() {
+  Widget _buildAddCategory(CategoryViewModel categoryViewModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
           flex: 7,
           child: Container(
-              decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(DimensManager.dimens.setRadius(15)),
-                  color: UIColors.white,
-                  border: Border.all(color: UIColors.inputBackground),
-                  boxShadow: [
-                    BoxShadow(
-                        color: UIColors.border,
-                        blurRadius: 7,
-                        offset: const Offset(2, 2))
-                  ]),
-              padding: EdgeInsets.only(
-                  left: DimensManager.dimens.setWidth(15),
-                  right: DimensManager.dimens.setWidth(4)),
-              child: TextFormField(
-                controller: _controllerName,
-                focusNode: _focusNode,
-                style: const TextStyle(
-                  fontFamily: Fonts.Outfit,
-                ),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding: EdgeInsets.zero,
-                ),
-              )),
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(DimensManager.dimens.setRadius(15)),
+              color: UIColors.white,
+              border: Border.all(color: UIColors.inputBackground),
+              boxShadow: [
+                BoxShadow(
+                  color: UIColors.border,
+                  blurRadius: 7,
+                  offset: const Offset(2, 2),
+                )
+              ],
+            ),
+            padding: EdgeInsets.only(
+                left: DimensManager.dimens.setWidth(15),
+                right: DimensManager.dimens.setWidth(4)),
+            child: TextFormField(
+              controller: categoryViewModel.controllerName,
+              focusNode: categoryViewModel.focusNode,
+              style: const TextStyle(
+                fontFamily: Fonts.Outfit,
+              ),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
         ),
         Flexible(
-            flex: 3,
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(UIColors.primary),
-                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        horizontal: DimensManager.dimens.setWidth(20),
-                        vertical: DimensManager.dimens.setWidth(15))),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                DimensManager.dimens.setRadius(10))))),
-                child: const UIText(UIStrings.create, color: UIColors.white),
-                onPressed: () {
-                  final category = CategoryEntity(categoryName: _controllerName.text);
-                  _categoryViewModel.createCategory(category);
-                  _focusNode.unfocus();
-                  _controllerName.clear();
-                }))
+          flex: 3,
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(UIColors.primary),
+                padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                    horizontal: DimensManager.dimens.setWidth(20),
+                    vertical: DimensManager.dimens.setWidth(15))),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            DimensManager.dimens.setRadius(10))))),
+            child: const UIText(UIStrings.create, color: UIColors.white),
+            onPressed: () {
+              categoryViewModel.addCategory();
+            },
+          ),
+        )
       ],
     );
   }
 
-  Widget _buildListView(CategoryViewModel category) {
+  Widget _buildListView(CategoryViewModel categoryViewModel) {
     return Expanded(
         child: ListView.builder(
-            itemCount: category.categories.length,
+            itemCount: categoryViewModel.categories.length,
             itemExtent: DimensManager.dimens.setHeight(80),
             itemBuilder: (context, index) {
-              final itemCategory = category.categories[index];
               return ListTile(
-                title: Text(itemCategory.categoryName),
+                title: Text(categoryViewModel.categories[index].categoryName),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _buildDialogEdit(context, itemCategory, category);
-                        _controllerNameUpdate = TextEditingController();
+                        _buildDialogEdit(
+                            context,
+                            categoryViewModel.categories[index],
+                            categoryViewModel);
                       },
                       child: Icon(
                         Icons.edit,
@@ -149,7 +149,8 @@ class _CategoryViewState extends State<CategoryView> {
                     ),
                     SizedBox(width: DimensManager.dimens.setWidth(20)),
                     GestureDetector(
-                      onTap: () => _buildDialogDelete(category, itemCategory),
+                      onTap: () => _buildDialogDelete(categoryViewModel,
+                          categoryViewModel.categories[index]),
                       child: Icon(
                         Icons.delete,
                         color: UIColors.lightRed,
@@ -162,19 +163,22 @@ class _CategoryViewState extends State<CategoryView> {
   }
 
   Future<void> _buildDialogEdit(BuildContext context,
-      CategoryEntity itemCategory, CategoryViewModel category) {
+      CategoryEntity itemCategory, CategoryViewModel categoryViewModel) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
-                  Radius.circular(DimensManager.dimens.setRadius(20))),
+                Radius.circular(
+                  DimensManager.dimens.setRadius(20),
+                ),
+              ),
             ),
             content: UITextInput(
                 textDisplay: itemCategory.categoryName,
                 colorCursor: UIColors.black,
-                controller: _controllerNameUpdate,
+                controller: categoryViewModel.controllerNameUpdate,
                 color: UIColors.black),
             actions: <Widget>[
               ElevatedButton(
@@ -187,8 +191,8 @@ class _CategoryViewState extends State<CategoryView> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  category.updateCategory(
-                      itemCategory, _controllerNameUpdate.text);
+                  categoryViewModel.updateCategory(itemCategory,
+                      categoryViewModel.controllerNameUpdate.text);
                   Navigator.pop(context, '');
                 },
                 style:
@@ -203,33 +207,35 @@ class _CategoryViewState extends State<CategoryView> {
   Future<void> _buildDialogDelete(
       CategoryViewModel category, CategoryEntity itemCategory) {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(DimensManager.dimens.setRadius(20))),
-              ),
-              title: const UITilte(UIStrings.titleConfirm),
-              content: const UIText(UIStrings.confirmDelete),
-              actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context, '');
-                  },
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: UIColors.white),
-                  child: UIText(UIStrings.cancel, color: UIColors.primary),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    category.deleteCategory(itemCategory);
-                    Navigator.pop(context, '');
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: UIColors.primary),
-                  child: const UIText(UIStrings.ok, color: UIColors.white),
-                )
-              ],
-            ));
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              DimensManager.dimens.setRadius(20),
+            ),
+          ),
+        ),
+        title: const UITilte(UIStrings.titleConfirm),
+        content: const UIText(UIStrings.confirmDelete),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, '');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: UIColors.white),
+            child: UIText(UIStrings.cancel, color: UIColors.primary),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              category.deleteCategory(itemCategory);
+              Navigator.pop(context, '');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: UIColors.primary),
+            child: const UIText(UIStrings.ok, color: UIColors.white),
+          )
+        ],
+      ),
+    );
   }
 }

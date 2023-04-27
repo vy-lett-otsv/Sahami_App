@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
-import '../../../../enums/view_state.dart';
+import '../../../../enums/enum.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../utils/constants.dart';
 import '../../../constants/ui_color.dart';

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import '../../../../enums/view_state.dart';
+import '../../../../enums/enum.dart';
 import '../../../../viewmodel/product_view_model.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
@@ -21,7 +21,7 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   void initState() {
-    _productViewModel.fetchProduct();
+    _productViewModel.fetchProduct(_productViewModel.productCollection);
     super.initState();
   }
 
@@ -52,9 +52,10 @@ class _ProductViewState extends State<ProductView> {
               children: [
                 _buildSearch(),
                 Expanded(
-                    child: product.viewState == ViewState.busy
-                        ? const Center(child: CircularProgressIndicator())
-                        : _buildListProduct(context, product))
+                  child: product.viewState == ViewState.busy
+                      ? const Center(child: CircularProgressIndicator())
+                      : _buildListProduct(context, product),
+                )
               ],
             );
           },
@@ -107,47 +108,45 @@ class _ProductViewState extends State<ProductView> {
                   motion: const BehindMotion(),
                   children: [
                     SlidableAction(
-                        backgroundColor: UIColors.background,
-                        foregroundColor: UIColors.lightRed,
-                        icon: Icons.delete,
-                        onPressed: (context) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(DimensManager.dimens
-                                              .setRadius(20))),
-                                    ),
-                                    title:
-                                        const UITilte(UIStrings.titleConfirm),
-                                    content:
-                                        const UIText(UIStrings.confirmDelete),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: UIColors.white),
-                                        child: UIText(UIStrings.cancel,
-                                            color: UIColors.primary),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          _productViewModel.deleteProduct(
-                                              product.productList[index]
-                                                  .productId);
-                                          Navigator.pop(context);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: UIColors.primary),
-                                        child: const UIText(UIStrings.ok,
-                                            color: UIColors.white),
-                                      )
-                                    ],
-                                  ));
-                        }),
+                      backgroundColor: UIColors.background,
+                      foregroundColor: UIColors.lightRed,
+                      icon: Icons.delete,
+                      onPressed: (context) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  DimensManager.dimens.setRadius(20))),
+                            ),
+                            title: const UITilte(UIStrings.titleConfirm),
+                            content: const UIText(UIStrings.confirmDelete),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: UIColors.white),
+                                child: UIText(UIStrings.cancel,
+                                    color: UIColors.primary),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _productViewModel.deleteProduct(
+                                      product.productList[index].productId);
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: UIColors.primary),
+                                child: const UIText(UIStrings.ok,
+                                    color: UIColors.white),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                     const Spacer(),
                   ],
                 ),
@@ -197,6 +196,7 @@ class _ProductViewState extends State<ProductView> {
                   ),
                 ),
               );
-            });
+            },
+          );
   }
 }

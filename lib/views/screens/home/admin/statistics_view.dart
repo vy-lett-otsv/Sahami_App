@@ -42,7 +42,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     _chartMonthData = FakeData().getMonthRevenueData();
     _chartYearData = FakeData().getYearRevenueData();
     _tooltipBehavior = TooltipBehavior(enable: true);
-    _productViewModel.fetchProduct();
+    _productViewModel.fetchProduct(_productViewModel.productCollection);
     _customerViewModel.fetchCustomer();
     super.initState();
   }
@@ -55,30 +55,31 @@ class _StatisticsViewState extends State<StatisticsView> {
         ChangeNotifierProvider(create: (_) => _customerViewModel)
       ],
       child: Scaffold(
-          backgroundColor: UIColors.background,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.zero,
-                  children: [
-                    SizedBox(height: DimensManager.dimens.setHeight(10)),
-                    _buildCreateButton(),
-                    SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    _buildStatistics(),
-                    SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    _buildPieChart(),
-                    SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    _buildLineChart()
-                  ],
-                ),
-              )
-            ],
-          )),
+        backgroundColor: UIColors.background,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.zero,
+                children: [
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  _buildCreateButton(),
+                  SizedBox(height: DimensManager.dimens.setHeight(20)),
+                  _buildStatistics(),
+                  SizedBox(height: DimensManager.dimens.setHeight(20)),
+                  _buildPieChart(),
+                  SizedBox(height: DimensManager.dimens.setHeight(20)),
+                  _buildLineChart()
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -149,12 +150,12 @@ class _StatisticsViewState extends State<StatisticsView> {
                   _customerViewModel.goToScreenCreateCustomerView(context);
                 }),
             UIButtonStatistics(
-                icon: Icons.category,
-                title: UIStrings.addCategory,
-                onTap: () {
-                  NavigationServices.instance
-                      .navigationToCategoryScreen(context);
-                })
+              icon: Icons.category,
+              title: UIStrings.addCategory,
+              onTap: () {
+                NavigationServices.instance.navigationToCategoryScreen(context);
+              },
+            )
           ],
         ),
       ),
@@ -178,13 +179,16 @@ class _StatisticsViewState extends State<StatisticsView> {
                 title: UIStrings.totalProduct,
                 data: "${productViewModel.productList.length}");
           }),
-          UICardStatistics(title: UIStrings.totalRevenue, data: "10.000K"),
-          Consumer<CustomerViewModel>(builder: (_, customerViewModel, __) {
-            return UICardStatistics(
-                title: UIStrings.totalCustomer,
-                data: "${customerViewModel.userList.length}");
-          }),
-          UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
+          const UICardStatistics(
+              title: UIStrings.totalRevenue, data: "10.000K"),
+          Consumer<CustomerViewModel>(
+            builder: (_, customerViewModel, __) {
+              return UICardStatistics(
+                  title: UIStrings.totalCustomer,
+                  data: "${customerViewModel.userList.length}");
+            },
+          ),
+          const UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
         ],
       ),
     );

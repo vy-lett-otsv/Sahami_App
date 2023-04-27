@@ -23,6 +23,9 @@ class AuthService {
 
   String get roleUserEntity => _roleUserEntity;
 
+  String _roleUserEntity = "";
+  String get roleUserEntity => _roleUserEntity;
+
   Future<void> loginUser(
       BuildContext context, String email, String pass) async {
     await FirebaseAuth.instance
@@ -57,7 +60,6 @@ class AuthService {
         NavigationServices.instance.navigationToMainAdminScreen(context);
       },
     );
-    print(_roleUserEntity);
   }
 
   Future<void> addUserFirestore(UserEntity userEntity, String? userId,
@@ -75,6 +77,7 @@ class AuthService {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+}
 
   AuthService._internal();
 }
