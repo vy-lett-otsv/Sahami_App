@@ -5,15 +5,10 @@ import '../data/remote/enitity/user_entity.dart';
 import 'navigation_service.dart';
 
 class AuthService {
-  AuthService._();
-
-  static AuthService? _instance;
-
-  static AuthService get instance => AuthService();
+  static final AuthService _singleton = AuthService._internal();
 
   factory AuthService() {
-    _instance ??= AuthService._();
-    return _instance!;
+    return _singleton;
   }
 
   String _avaAdmin = "";
@@ -24,6 +19,10 @@ class AuthService {
 
   String get userName => _userName;
 
+  String _roleUserEntity = "";
+
+  String get roleUserEntity => _roleUserEntity;
+
   Future<void> loginUser(
       BuildContext context, String email, String pass) async {
     await FirebaseAuth.instance
@@ -33,7 +32,8 @@ class AuthService {
     });
   }
 
-  Future<void> registerUser(BuildContext context, String email, String pass, String user, String phone, UserEntity userEntity) async {
+  Future<void> registerUser(BuildContext context, String email, String pass,
+      String user, String phone, UserEntity userEntity) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: pass)
         .then((value) {
@@ -44,18 +44,20 @@ class AuthService {
 
   Future<void> roleUser(BuildContext context, String idUser) async {
     await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
-      (DocumentSnapshot doc) {
+          (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         String role = data['role'];
         _avaAdmin = data['image'];
         _userName = data['name'];
         if (role == "admin") {
-          NavigationServices.instance.navigationToMainAdminScreen(context);
+          _roleUserEntity = "admin";
         } else {
-          NavigationServices.instance.navigationToHomeScreen(context);
+          _roleUserEntity = "User";
         }
+        NavigationServices.instance.navigationToMainAdminScreen(context);
       },
     );
+    print(_roleUserEntity);
   }
 
   Future<void> addUserFirestore(UserEntity userEntity, String? userId,
@@ -73,4 +75,6 @@ class AuthService {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  AuthService._internal();
 }

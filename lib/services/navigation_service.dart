@@ -7,7 +7,7 @@ import 'package:sahami_app/views/screens/manage/product/product_create_view.dart
 import 'package:sahami_app/views/screens/splash_view.dart';
 import '../utils/constants.dart';
 import '../views/screens/home/admin/customer_view.dart';
-import '../views/screens/home/admin/main_admin_view.dart';
+import '../views/screens/home/main_view.dart';
 import '../views/screens/home/admin/setting_admin_view.dart';
 import '../views/screens/home/admin/statistics_view.dart';
 import '../views/screens/home/home_view.dart';
@@ -55,7 +55,7 @@ class NavigationServices {
       case REGISTER_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const RegisterView());
       case MAIN_ADMIN_ROUTE:
-        return MaterialPageRoute(builder: (_) => const MainAdminView());
+        return MaterialPageRoute(builder: (_) => const MainView());
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const StatisticsView());
       case CUSTOMER_VIEW_ROUTE:
