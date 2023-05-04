@@ -55,7 +55,7 @@ class NavigationServices {
       case REGISTER_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const RegisterView());
       case MAIN_ADMIN_ROUTE:
-        return MaterialPageRoute(builder: (_) => const MainView());
+        return MaterialPageRoute(builder: (_) => MainView());
       case STATISTICS_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const StatisticsView());
       case CUSTOMER_VIEW_ROUTE:
@@ -83,7 +83,7 @@ class NavigationServices {
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, HOME_ROUTE);
   }
-  void navigationToMainAdminScreen(BuildContext context) {
+  void navigationToMainScreen(BuildContext context) {
     Navigator.pushNamed(context, MAIN_ADMIN_ROUTE);
   }
   void navigationToLoginScreen(BuildContext context) {

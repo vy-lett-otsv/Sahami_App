@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import '../../enums/fonts.dart';
 
 
-class UITilte extends StatelessWidget {
+class UITitle extends StatelessWidget {
   final String text;
   final TextStyle? style;
   final StrutStyle? strutStyle;
-  final int? maxLines;
+  final int maxLines;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
+  final TextOverflow overflow;
   final bool? softWrap;
   final Color color;
   final double size;
   final TextDecoration decoration;
   final FontWeight fontWeight;
 
-  const UITilte(
+  const UITitle(
       this.text, {
         Key? key,
         this.style,
         this.strutStyle,
-        this.maxLines,
+        this.maxLines = 1,
         this.textAlign,
-        this.overflow,
+        this.overflow = TextOverflow.ellipsis,
         this.softWrap,
         this.color =  const Color(0xFF000000),
-        this.size = 20,
+        this.size = 18,
         this.decoration = TextDecoration.none,
         this.fontWeight = FontWeight.w300,
       }) : super(key: key);

@@ -35,7 +35,7 @@ class _CategoryViewState extends State<CategoryView> {
       child: Scaffold(
         backgroundColor: UIColors.background,
         appBar: AppBar(
-          title: const UITilte(UIStrings.manageCategory, color: UIColors.white),
+          title: const UITitle(UIStrings.manageCategory, color: UIColors.white),
           backgroundColor: UIColors.primary,
           centerTitle: true,
           leading: GestureDetector(
@@ -216,7 +216,7 @@ class _CategoryViewState extends State<CategoryView> {
             ),
           ),
         ),
-        title: const UITilte(UIStrings.titleConfirm),
+        title: const UITitle(UIStrings.titleConfirm),
         content: const UIText(UIStrings.confirmDelete),
         actions: <Widget>[
           ElevatedButton(

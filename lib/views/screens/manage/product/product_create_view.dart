@@ -1,21 +1,22 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/main_view_model.dart';
 import 'package:sahami_app/viewmodel/product_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import 'package:sahami_app/views/widget/bottom_bar_widget.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_label.dart';
 import 'package:sahami_app/views/widget/ui_label_text_input.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
-import '../../../../enums/enum.dart';
+import '../../../../data/remote/enitity/product_entity.dart';
 import '../../../../viewmodel/category_view_model.dart';
 import '../../../widget/bottomsheet_model.dart';
 import '../../../widget/ui_button_small.dart';
+import '../../home/main_view.dart';
 
 class ProductCreateView extends StatefulWidget {
   const ProductCreateView({Key? key}) : super(key: key);
@@ -77,17 +78,14 @@ class _ProductCreateViewState extends State<ProductCreateView> {
                     SizedBox(height: DimensManager.dimens.setHeight(10)),
                     _buildInfNutri(),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
-                    UIButtonPrimary(
-                      text: UIStrings.createProduct,
-                      onPress: () {
-                        _productViewModel.createProduct(
-                            _productViewModel.productEntity,
-                            context,
-                            _productViewModel.categoryName);
-                        // _mainViewModel.navigationProductView();
-
-                      },
-                    ),
+                    Consumer<MainViewModel>(builder: (_, mainViewModel, __) {
+                      return UIButtonPrimary(
+                        text: UIStrings.createProduct,
+                        onPress: () {
+                          product.addProduct(context);
+                        },
+                      );
+                    }),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
                   ],
                 ),

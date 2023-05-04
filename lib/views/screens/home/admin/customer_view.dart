@@ -130,7 +130,7 @@ class _CustomerViewState extends State<CustomerView> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
                                 ),
-                                title: const UITilte(UIStrings.titleConfirm),
+                                title: const UITitle(UIStrings.titleConfirm),
                                 content: const UIText(UIStrings.confirmDelete),
                                 actions: <Widget>[
                                   ElevatedButton(

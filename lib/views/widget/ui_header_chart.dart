@@ -21,7 +21,7 @@ class StatisticsHeaderWidget extends StatelessWidget {
     return Flexible(
       flex: 2,
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        UITilte(title, fontWeight: FontWeight.w500),
+        UITitle(title, fontWeight: FontWeight.w500),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(

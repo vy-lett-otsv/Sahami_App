@@ -27,10 +27,6 @@ class CategoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clearText(TextEditingController controllerName) {
-    controllerName.clear();
-  }
-
   Future<void> createCategory(CategoryEntity category) async {
     final docCategory = FirebaseFirestore.instance.collection('category').doc();
     category.categoryId = docCategory.id;

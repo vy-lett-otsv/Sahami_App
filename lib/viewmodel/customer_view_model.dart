@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
+import 'package:sahami_app/views/containers/toast_widget.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';
 import '../enums/enum.dart';
+import '../views/constants/ui_strings.dart';
+import '../views/screens/home/main_view.dart';
 
 class CustomerViewModel extends ChangeNotifier{
 
@@ -56,7 +59,31 @@ class CustomerViewModel extends ChangeNotifier{
       await docUser.set(json);
 
       fetchCustomer();
-      if(context.mounted) Navigator.pop(context, userEntity);
+      ToastWidget.showToastSuccess(message: UIStrings.success);
+  }
+
+  final nameController = TextEditingController();
+  final contactController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+
+  void addCustomer(BuildContext context) {
+    final customerEntity = UserEntity(
+        userName: nameController.text,
+        contact: contactController.text,
+        email: emailController.text,
+        address: addressController.text
+    );
+    createCustomer(customerEntity, context).then(
+          (value) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainView(
+            index: 1,
+          ),
+        ),
+      ),
+    );
   }
 
   Future <void> fetchCustomer() async {
@@ -85,17 +112,21 @@ class CustomerViewModel extends ChangeNotifier{
     final db = FirebaseFirestore.instance.collection("user").doc(documentId);
     await db.delete().then(
         (doc) {
-          fetchCustomer();
           FirebaseAuth.instance
               .authStateChanges()
-              .listen((User? user) {
-            if (user != null) {
-              user.delete();
+              .listen((User? user) async {
+            if (user != null && user.uid == documentId) {
+              try {
+                await user.delete();
+                print("User deleted successfully.");
+              } catch (error) {
+                print("Failed to delete user: $error");
+              }
             }
           });
         },
     );
-    notifyListeners();
+    fetchCustomer();
   }
 
   Future<void> goToScreenCreateCustomerView(BuildContext context) async {

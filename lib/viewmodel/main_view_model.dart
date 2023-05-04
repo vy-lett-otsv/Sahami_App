@@ -15,7 +15,6 @@ class MainViewModel extends ChangeNotifier {
 
   int get selectedIndex => _selectedIndex;
 
-
   void bottomBarItem() {
     if (AuthService().roleUserEntity == "admin") {
       _pages = const [
@@ -36,5 +35,9 @@ class MainViewModel extends ChangeNotifier {
   void onTapNav(int index) {
     _selectedIndex = index;
     notifyListeners();
+  }
+
+  void setSelectedIndex(int index) {
+    _selectedIndex = index;
   }
 }

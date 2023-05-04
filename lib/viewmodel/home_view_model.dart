@@ -14,28 +14,20 @@ class HomeViewModel extends ChangeNotifier {
   PageController pageController = PageController(viewportFraction: 0.9); //Phần nhỏ của khung nhìn mà mỗi trang sẽ chiếm.
 
   void matrixSlide(int index) {
+    var currentScale, currentTrans;
+
     if (index == currPageValue.floor()) {
-      var currScale = 1 - (currPageValue - index) * (1 - _scaleFactor);
-      var curTrans = _height * (1 - currScale) / 2;
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, curTrans, 0);
-    } else if (index == currPageValue.floor() + 1) {
-      var currScale = _scaleFactor + (currPageValue - index + 1) * (1 - _scaleFactor);
-      var curTrans = _height * (1 - currScale) / 2; //220*(1-0.8)/2 = 220*0.2/2 = 220*1/10 = 22
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1);
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, curTrans, 0);
-    } else if (index == currPageValue.floor() - 1) {
-      var currScale = 1 - (currPageValue - index) * (1 - _scaleFactor);
-      var curTrans = _height * (1 - currScale) / 2;
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1);
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, curTrans, 0);
+      currentScale = 1 - (currPageValue - index) * (1 - _scaleFactor);
+    } else if (index == currPageValue.floor() + 1 ||
+        index == currPageValue.floor() - 1) {
+      currentScale = _scaleFactor + (currPageValue - index + 1) * (1 - _scaleFactor);
     } else {
-      var currScale = 0.8;
-      _matrix = Matrix4.diagonal3Values(1, currScale, 1)
-        ..setTranslationRaw(0, _height * (1 - _scaleFactor) / 2, 1);
+      currentScale = 0.8;
     }
+
+    currentTrans = _height * (1 - currentScale) / 2;
+    _matrix = Matrix4.diagonal3Values(1, currentScale, 1);
+    _matrix.setTranslationRaw(0, currentTrans, 0);
   }
 
   void pageControllerView() {

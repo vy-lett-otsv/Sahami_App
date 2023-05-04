@@ -5,6 +5,7 @@ import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../../../../enums/enum.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../../viewmodel/product_view_model.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
@@ -21,7 +22,7 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   void initState() {
-    _productViewModel.fetchProduct(_productViewModel.productCollection);
+    _productViewModel.fetchProducts("product");
     super.initState();
   }
 
@@ -39,7 +40,7 @@ class _ProductViewState extends State<ProductView> {
           actions: [
             GestureDetector(
                 onTap: () {
-                  _productViewModel.goToScreenCreateProductView(context);
+                  NavigationServices.instance.navigationToProductCreateScreen(context);
                 },
                 child: const Icon(Icons.add)),
             SizedBox(width: DimensManager.dimens.setWidth(20))
@@ -114,12 +115,12 @@ class _ProductViewState extends State<ProductView> {
                       onPressed: (context) {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) => AlertDialog(
+                          builder: (context) => AlertDialog(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(
                                   DimensManager.dimens.setRadius(20))),
                             ),
-                            title: const UITilte(UIStrings.titleConfirm),
+                            title: const UITitle(UIStrings.titleConfirm),
                             content: const UIText(UIStrings.confirmDelete),
                             actions: <Widget>[
                               ElevatedButton(
@@ -133,9 +134,7 @@ class _ProductViewState extends State<ProductView> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  _productViewModel.deleteProduct(
-                                      product.productList[index].productId);
-                                  Navigator.pop(context);
+                                  product.deleteProduct(context, product.productList[index].productId);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: UIColors.primary),

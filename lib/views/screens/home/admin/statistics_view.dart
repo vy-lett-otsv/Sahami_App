@@ -42,7 +42,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     _chartMonthData = FakeData().getMonthRevenueData();
     _chartYearData = FakeData().getYearRevenueData();
     _tooltipBehavior = TooltipBehavior(enable: true);
-    _productViewModel.fetchProduct(_productViewModel.productCollection);
+    _productViewModel.fetchProducts("product");
     _customerViewModel.fetchCustomer();
     super.initState();
   }
@@ -103,8 +103,7 @@ class _StatisticsViewState extends State<StatisticsView> {
               child: AuthService().avaAdmin.isEmpty
                   ? const CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(
-                          "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg"),
+                      backgroundImage: NetworkImage(UIStrings.defaultImage),
                     )
                   : CircleAvatar(
                       radius: 30,
@@ -114,11 +113,12 @@ class _StatisticsViewState extends State<StatisticsView> {
           SizedBox(width: DimensManager.dimens.setWidth(10)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UIText(AuthService().userName,
                   color: UIColors.white, fontWeight: FontWeight.bold, size: 20),
               const SizedBox(height: 5),
-              const UIText("Admin", color: UIColors.white, size: 16)
+              const UIText(UIStrings.admin, color: UIColors.white, size: 16)
             ],
           )
         ],
@@ -139,7 +139,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                 title: UIStrings.addProduct,
                 image: AssetIcons.iconProductWhite,
                 onTap: () {
-                  _productViewModel.goToScreenCreateProductView(context);
+                  NavigationServices.instance.navigationToProductCreateScreen(context);
                 }),
             UIButtonStatistics(
                 icon: Icons.article, title: UIStrings.addOrder, onTap: () {}),
@@ -147,7 +147,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                 icon: Icons.person,
                 title: UIStrings.addCustomer,
                 onTap: () {
-                  _customerViewModel.goToScreenCreateCustomerView(context);
+                  NavigationServices.instance.navigationToCustomerCreateScreen(context);
                 }),
             UIButtonStatistics(
               icon: Icons.category,
