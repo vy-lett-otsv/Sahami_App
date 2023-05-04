@@ -91,7 +91,7 @@ class ProductViewModel extends ChangeNotifier {
         categoryName: data['category_name'],
         productId: data['id'],
         image: data['image'],
-        priceSale: data['priceSale'],
+        priceSale: data['priceSale'].toDouble(),
       );
     }).toList();
     if (status == "feature") {

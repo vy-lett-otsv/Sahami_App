@@ -68,7 +68,8 @@ class _HomeViewState extends State<HomeView> {
                                           .featureProductList.length,
                                       itemBuilder: (context, index) {
                                         homeViewModel.matrixSlide(index);
-                                        return _buildPageItem(homeViewModel, productViewModel, index);
+                                        return _buildPageItem(homeViewModel,
+                                            productViewModel, index);
                                       }),
                                 ),
                                 SizedBox(
@@ -121,7 +122,8 @@ class _HomeViewState extends State<HomeView> {
               color: UIColors.primary,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(productViewModel.featureProductList[index].image),
+                image: NetworkImage(
+                    productViewModel.featureProductList[index].image),
               )),
         ),
         Align(
@@ -154,7 +156,8 @@ class _HomeViewState extends State<HomeView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    UITitle(productViewModel.featureProductList[index].productName),
+                    UITitle(
+                        productViewModel.featureProductList[index].productName),
                     SizedBox(height: DimensManager.dimens.setHeight(10)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,8 +230,8 @@ Widget _buildProduct(ProductViewModel productViewModel) {
           return GestureDetector(
             onTap: () {},
             child: Container(
-              padding: EdgeInsets.only(
-                  bottom: DimensManager.dimens.setHeight(20)),
+              padding:
+                  EdgeInsets.only(bottom: DimensManager.dimens.setHeight(20)),
               child: Row(
                 children: [
                   Container(
@@ -258,41 +261,42 @@ Widget _buildProduct(ProductViewModel productViewModel) {
                         SizedBox(height: DimensManager.dimens.setHeight(10)),
                         SizedBox(
                           width: DimensManager.dimens.setWidth(250),
-                          child: productViewModel
-                                      .productList[index].priceSale !=
-                                  0
-                              ? Row(
-                                  children: [
-                                    Text(
-                                      "${formatter.format(productViewModel.productList[index].priceSale)} VNĐ",
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          DimensManager.dimens.setWidth(10),
-                                    ),
-                                    Text(
+                          child:
+                              productViewModel.productList[index].priceSale != 0
+                                  ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "${formatter.format(productViewModel.productList[index].price)} VNĐ",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            decoration: TextDecoration.lineThrough
+                                          ),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              DimensManager.dimens.setWidth(10),
+                                        ),
+                                        Text(
+                                          "${formatter.format(productViewModel.productList[index].priceSale)} VNĐ",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ],
+                                    )
+                                  : Text(
                                       "${formatter.format(productViewModel.productList[index].price)} VNĐ",
                                       style: const TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                       textAlign: TextAlign.end,
                                     ),
-                                  ],
-                                )
-                              : Text(
-                                  "${formatter.format(productViewModel.productList[index].price)} VNĐ",
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
                         ),
                       ],
                     ),
