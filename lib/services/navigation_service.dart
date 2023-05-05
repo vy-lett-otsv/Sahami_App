@@ -4,6 +4,7 @@ import 'package:sahami_app/views/screens/auth/register_view.dart';
 import 'package:sahami_app/views/screens/home/admin/category_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
+import 'package:sahami_app/views/screens/manage/product/product_detail_view.dart';
 import 'package:sahami_app/views/screens/splash_view.dart';
 import '../utils/constants.dart';
 import '../views/screens/home/admin/customer_view.dart';
@@ -38,6 +39,7 @@ class NavigationServices {
   static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
   static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
+  static const String PRODUCT_DETAIL_VIEW_ROUTE = "/PRODUCT_DETAIL_VIEW_ROUTE";
   static const String CATEGORY_VIEW_ROUTE = "/CATEGORY_VIEW_ROUTE";
 
 
@@ -67,6 +69,13 @@ class NavigationServices {
         return MaterialPageRoute(
             builder: (_) => CustomerDetailView(
               userEntity: args[Constants.ENTITY],
+            )
+        );
+      case PRODUCT_DETAIL_VIEW_ROUTE:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => ProductDetailView(
+              productEntity: args[Constants.ENTITY],
             )
         );
       case PRODUCT_CREATE_VIEW_ROUTE:
@@ -104,6 +113,13 @@ class NavigationServices {
       Object? arguments,
   }) {
     Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE, arguments: arguments);
+  }
+
+  void navigationToProductDetailScreen(
+      BuildContext context, {
+        Object? arguments,
+      }) {
+    Navigator.pushNamed(context, PRODUCT_DETAIL_VIEW_ROUTE, arguments: arguments);
   }
 
   void navigationToProductCreateScreen(BuildContext context) {

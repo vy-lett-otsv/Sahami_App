@@ -83,8 +83,6 @@ abstract class BaseDimens<T> {
   double setRadius(double radius) {
     return radius * min(scaleHeight, scaleWidth);
   }
-
-  // double productImageSize = DimensManager.dimens.setHeight(305);
 }
 
 

@@ -40,7 +40,7 @@ class UITitle extends StatelessWidget {
           color: color,
           fontSize: size,
           letterSpacing: 0.75,
-          fontFamily: Fonts.Outfit,
+          fontFamily: Fonts.Inter,
           fontWeight: fontWeight,
           height: 1.25,
           decoration: decoration

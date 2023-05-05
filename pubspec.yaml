@@ -113,6 +113,10 @@ flutter:
       fonts:
         - asset: fonts/Outfit-Regular.ttf
           style: italic
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Medium.ttf
+          style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

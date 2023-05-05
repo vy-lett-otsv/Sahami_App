@@ -104,7 +104,7 @@ class UIStrings {
   static const String notYet = "Chưa có";
 
   //product
-  static const String product1 = "Cool Lime Physio";
+  static const String nutritionInformation = "Thông tin dinh dưỡng";
 
   static const String defaultImage = "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg";
 }

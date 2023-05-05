@@ -40,19 +40,19 @@ class ProductViewModel extends ChangeNotifier {
       description: controllerDes.text,
       price: double.parse(controllerPrice.text),
       categoryName: categoryName,
-      servingSize: double.parse(controllerServingSize.text.isEmpty
+      servingSize: int.parse(controllerServingSize.text.isEmpty
           ? "0"
           : controllerServingSize.text),
-      saturatedFat: double.parse(controllerSaturatedFat.text.isEmpty
+      saturatedFat: int.parse(controllerSaturatedFat.text.isEmpty
           ? "0"
           : controllerSaturatedFat.text),
-      protein: double.parse(
+      protein: int.parse(
           controllerProtein.text.isEmpty ? "0" : controllerProtein.text),
-      sodium: double.parse(
+      sodium: int.parse(
           controllerSodium.text.isEmpty ? "0" : controllerSodium.text),
-      sugars: double.parse(
+      sugars: int.parse(
           controllerSugar.text.isEmpty ? "0" : controllerSugar.text),
-      caffeine: double.parse(
+      caffeine: int.parse(
           controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text),
     );
     createProduct(
@@ -92,6 +92,12 @@ class ProductViewModel extends ChangeNotifier {
         productId: data['id'],
         image: data['image'],
         priceSale: data['priceSale'].toDouble(),
+        servingSize: data['serving_size'].toInt(),
+        saturatedFat: data['saturated_fat'].toInt(),
+        protein: data['protein'].toInt(),
+        sodium: data['sodium'].toInt(),
+        sugars: data['sugars'].toInt(),
+        caffeine: data['caffeine'].toInt(),
       );
     }).toList();
     if (status == "feature") {
@@ -153,5 +159,11 @@ class ProductViewModel extends ChangeNotifier {
         .delete();
     fetchProducts("product");
     if(context.mounted) Navigator.pop(context);
+  }
+
+  int _currentProductTab = 0;
+
+  void changeStaffTab(productTab) {
+    _currentProductTab = productTab;
   }
 }

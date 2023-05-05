@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/services/auth_service.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/home_view_model.dart';
 import 'package:sahami_app/viewmodel/product_view_model.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
+import '../../../utils/constants.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
 import '../../widget/ui_textinput_icon.dart';
@@ -228,7 +229,15 @@ Widget _buildProduct(ProductViewModel productViewModel) {
         itemCount: productViewModel.productList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              NavigationServices.instance.navigationToProductDetailScreen(
+                context,
+                arguments: {
+                  Constants.ENTITY:
+                      productViewModel.productList.elementAt(index),
+                },
+              );
+            },
             child: Container(
               padding:
                   EdgeInsets.only(bottom: DimensManager.dimens.setHeight(20)),
@@ -269,10 +278,10 @@ Widget _buildProduct(ProductViewModel productViewModel) {
                                         Text(
                                           "${formatter.format(productViewModel.productList[index].price)} VNĐ",
                                           style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            decoration: TextDecoration.lineThrough
-                                          ),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
                                           textAlign: TextAlign.end,
                                         ),
                                         SizedBox(

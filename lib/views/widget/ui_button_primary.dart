@@ -7,9 +7,12 @@ class UIButtonPrimary extends StatelessWidget {
   final String text;
   final VoidCallback? onPress;
   final double? size;
+  final double paddingHorizontal;
+  final double paddingVertical;
+  final double radius;
 
   const UIButtonPrimary(
-      {super.key, this.onPress, this.size = 20, required this.text});
+      {super.key, this.onPress, this.size = 20, required this.text, this.paddingHorizontal = 80, this.paddingVertical = 15, this.radius = 30});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +22,12 @@ class UIButtonPrimary extends StatelessWidget {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(UIColors.primary),
               padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                  horizontal: DimensManager.dimens.setWidth(80),
-                  vertical: DimensManager.dimens.setWidth(15))),
+                  horizontal: DimensManager.dimens.setWidth(paddingHorizontal),
+                  vertical: DimensManager.dimens.setWidth(paddingVertical))),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                          DimensManager.dimens.setRadius(30))))),
+                          DimensManager.dimens.setRadius(radius))))),
           onPressed: onPress,
           child: Text(text,
               style: const TextStyle(
