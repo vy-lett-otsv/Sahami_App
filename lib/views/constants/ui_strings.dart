@@ -38,6 +38,12 @@ class UIStrings {
   static const String delete = "Delete";
   static const String filter = "Filter";
   static const String success = "Success";
+  static const String showMore = "Xem thêm";
+  static const String showLess = "Rút gọn";
+  static const String addNewItem = "Thêm món mới";
+  static const String size = "Size";
+  static const String ice = "Lượng đá";
+  static const String quantitySugar = "Lượng đường";
 
 
   static const String manageCategory = "Manage Category";

@@ -10,6 +10,32 @@ import '../views/constants/ui_strings.dart';
 import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
+
+  bool _favorite = false;
+  bool get favorite => _favorite;
+
+  late TextEditingController categoryController;
+  String categoryName = "";
+
+  String get getControllerName => controllerName.text;
+
+  final int _selected = 0;
+
+  int get selected => _selected;
+
+  String selectedFileName = '';
+  XFile? file;
+
+  String _imageUrl = " ";
+
+  String get imageUrl => _imageUrl;
+
+  String _category = "";
+
+  String get category => _category;
+
+  int _currentProductTab = 0;
+
   ViewState _viewState = ViewState.idle;
 
   ViewState get viewState => _viewState;
@@ -32,8 +58,6 @@ class ProductViewModel extends ChangeNotifier {
   TextEditingController controllerSugar = TextEditingController();
   TextEditingController controllerCaffeine = TextEditingController();
 
-  String get getControllerName => controllerName.text;
-
   void addProduct(BuildContext context) {
     final productEntity = ProductEntity(
       productName: controllerName.text,
@@ -42,18 +66,18 @@ class ProductViewModel extends ChangeNotifier {
       categoryName: categoryName,
       servingSize: int.parse(controllerServingSize.text.isEmpty
           ? "0"
-          : controllerServingSize.text),
+          : controllerServingSize.text.trim()),
       saturatedFat: int.parse(controllerSaturatedFat.text.isEmpty
           ? "0"
-          : controllerSaturatedFat.text),
+          : controllerSaturatedFat.text..trim()),
       protein: int.parse(
-          controllerProtein.text.isEmpty ? "0" : controllerProtein.text),
+          controllerProtein.text.isEmpty ? "0" : controllerProtein.text.trim()),
       sodium: int.parse(
-          controllerSodium.text.isEmpty ? "0" : controllerSodium.text),
+          controllerSodium.text.isEmpty ? "0" : controllerSodium.text.trim()),
       sugars: int.parse(
-          controllerSugar.text.isEmpty ? "0" : controllerSugar.text),
+          controllerSugar.text.isEmpty ? "0" : controllerSugar.text.trim()),
       caffeine: int.parse(
-          controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text),
+          controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text.trim()),
     );
     createProduct(
       productEntity,
@@ -70,9 +94,6 @@ class ProductViewModel extends ChangeNotifier {
       ),
     );
   }
-
-  late TextEditingController categoryController;
-  String categoryName = "";
 
   Future<void> fetchProducts(String status) async {
     _viewState = ViewState.busy;
@@ -109,13 +130,6 @@ class ProductViewModel extends ChangeNotifier {
     _viewState = ViewState.success;
   }
 
-  final int _selected = 0;
-
-  int get selected => _selected;
-
-  String selectedFileName = '';
-  XFile? file;
-
   selectFile(bool imageFrom) async {
     file = await ImagePicker().pickImage(
         source: imageFrom ? ImageSource.gallery : ImageSource.camera);
@@ -125,16 +139,7 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
-  String _imageUrl = " ";
-
-  String get imageUrl => _imageUrl;
-
-  String _category = "";
-
-  String get category => _category;
-
-  Future<void> createProduct(
-      ProductEntity product, BuildContext context, String categoryName) async {
+  Future<void> createProduct(ProductEntity product, BuildContext context, String categoryName) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child('product').child('/${file!.name}');
     UploadTask uploadTask = ref.putFile(File(file!.path));
@@ -161,9 +166,12 @@ class ProductViewModel extends ChangeNotifier {
     if(context.mounted) Navigator.pop(context);
   }
 
-  int _currentProductTab = 0;
-
   void changeStaffTab(productTab) {
     _currentProductTab = productTab;
+  }
+
+  void setFavorite() {
+    _favorite = !_favorite;
+    notifyListeners();
   }
 }
