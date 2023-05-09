@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sahami_app/views/constants/dimens_manager.dart';
+
+import '../constants/dimens_manager.dart';
 
 class UIIconButton extends StatelessWidget {
   final IconData icon;
@@ -20,21 +21,18 @@ class UIIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(size/2),
-          color: backgroundColor
-        ),
-        child: Icon(
-          icon,
-          color: iconColor,
-          size: DimensManager.dimens.setSp(24),
-        ),
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(size/2),
+        color: backgroundColor
       ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        icon: Icon(icon, color: iconColor, size: DimensManager.dimens.setSp(24)),
+      )
     );
   }
 }

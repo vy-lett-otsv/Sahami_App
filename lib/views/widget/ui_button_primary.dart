@@ -10,9 +10,10 @@ class UIButtonPrimary extends StatelessWidget {
   final double paddingHorizontal;
   final double paddingVertical;
   final double radius;
+  final bool light;
 
   const UIButtonPrimary(
-      {super.key, this.onPress, this.size = 20, required this.text, this.paddingHorizontal = 80, this.paddingVertical = 15, this.radius = 30});
+      {super.key, this.onPress, this.size = 20, required this.text, this.paddingHorizontal = 80, this.paddingVertical = 15, this.radius = 30, this.light = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class UIButtonPrimary extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(UIColors.primary),
+              backgroundColor: MaterialStateProperty.all(light ? UIColors.primarySecond : UIColors.primary),
               padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                   horizontal: DimensManager.dimens.setWidth(paddingHorizontal),
                   vertical: DimensManager.dimens.setWidth(paddingVertical))),

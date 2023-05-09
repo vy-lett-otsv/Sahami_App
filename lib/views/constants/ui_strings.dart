@@ -112,5 +112,10 @@ class UIStrings {
   //product
   static const String nutritionInformation = "Thông tin dinh dưỡng";
 
+  //cart
+  static const String cart = "Giỏ hàng";
+  static const String paymentOption = "Phương thức Thanh toán và giao hàng";
+  static const String checkout = "Thanh toán";
+
   static const String defaultImage = "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg";
 }

@@ -76,7 +76,7 @@ class _CategoryViewState extends State<CategoryView> {
               borderRadius:
                   BorderRadius.circular(DimensManager.dimens.setRadius(15)),
               color: UIColors.white,
-              border: Border.all(color: UIColors.inputBackground),
+              border: Border.all(color: UIColors.backgroundInput),
               boxShadow: [
                 BoxShadow(
                   color: UIColors.border,

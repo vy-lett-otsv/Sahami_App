@@ -31,7 +31,7 @@ class UITextInputIcon extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: UIColors.white,
-            border: Border.all(color: UIColors.inputBackground),
+            border: Border.all(color: UIColors.backgroundInput),
             boxShadow: [
               BoxShadow(
                   color: UIColors.border,
