@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/dimens_manager.dart';
 
 class UIIconButton extends StatelessWidget {

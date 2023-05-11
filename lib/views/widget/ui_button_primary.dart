@@ -33,7 +33,7 @@ class UIButtonPrimary extends StatelessWidget {
           child: Text(text,
               style: const TextStyle(
                   color: UIColors.white,
-                  fontFamily: Fonts.Outfit,
+                  fontFamily: Fonts.Inter,
                   fontWeight: FontWeight.bold,
                   fontSize: 16))),
     );

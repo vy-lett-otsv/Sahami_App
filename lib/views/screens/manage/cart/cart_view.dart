@@ -49,7 +49,7 @@ class _CartViewState extends State<CartView> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 5,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return Container(
                       height: DimensManager.dimens.setHeight(100),
@@ -141,6 +141,39 @@ class _CartViewState extends State<CartView> {
                   paddingHorizontal: DimensManager.dimens.setWidth(20),
                   radius: DimensManager.dimens.setRadius(20),
                   light: true,
+                  onPress: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return FractionallySizedBox(
+                            heightFactor: DimensManager.dimens.setHeight(1.5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(DimensManager.dimens.setRadius(20)),
+                                  topRight: Radius.circular(DimensManager.dimens.setRadius(20))
+                                ),
+                                color: Colors.teal,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: DimensManager.dimens.setWidth(20)
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    color: Colors.orange,
+                                    height: DimensManager.dimens.setHeight(50),
+                                    child: Row(
+
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          );
+                        }
+                    );
+                  },
                 ),
               )
             ],

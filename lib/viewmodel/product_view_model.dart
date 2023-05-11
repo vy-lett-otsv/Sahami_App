@@ -10,9 +10,6 @@ import '../views/constants/ui_strings.dart';
 import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
-  bool _isSelectedItem = false;
-  bool get isSelectedItem => _isSelectedItem;
-
   bool _favorite = false;
   bool get favorite => _favorite;
 
@@ -60,14 +57,6 @@ class ProductViewModel extends ChangeNotifier {
   TextEditingController controllerSugar = TextEditingController();
   TextEditingController controllerCaffeine = TextEditingController();
 
-  void selectedAddPumpBrownSugar() {
-    _isSelectedItem = true;
-    notifyListeners();
-  }
-
-  void resetAddPumpBrownSugar() {
-    _isSelectedItem = false;
-  }
   void addProduct(BuildContext context) {
     final productEntity = ProductEntity(
       productName: controllerName.text,

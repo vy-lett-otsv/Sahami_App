@@ -8,6 +8,7 @@ import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_icon_button.dart';
 import '../../../../enums/fonts.dart';
 import '../../../constants/ui_color.dart';
+import '../../../widget/bottom_sheet/bottom_sheet_add_item.dart';
 import '../../../widget/expandable_text.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
@@ -43,7 +44,6 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
       providers: [ChangeNotifierProvider(create: (_) => _productViewModel)],
       child: Consumer<ProductViewModel>(
         builder: (_, productViewModel, __) {
-          print(productViewModel.isSelectedItem);
           return Scaffold(
             body: Stack(
               children: [
@@ -314,153 +314,11 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                           backgroundColor: UIColors.primary,
                           iconColor: UIColors.white,
                           onPressed: () {
-                            productViewModel.resetAddPumpBrownSugar();
-                            print("before ${productViewModel.isSelectedItem}");
+                            // productViewModel.resetAddPumpBrownSugar();
+                            // print("before ${productViewModel.isSelectedItem}");
                            showModalBottomSheet(
                                context: context,
-                               builder: (context){
-                             return FractionallySizedBox(
-                               heightFactor: DimensManager.dimens.setHeight(1.5),
-                               child: Container(
-                                 color: UIColors.white,
-                                 margin: EdgeInsets.only(
-                                   bottom: DimensManager.dimens.setHeight(100),
-                                 ),
-                                 child: Column(
-                                   children: [
-                                     Padding(
-                                       padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
-                                       child: Row(
-                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                         children: [
-                                           SizedBox(width: DimensManager.dimens.setWidth(44)),
-                                           const UITitle(UIStrings.addNewItem),
-                                           IconButton(
-                                             onPressed: () {
-                                               Navigator.of(context).pop();
-                                             },
-                                             icon: const Icon(Icons.close, size: 24),
-                                           ),
-                                         ],
-                                       ),
-                                     ),
-                                     const Divider(),
-                                     Expanded(
-                                       child: SingleChildScrollView(
-                                         child: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: [
-                                             _buildSize(),
-                                             SizedBox(height: DimensManager.dimens.setHeight(20),),
-                                             _buildOption(UIStrings.ice, DataLocal.ice.first, DataLocal.ice),
-                                             SizedBox(height: DimensManager.dimens.setHeight(20),),
-                                             _buildOption(UIStrings.quantitySugar, DataLocal.sugar.first, DataLocal.sugar),
-                                             SizedBox(height: DimensManager.dimens.setHeight(20),),
-                                             Container(
-                                               padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
-                                               child: Column(
-                                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                                 children: [
-                                                   const UIText("Flavors", fontWeight: FontWeight.bold),
-                                                   SizedBox(height: DimensManager.dimens.setHeight(10),),
-                                                   const UIText("SYRUPS", size: 14,),
-                                                   const Divider(),
-                                                   Container(
-                                                     padding: EdgeInsets.symmetric(
-                                                         horizontal: DimensManager.dimens.setWidth(10),
-                                                         vertical: DimensManager.dimens.setHeight(10)
-                                                     ),
-                                                     decoration: BoxDecoration(
-                                                         borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-                                                         border: Border.all(
-                                                             width: 1,
-                                                             color: UIColors.primary
-                                                         )
-                                                     ),
-                                                     child: productViewModel.isSelectedItem ? Row(
-                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                       children: [
-                                                         const UIText("Brown Sugar Syrup pump"),
-                                                         Container(
-                                                           color: Colors.teal,
-                                                           child: Row(
-                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                             children: [
-                                                               IconButton(
-                                                                 padding: EdgeInsets.zero,
-                                                                 icon: Icon(
-                                                                   Icons.add,
-                                                                   color: UIColors.primary,
-                                                                   size: DimensManager.dimens.setSp(24),
-                                                                 ),
-                                                                 onPressed: () {
-                                                                   productViewModel.selectedAddPumpBrownSugar();
-                                                                   print("on select ${productViewModel.isSelectedItem}");
-                                                                 },
-                                                               ),
-                                                               UIText("0"),
-                                                               IconButton(
-                                                                 padding: EdgeInsets.zero,
-                                                                 icon: Icon(
-                                                                   Icons.add,
-                                                                   color: UIColors.primary,
-                                                                   size: DimensManager.dimens.setSp(24),
-                                                                 ),
-                                                                 onPressed: () {
-                                                                   productViewModel.selectedAddPumpBrownSugar();
-                                                                   print("on select ${productViewModel.isSelectedItem}");
-                                                                 },
-                                                               )
-                                                             ],
-                                                           ),
-                                                         )
-                                                       ],
-                                                     ): Row(
-                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                       children: [
-                                                         const UIText("Thêm siro Brown Sugar"),
-                                                         GestureDetector(
-                                                           onTap: () {},
-                                                           child: Container(
-                                                               width: 28,
-                                                               height: 28,
-                                                               decoration: BoxDecoration(
-                                                                   borderRadius: BorderRadius.circular(28/2),
-                                                                   color: UIColors.white,
-                                                                   border: Border.all(
-                                                                       width: 1,
-                                                                       color: UIColors.primary
-                                                                   )
-                                                               ),
-                                                               child: IconButton(
-                                                                 padding: EdgeInsets.zero,
-                                                                 icon: Icon(
-                                                                   Icons.add,
-                                                                   color: UIColors.primary,
-                                                                   size: DimensManager.dimens.setSp(24),
-                                                                 ),
-                                                                 onPressed: () {
-                                                                   productViewModel.selectedAddPumpBrownSugar();
-                                                                   print("on select ${productViewModel.isSelectedItem}");
-                                                                 },
-                                                               )
-                                                           ),
-                                                         )
-                                                       ],
-                                                     ),
-                                                   ),
-                                                 ],
-                                               ),
-                                             )
-                                           ],
-                                         ),
-                                       ),
-                                     ),
-                                   ],
-                                 ),
-                               )
-                             );
-                           });
+                               builder: (context) => BottomSheetAddItem());
                           },
                         ),
                       ],
@@ -584,100 +442,6 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
           size: DimensManager.dimens.setSp(size),
         )
       ],
-    );
-  }
-
-  Widget _buildSize() {
-    return Container(
-      height: DimensManager.dimens.setHeight(170),
-      padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const UIText(UIStrings.size, fontWeight: FontWeight.bold),
-          SizedBox(height: DimensManager.dimens.setHeight(10),),
-          Expanded(
-            child: Center(
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: DataLocal.cupSize.length,
-                    itemBuilder: (context, index) {
-                      final iconCupSize = DataLocal.cupSize[index];
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: DimensManager.dimens.setWidth(15)
-                        ),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              iconCupSize.image,
-                              width: DimensManager.dimens.setWidth(80),
-                              height: DimensManager.dimens.setHeight(80),
-                            ),
-                            SizedBox(height: DimensManager.dimens.setHeight(10),),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(30)),
-                                  color: UIColors.background
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: DimensManager.dimens.setWidth(20),
-                                  vertical: DimensManager.dimens.setWidth(5)
-                              ),
-                              child: UIText(iconCupSize.price, fontWeight: FontWeight.bold, size: 14,),
-                            )
-                          ],
-                        ),
-                      );
-                    })
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOption(String title, String dropdownValue, List<String> data) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          UIText(title, fontWeight: FontWeight.bold),
-          SizedBox(height: DimensManager.dimens.setHeight(10),),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: UIColors.primary
-              ),
-              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10))
-            ),
-            width: DimensManager.dimens.fullWidth,
-            child: DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.keyboard_arrow_down),
-              elevation: 16,
-              isExpanded: true,
-              underline: Container(color: Colors.white,),
-              onChanged: (String? value) {
-                setState(() {
-                  dropdownValue = value!;
-                  print(value);
-                });
-              },
-              items: data.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: UIText(value),
-                );
-              }).toList(),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
