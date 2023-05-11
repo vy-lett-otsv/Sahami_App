@@ -314,11 +314,9 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                           backgroundColor: UIColors.primary,
                           iconColor: UIColors.white,
                           onPressed: () {
-                            // productViewModel.resetAddPumpBrownSugar();
-                            // print("before ${productViewModel.isSelectedItem}");
-                           showModalBottomSheet(
-                               context: context,
-                               builder: (context) => BottomSheetAddItem());
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => BottomSheetAddItem(productEntity: widget.productEntity));
                           },
                         ),
                       ],

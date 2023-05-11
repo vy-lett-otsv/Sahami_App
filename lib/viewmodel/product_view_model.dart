@@ -57,6 +57,7 @@ class ProductViewModel extends ChangeNotifier {
   TextEditingController controllerSugar = TextEditingController();
   TextEditingController controllerCaffeine = TextEditingController();
 
+
   void addProduct(BuildContext context) {
     final productEntity = ProductEntity(
       productName: controllerName.text,

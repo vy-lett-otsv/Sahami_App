@@ -140,7 +140,7 @@ class _CartViewState extends State<CartView> {
                   text: UIStrings.paymentOption,
                   paddingHorizontal: DimensManager.dimens.setWidth(20),
                   radius: DimensManager.dimens.setRadius(20),
-                  light: true,
+                  backgroundColor: UIColors.primarySecond,
                   onPress: () {
                     showModalBottomSheet(
                         context: context,
@@ -209,7 +209,7 @@ class _CartViewState extends State<CartView> {
                 text: UIStrings.checkout,
                 paddingHorizontal: DimensManager.dimens.setWidth(20),
                 radius: DimensManager.dimens.setRadius(10),
-                light: true,
+                backgroundColor: UIColors.primarySecond,
             )
           ],
         ),

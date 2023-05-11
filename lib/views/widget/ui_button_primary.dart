@@ -10,10 +10,21 @@ class UIButtonPrimary extends StatelessWidget {
   final double paddingHorizontal;
   final double paddingVertical;
   final double radius;
-  final bool light;
+  final Color textColor;
+  final Color backgroundColor;
+  final bool isBorder;
 
   const UIButtonPrimary(
-      {super.key, this.onPress, this.size = 20, required this.text, this.paddingHorizontal = 80, this.paddingVertical = 15, this.radius = 30, this.light = false});
+      {super.key,
+      this.onPress,
+      this.size = 20,
+      required this.text,
+      this.paddingHorizontal = 80,
+      this.paddingVertical = 15,
+      this.radius = 30,
+      this.textColor = const Color(0xFFFFFFFF),
+      this.backgroundColor = const Color(0xFF82AA06),
+      this.isBorder = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +32,30 @@ class UIButtonPrimary extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(light ? UIColors.primarySecond : UIColors.primary),
-              padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                  horizontal: DimensManager.dimens.setWidth(paddingHorizontal),
-                  vertical: DimensManager.dimens.setWidth(paddingVertical))),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          DimensManager.dimens.setRadius(radius))))),
+            backgroundColor: MaterialStateProperty.all(backgroundColor),
+            padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                horizontal: DimensManager.dimens.setWidth(paddingHorizontal),
+                vertical: DimensManager.dimens.setWidth(paddingVertical))),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              isBorder ? RoundedRectangleBorder(
+                side: BorderSide(color: UIColors.primary, width: 1),
+                borderRadius: BorderRadius.circular(
+                  DimensManager.dimens.setRadius(radius),
+                ),
+              ) :
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  DimensManager.dimens.setRadius(radius),
+                ),
+              ),
+            ),
+          ),
           onPressed: onPress,
           child: Text(text,
-              style: const TextStyle(
-                  color: UIColors.white,
+              style: TextStyle(
+                  color: textColor,
                   fontFamily: Fonts.Inter,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: isBorder ? FontWeight.normal : FontWeight.bold,
                   fontSize: 16))),
     );
   }

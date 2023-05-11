@@ -122,6 +122,11 @@ class UIStrings {
   static const String syrup = "Siro";
   static const String brownSugar = "Brown Sugar Syrup pump";
   static const String addBrownSugar = "Thêm siro Brown Sugar";
+  static const String toppings = "Toppings";
+  static const String cookieCrumbleTopping = "Cookie Crumble Topping";
+  static const String addCart = "Thêm vào giỏ hàng";
+  static const String refresh = "Làm mới";
+
 
   static const String defaultImage = "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg";
 }

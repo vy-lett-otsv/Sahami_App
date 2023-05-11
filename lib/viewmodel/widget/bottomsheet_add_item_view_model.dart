@@ -3,93 +3,30 @@ import '../../data/data_local.dart';
 import '../../data/remote/enitity/option_entity.dart';
 
 class BottomSheetAddItemViewModel extends ChangeNotifier {
-  bool _isSelectedItem = false;
-  bool get isSelectedItem => _isSelectedItem;
-
-  int brownSugarSyrup = 0;
-  int caramelSyrup = 0;
-  int vanillaSyrup = 0;
-
-  // List<OptionEntity> _optionList =[];
-  // List<OptionEntity> get userOption => _optionList;
-  //
-  OptionEntity _optionEntity = OptionEntity();
+  OptionEntity _optionEntity = OptionEntity(nameProduct: "");
   OptionEntity get optionEntity => _optionEntity;
 
-  int _quantity = 0;
-  int get quantity => _quantity;
+  String nameSize = DataLocal.cupSize[0].name;
 
-  // int _initCartItems = 0;
-  // int get initCartItems => _initCartItems + _quantity;
+  int quantity = 0;
 
-  // set quantityBrownSugarSyrup(int quantity) {
-  //   if(quantity > 0) {
-  //     _optionEntity.brownSugarSyrup = quantity;
-  //   } else {
-  //     _optionEntity.brownSugarSyrup = null;
-  //   }
-  //   notifyListeners();
-  // }
-  //
-  // set quantityCaramelSyrup(int quantity) {
-  //   if(quantity > 0) {
-  //     _optionEntity.caramelSyrup = quantity;
-  //   } else {
-  //     _optionEntity.caramelSyrup = null;
-  //   }
-  //   notifyListeners();
-  // }
-  //
-  // set quantityVanillaSyrup(int quantity) {
-  //   if(quantity > 0) {
-  //     _optionEntity.vanillaSyrup = quantity;
-  //   } else {
-  //     _optionEntity.vanillaSyrup = null;
-  //   }
-  //   notifyListeners();
-  // }
+  String dropdownValue = DataLocal.ice.first;
 
-  int? quantitySyrup() {
-    if(quantity > 0) {
-      return quantity;
-    } else {
-      return null;
-    }
-  }
+  bool isSelected = false;
 
   void addProductList() {
     _optionEntity = OptionEntity(
-      brownSugarSyrup: brownSugarSyrup,
-      caramelSyrup: caramelSyrup,
-      vanillaSyrup: vanillaSyrup,
+      nameProduct: _optionEntity.nameProduct,
+      size: nameSize,
+      ice: _optionEntity.ice,
+      sugar: _optionEntity.sugar,
+      brownSugarSyrup: _optionEntity.brownSugarSyrup,
+      caramelSyrup: _optionEntity.caramelSyrup,
+      vanillaSyrup: _optionEntity.vanillaSyrup,
+      cookieCrumbleTopping: _optionEntity.cookieCrumbleTopping
     );
-    print(_optionEntity);
   }
 
-  void setQuantity(bool isIncrement, bool? isBrownSugarSyrup, bool? isCaramelSyrup, bool? isVanillaSyrup) {
-    if(isIncrement) {
-      if(isBrownSugarSyrup == true) {
-        brownSugarSyrup = checkQuantity(brownSugarSyrup+1);
-      }
-      if(isCaramelSyrup == true) {
-        caramelSyrup = checkQuantity(caramelSyrup+1);
-      }
-      if(isVanillaSyrup == true) {
-        vanillaSyrup = checkQuantity(vanillaSyrup+1);
-      }
-    } else {
-      if(isBrownSugarSyrup == true) {
-        brownSugarSyrup = checkQuantity(brownSugarSyrup-1);
-      }
-      if(isCaramelSyrup == true) {
-        caramelSyrup = checkQuantity(caramelSyrup-1);
-      }
-      if(isVanillaSyrup == true) {
-        vanillaSyrup = checkQuantity(vanillaSyrup-1);
-      }
-    }
-    print("Quantity view model $quantity}");
-  }
 
   int checkQuantity(int quantity) {
     if(quantity<0) {
@@ -101,64 +38,84 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
     }
   }
 
-  void updateSelectedSize(int index) {
+  void setQuantityBrownSugarSyrup(bool isIncrement) {
+    isSelected = true;
+    if(isIncrement) {
+      _optionEntity.brownSugarSyrup = checkQuantity(_optionEntity.brownSugarSyrup + 1);
+    } else {
+      _optionEntity.brownSugarSyrup = checkQuantity(_optionEntity.brownSugarSyrup - 1);
+    }
+    notifyListeners();
+  }
+
+  void setQuantityCaramelSyrup(bool isIncrement) {
+    isSelected = true;
+    if(isIncrement) {
+      _optionEntity.caramelSyrup = checkQuantity(_optionEntity.caramelSyrup + 1);
+    } else {
+      _optionEntity.caramelSyrup = checkQuantity(_optionEntity.caramelSyrup - 1);
+    }
+    notifyListeners();
+  }
+
+  void setQuantityVanillaSyrup(bool isIncrement) {
+    isSelected = true;
+    if(isIncrement) {
+      _optionEntity.vanillaSyrup = checkQuantity(_optionEntity.vanillaSyrup + 1);
+    } else {
+      _optionEntity.vanillaSyrup = checkQuantity(_optionEntity.vanillaSyrup - 1);
+    }
+    notifyListeners();
+  }
+
+  void updateSelectedSize(int index, String name) {
     int currentIndex = DataLocal.cupSize.indexWhere((item) => item.isSelected);
     if (currentIndex != index) {
       DataLocal.cupSize[currentIndex].isSelected = false;
       DataLocal.cupSize[index].isSelected = true;
       notifyListeners();
     }
-    print("updateSelectedSize $currentIndex");
+    nameSize = name;
   }
 
-  void initProduct() {
-    _quantity = 0;
-    // _initCartItems = 0;
-  }
-
-  String valueIce = "";
-
-  void selected(String name) {
-    if(name=="brownSugarSyrup") {
-      brownSugarSyrup = 1;
+  void setIce(String? value) {
+    isSelected = true;
+    if(value!=null) {
+      dropdownValue = value;
+      _optionEntity.ice = value;
     }
-    if(name=="caramelSyrup") {
-      caramelSyrup = 1;
-    }
-    if(name=="vanillaSyrup") {
-      vanillaSyrup = 1;
-    }
-    _isSelectedItem = true;
     notifyListeners();
   }
 
-  // void resetAddPump() {
-  //   _isSelectedItem = false;
-  // }
+  void setSugar(String? value) {
+    isSelected = true;
+    if(value!=null) {
+      dropdownValue = value;
+      _optionEntity.sugar = value;
+    }
+    notifyListeners();
+  }
+  void setCookieCrumbleTopping(String? value) {
+    isSelected = true;
+    if(value!=null) {
+      dropdownValue = value;
+      _optionEntity.cookieCrumbleTopping = value;
+    }
+    notifyListeners();
+  }
 
-  // void removeQuantity(String name) {
-  //   if(name=="brownSugarSyrup") {
-  //     brownSugarSyrup -= 1;
-  //   }
-  //   if(name=="caramelSyrup") {
-  //     caramelSyrup -= 1;
-  //   }
-  //   if(name=="vanillaSyrup") {
-  //     vanillaSyrup -= 1;
-  //   }
-  //   notifyListeners();
-  // }
-  //
-  // void addQuantity(String name) {
-  //   if(name=="brownSugarSyrup") {
-  //     brownSugarSyrup += 1;
-  //   }
-  //   if(name=="caramelSyrup") {
-  //     caramelSyrup += 1;
-  //   }
-  //   if(name=="vanillaSyrup") {
-  //     vanillaSyrup += 1;
-  //   }
-  //   notifyListeners();
-  // }
+  void setNameProduct(String name) {
+    _optionEntity.nameProduct = name;
+  }
+  void initProduct() {
+    isSelected = false;
+    updateSelectedSize(0, nameSize);
+    _optionEntity.ice = DataLocal.ice.first;
+    _optionEntity.sugar = DataLocal.sugar.first;
+    _optionEntity.brownSugarSyrup = 0;
+    _optionEntity.caramelSyrup = 0;
+    _optionEntity.vanillaSyrup = 0;
+    _optionEntity.cookieCrumbleTopping = DataLocal.cookieCrumbleTopping.first;
+    notifyListeners();
+  }
 }
