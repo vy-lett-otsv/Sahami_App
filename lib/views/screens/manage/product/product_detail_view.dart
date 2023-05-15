@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/data/data_local.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
 import 'package:sahami_app/viewmodel/product_view_model.dart';
+import 'package:sahami_app/viewmodel/widget/botttom_sheet_add_item_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_icon_button.dart';
@@ -10,6 +11,7 @@ import '../../../../enums/fonts.dart';
 import '../../../constants/ui_color.dart';
 import '../../../widget/bottom_sheet/bottom_sheet_add_item.dart';
 import '../../../widget/expandable_text.dart';
+import '../../../widget/ui_button_primary.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
 import '../cart/cart_view.dart';
@@ -26,7 +28,9 @@ class ProductDetailView extends StatefulWidget {
 
 class _ProductDetailViewState extends State<ProductDetailView> with SingleTickerProviderStateMixin {
   double productImageSize = DimensManager.dimens.setHeight(400);
+  double productFavoriteButton = DimensManager.dimens.setHeight(285);
   final ProductViewModel _productViewModel = ProductViewModel();
+  final BottomSheetAddItemViewModel _cartViewModel = BottomSheetAddItemViewModel();
   late TabController _tabController;
 
   @override
@@ -41,7 +45,10 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => _productViewModel)],
+      providers: [
+        ChangeNotifierProvider(create: (_) => _productViewModel),
+        ChangeNotifierProvider(create: (_) => _cartViewModel)
+      ],
       child: Consumer<ProductViewModel>(
         builder: (_, productViewModel, __) {
           return Scaffold(
@@ -75,11 +82,12 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                         },
                       ),
                       UIIconButton(
-                          icon: Icons.shopping_cart_outlined,
-                        onPressed: (){
+                        icon: Icons.shopping_cart_outlined,
+                        onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const CartView()),
+                            MaterialPageRoute(
+                                builder: (context) => const CartView()),
                           );
                         },
                       )
@@ -89,7 +97,7 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                 Positioned(
                   left: 0,
                   right: 0,
-                  top: productImageSize - 50,
+                  top: productImageSize - 80,
                   bottom: 0,
                   child: Container(
                     padding: EdgeInsets.only(
@@ -188,7 +196,7 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                                   ),
                                 ],
                               ),
-                              _buildNutritionInformation(),
+                             _buildNutritionInformation(),
                               ListView.builder(itemBuilder: (context, index) {
                                 return Container(
                                     color: UIColors.background,
@@ -265,64 +273,49 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                       ],
                     ),
                   ),
+                ),
+                Positioned(
+                    right: DimensManager.dimens.setWidth(20),
+                    top: productFavoriteButton,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: _productViewModel.favorite
+                          ? Icon(
+                        Icons.favorite,
+                        color: UIColors.primarySecond,
+                        size: 36,
+                      )
+                          : Icon(
+                        Icons.favorite_border_outlined,
+                        color: UIColors.primarySecond,
+                        size: 36,
+                      ),
+                      onPressed: () {
+                        productViewModel.setFavorite();
+                      },
+                    )),
+                Consumer<BottomSheetAddItemViewModel>(
+                  builder: (_, cartViewModel, __) {
+                    return Positioned(
+                      bottom: DimensManager.dimens.setHeight(30),
+                      right: DimensManager.dimens.setWidth(30),
+                      child: UIIconButton(
+                        icon: Icons.add,
+                        size: DimensManager.dimens.setSp(64),
+                        backgroundColor: UIColors.primary,
+                        iconColor: UIColors.white,
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => BottomSheetAddItem(productEntity: widget.productEntity,),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 )
               ],
             ),
-            bottomNavigationBar: Container(
-                decoration: BoxDecoration(
-                  color: UIColors.backgroundBottom,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(DimensManager.dimens.setRadius(30)),
-                    topRight: Radius.circular(DimensManager.dimens.setRadius(30)),
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
-                height: DimensManager.dimens.setHeight(100),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
-                          color: UIColors.white),
-                      padding: EdgeInsets.all(DimensManager.dimens.setHeight(5)),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: _productViewModel.favorite
-                            ? Icon(Icons.favorite, color: UIColors.primarySecond, size: 36,)
-                            : Icon(Icons.favorite_border_outlined, color: UIColors.primarySecond, size: 36,),
-                        onPressed: () {
-                          productViewModel.setFavorite();
-                        },
-                      )
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        UIIconButton(
-                          icon: Icons.remove,
-                          size: 36,
-                          backgroundColor: UIColors.primary,
-                          iconColor: UIColors.white,
-                        ),
-                        SizedBox(width: DimensManager.dimens.setWidth(20),),
-                        const UIText("0"),
-                        SizedBox(width: DimensManager.dimens.setWidth(20),),
-                        UIIconButton(
-                          icon: Icons.add,
-                          size: 36,
-                          backgroundColor: UIColors.primary,
-                          iconColor: UIColors.white,
-                          onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => BottomSheetAddItem(productEntity: widget.productEntity));
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
           );
         },
       ),
@@ -330,72 +323,75 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
   }
 
   Widget _buildNutritionInformation() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: DimensManager.dimens.setWidth(20),
-          vertical: DimensManager.dimens.setHeight(30)),
-      padding: EdgeInsets.symmetric(
-          horizontal: DimensManager.dimens.setWidth(10),
-          vertical: DimensManager.dimens.setHeight(20)),
-      decoration: BoxDecoration(
-          color: UIColors.white,
-          borderRadius:
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(20),
+              vertical: DimensManager.dimens.setHeight(30)),
+          padding: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(10),
+              vertical: DimensManager.dimens.setHeight(30)),
+          decoration: BoxDecoration(
+              color: UIColors.white,
+              borderRadius:
               BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-          border: Border.all(width: 2, color: UIColors.primarySecond),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 5.0, offset: Offset(0, 5)),
-            BoxShadow(
-                color: Colors.black12, blurRadius: 5.0, offset: Offset(5, 0)),
-          ]),
-      child: Column(
-        children: [
-          const UITitle(UIStrings.nutritionInformation),
-          SizedBox(height: DimensManager.dimens.setHeight(30)),
-          SizedBox(
-            height: DimensManager.dimens.setHeight(80),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildHeaderNutrition(
-                    "${UIStrings.servingSize}(${UIStrings.kcal})",
-                    "${UIStrings.saturatedFat}(${UIStrings.g})",
-                    "${UIStrings.protein}(${UIStrings.g})",
-                    14),
-                SizedBox(
-                  width: DimensManager.dimens.setWidth(10),
-                ),
-                _buildNumberNutrition(
-                    widget.productEntity.servingSize.toString(),
-                    widget.productEntity.saturatedFat.toString(),
-                    widget.productEntity.protein.toString(),
-                    14),
-                VerticalDivider(
-                    thickness: 1,
-                    color: UIColors.backgroundBottom,
-                    width: DimensManager.dimens.setWidth(30)),
-                _buildHeaderNutrition(
-                    "${UIStrings.sodium}(${UIStrings.mg})",
-                    "${UIStrings.sugars}(${UIStrings.g})",
-                    "${UIStrings.caffeine}(${UIStrings.mg})",
-                    14),
-                SizedBox(
-                  width: DimensManager.dimens.setWidth(10),
-                ),
-                _buildNumberNutrition(
-                    widget.productEntity.sodium.toString(),
-                    widget.productEntity.sugars.toString(),
-                    widget.productEntity.caffeine.toString(),
-                    14),
-              ],
-            ),
-          )
-        ],
-      ),
+              border: Border.all(width: 2, color: UIColors.primarySecond),
+              boxShadow: const [
+                BoxShadow(
+                    color: Colors.black12, blurRadius: 5.0, offset: Offset(0, 5)),
+                BoxShadow(
+                    color: Colors.black12, blurRadius: 5.0, offset: Offset(5, 0)),
+              ]),
+          child: Column(
+            children: [
+              const UITitle(UIStrings.nutritionInformation),
+              SizedBox(height: DimensManager.dimens.setHeight(30)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildHeaderNutrition(
+                      "${UIStrings.servingSize}(${UIStrings.kcal})",
+                      "${UIStrings.saturatedFat}(${UIStrings.g})",
+                      "${UIStrings.protein}(${UIStrings.g})",
+                      14),
+                  SizedBox(
+                    width: DimensManager.dimens.setWidth(10),
+                  ),
+                  _buildNumberNutrition(
+                      widget.productEntity.servingSize.toString(),
+                      widget.productEntity.saturatedFat.toString(),
+                      widget.productEntity.protein.toString(),
+                      14),
+                  VerticalDivider(
+                      thickness: 1,
+                      color: UIColors.backgroundBottom,
+                      width: DimensManager.dimens.setWidth(30)),
+                  _buildHeaderNutrition(
+                      "${UIStrings.sodium}(${UIStrings.mg})",
+                      "${UIStrings.sugars}(${UIStrings.g})",
+                      "${UIStrings.caffeine}(${UIStrings.mg})",
+                      14),
+                  SizedBox(
+                    width: DimensManager.dimens.setWidth(10),
+                  ),
+                  _buildNumberNutrition(
+                      widget.productEntity.sodium.toString(),
+                      widget.productEntity.sugars.toString(),
+                      widget.productEntity.caffeine.toString(),
+                      14),
+                ],
+              )
+            ],
+          ),
+        ),
+        const Spacer()
+      ],
     );
   }
 
-  Widget _buildHeaderNutrition(String nutritionOne, String nutritionTwo, String nutritionThree, double size) {
+  Widget _buildHeaderNutrition(String nutritionOne, String nutritionTwo,
+      String nutritionThree, double size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -421,7 +417,8 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
     );
   }
 
-  Widget _buildNumberNutrition(String nutritionOne, String nutritionTwo, String nutritionThree, double size) {
+  Widget _buildNumberNutrition(String nutritionOne, String nutritionTwo,
+      String nutritionThree, double size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -429,12 +426,16 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
           nutritionOne,
           size: DimensManager.dimens.setSp(size),
         ),
-        SizedBox(height: DimensManager.dimens.setHeight(10),),
+        SizedBox(
+          height: DimensManager.dimens.setHeight(10),
+        ),
         UIText(
           nutritionTwo,
           size: DimensManager.dimens.setSp(size),
         ),
-        SizedBox(height: DimensManager.dimens.setHeight(10),),
+        SizedBox(
+          height: DimensManager.dimens.setHeight(10),
+        ),
         UIText(
           nutritionThree,
           size: DimensManager.dimens.setSp(size),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/services/cart_service.dart';
 import '../../data/data_local.dart';
-import '../../data/remote/enitity/option_entity.dart';
+import '../../data/remote/enitity/order_entity.dart';
 
 class BottomSheetAddItemViewModel extends ChangeNotifier {
-  OptionEntity _optionEntity = OptionEntity(nameProduct: "");
-  OptionEntity get optionEntity => _optionEntity;
+  OrderEntity _optionEntity = OrderEntity(nameProduct: "", price: 0.0, priceSale: 0.0, image: "");
+  OrderEntity get optionEntity => _optionEntity;
 
   String nameSize = DataLocal.cupSize[0].name;
 
@@ -14,17 +16,29 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
 
   bool isSelected = false;
 
-  void addProductList() {
-    _optionEntity = OptionEntity(
-      nameProduct: _optionEntity.nameProduct,
+  void handleGetOrders(OrderEntity orderEntity, int quantity) {
+    var totalQuantity = 0;
+
+  }
+
+  void addProductList(ProductEntity productEntity) {
+    _optionEntity = OrderEntity(
+      nameProduct: productEntity.productName,
+      price: productEntity.price,
+      priceSale: productEntity.priceSale,
+      image: productEntity.image,
       size: nameSize,
       ice: _optionEntity.ice,
       sugar: _optionEntity.sugar,
       brownSugarSyrup: _optionEntity.brownSugarSyrup,
       caramelSyrup: _optionEntity.caramelSyrup,
       vanillaSyrup: _optionEntity.vanillaSyrup,
-      cookieCrumbleTopping: _optionEntity.cookieCrumbleTopping
+      cookieCrumbleTopping: _optionEntity.cookieCrumbleTopping,
+      quantity: _optionEntity.quantity
     );
+    print(_optionEntity);
+    CartService().orderList.add(optionEntity);
+    print(CartService().orderList);
   }
 
 
@@ -104,9 +118,6 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setNameProduct(String name) {
-    _optionEntity.nameProduct = name;
-  }
   void initProduct() {
     isSelected = false;
     updateSelectedSize(0, nameSize);
