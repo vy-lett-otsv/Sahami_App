@@ -3,16 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
 import 'package:sahami_app/viewmodel/widget/botttom_sheet_add_item_view_model.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
+import 'package:sahami_app/views/widget/ui_text_price.dart';
 import '../../../data/data_local.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
 import '../../constants/ui_strings.dart';
+import '../ui_icon_button.dart';
 import '../ui_text.dart';
 import '../ui_title.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetAddItem extends StatefulWidget {
   final ProductEntity productEntity;
+
   const BottomSheetAddItem({Key? key, required this.productEntity})
       : super(key: key);
 
@@ -59,30 +62,83 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                     const Divider(),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildSize(viewModel),
-                            SizedBox(
-                              height: DimensManager.dimens.setHeight(20),
-                            ),
-                            _buildOptionDefault(
-                                UIStrings.ice, viewModel.optionEntity.ice,
-                                    (value) {
-                                  viewModel.setIce(value);
-                                }, DataLocal.ice),
-                            _buildOptionDefault(UIStrings.quantitySugar,
-                                viewModel.optionEntity.sugar, (value) {
-                                  viewModel.setSugar(value);
-                                }, DataLocal.sugar),
-                            SizedBox(
-                              height: DimensManager.dimens.setHeight(20),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: DimensManager.dimens.setWidth(20),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: DimensManager.dimens.setWidth(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              UITitle(
+                                widget.productEntity.productName,
                               ),
-                              child: Column(
+                              SizedBox(
+                                height: DimensManager.dimens.setHeight(10),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  widget.productEntity.priceSale != 0
+                                      ? UITextPrice(
+                                        price: widget.productEntity.price,
+                                        priceSale: widget.productEntity.priceSale,
+                                        isPriceSale: true,
+                                        color: UIColors.primary,
+                                      )
+                                      : UITextPrice(
+                                    price: widget.productEntity.price,
+                                    color: UIColors.primary,
+                                  ),
+                                  Row(
+                                    children: [
+                                      UIIconButton(
+                                        icon: Icons.remove,
+                                        radius:
+                                            DimensManager.dimens.setSp(36),
+                                        backgroundColor:
+                                            UIColors.primarySecond,
+                                        iconColor: UIColors.white,
+                                        circle: false,
+                                        onPressed: () {},
+                                      ),
+                                      SizedBox(
+                                          width: DimensManager.dimens
+                                              .setWidth(10)),
+                                      UIText("0"),
+                                      SizedBox(
+                                          width: DimensManager.dimens
+                                              .setWidth(10)),
+                                      UIIconButton(
+                                        icon: Icons.add,
+                                        radius:
+                                            DimensManager.dimens.setSp(36),
+                                        backgroundColor:
+                                            UIColors.primarySecond,
+                                        iconColor: UIColors.white,
+                                        circle: false,
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              _buildSize(viewModel),
+                              SizedBox(
+                                height: DimensManager.dimens.setHeight(20),
+                              ),
+                              _buildOptionDefault(
+                                  UIStrings.ice, viewModel.optionEntity.ice,
+                                  (value) {
+                                viewModel.setIce(value);
+                              }, DataLocal.ice),
+                              _buildOptionDefault(UIStrings.quantitySugar,
+                                  viewModel.optionEntity.sugar, (value) {
+                                viewModel.setSugar(value);
+                              }, DataLocal.sugar),
+                              SizedBox(
+                                height: DimensManager.dimens.setHeight(20),
+                              ),
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const UIText(UIStrings.flavor,
@@ -100,9 +156,9 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                       UIStrings.addBrownSugar,
                                       viewModel,
                                       viewModel.optionEntity.brownSugarSyrup,
-                                          () {
-                                        viewModel.setQuantityBrownSugarSyrup(false);
-                                      }, () {
+                                      () {
+                                    viewModel.setQuantityBrownSugarSyrup(false);
+                                  }, () {
                                     viewModel.setQuantityBrownSugarSyrup(true);
                                   }),
                                   _buildQuantity(
@@ -137,20 +193,20 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                       UIStrings.cookieCrumbleTopping)
                                 ],
                               ),
-                            ),
-                            SizedBox(
-                              height: DimensManager.dimens.setHeight(20),
-                            ),
-                            UIButtonPrimary(
-                              text: UIStrings.addCart,
-                              onPress: () {
-                                  viewModel.addProductList(widget.productEntity);
-                              }
-                            ),
-                            SizedBox(
-                              height: DimensManager.dimens.setHeight(20),
-                            )
-                          ],
+                              SizedBox(
+                                height: DimensManager.dimens.setHeight(20),
+                              ),
+                              UIButtonPrimary(
+                                  text: UIStrings.addCart,
+                                  onPress: () {
+                                    viewModel
+                                        .addProductList(widget.productEntity);
+                                  }),
+                              SizedBox(
+                                height: DimensManager.dimens.setHeight(20),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -163,10 +219,8 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
   }
 
   Widget _buildSize(BottomSheetAddItemViewModel viewModel) {
-    return Container(
+    return SizedBox(
       height: DimensManager.dimens.setHeight(200),
-      padding:
-      EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -227,7 +281,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                         : UIColors.background),
                                 padding: EdgeInsets.symmetric(
                                     horizontal:
-                                    DimensManager.dimens.setWidth(20),
+                                        DimensManager.dimens.setWidth(20),
                                     vertical: DimensManager.dimens.setWidth(5)),
                                 child: UIText(
                                   iconCupSize.price,
@@ -257,13 +311,13 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
       List<String> list, String hint) {
     return Container(
       margin:
-      EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(10)),
+          EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(10)),
       padding:
-      EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
+          EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
       decoration: BoxDecoration(
           border: Border.all(width: 1, color: UIColors.primary),
           borderRadius:
-          BorderRadius.circular(DimensManager.dimens.setRadius(10))),
+              BorderRadius.circular(DimensManager.dimens.setRadius(10))),
       width: DimensManager.dimens.fullWidth,
       child: DropdownButton<String>(
         hint: UIText(
@@ -294,8 +348,6 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
   Widget _buildOptionDefault(String title, String? value,
       Function(String?) onPress, List<String> list) {
     return Container(
-      padding:
-      EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
       margin: EdgeInsets.only(bottom: DimensManager.dimens.setHeight(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,7 +362,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: UIColors.primary),
                 borderRadius:
-                BorderRadius.circular(DimensManager.dimens.setRadius(10))),
+                    BorderRadius.circular(DimensManager.dimens.setRadius(10))),
             width: DimensManager.dimens.fullWidth,
             child: DropdownButton<String>(
               value: value,
@@ -357,13 +409,13 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
   }
 
   Widget _buildQuantity(
-      String titleDefault,
-      String titleAfter,
-      BottomSheetAddItemViewModel bottomSheetAddItemViewModel,
-      int pump,
-      Callback onPressRemove,
-      Callback onPressAdd,
-      ) {
+    String titleDefault,
+    String titleAfter,
+    BottomSheetAddItemViewModel bottomSheetAddItemViewModel,
+    int pump,
+    Callback onPressRemove,
+    Callback onPressAdd,
+  ) {
     return Container(
       margin: EdgeInsets.only(
         bottom: DimensManager.dimens.setHeight(20),
@@ -373,45 +425,45 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
           vertical: DimensManager.dimens.setHeight(10)),
       decoration: BoxDecoration(
           borderRadius:
-          BorderRadius.circular(DimensManager.dimens.setRadius(10)),
+              BorderRadius.circular(DimensManager.dimens.setRadius(10)),
           border: Border.all(width: 1, color: UIColors.primary)),
       child: pump != 0
           ? Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          UIText(
-            titleDefault,
-            size: DimensManager.dimens.setSp(18),
-          ),
-          SizedBox(
-            width: DimensManager.dimens.setWidth(90),
-            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildIcon(Icons.remove, onPressRemove),
-                SizedBox(
-                  width: DimensManager.dimens.setWidth(5),
+                UIText(
+                  titleDefault,
+                  size: DimensManager.dimens.setSp(18),
                 ),
-                UIText(pump.toString()),
                 SizedBox(
-                  width: DimensManager.dimens.setWidth(5),
+                  width: DimensManager.dimens.setWidth(90),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildIcon(Icons.remove, onPressRemove),
+                      SizedBox(
+                        width: DimensManager.dimens.setWidth(5),
+                      ),
+                      UIText(pump.toString()),
+                      SizedBox(
+                        width: DimensManager.dimens.setWidth(5),
+                      ),
+                      _buildIcon(Icons.add, onPressAdd),
+                    ],
+                  ),
+                )
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                UIText(
+                  titleAfter,
+                  size: DimensManager.dimens.setSp(18),
                 ),
-                _buildIcon(Icons.add, onPressAdd),
+                _buildIcon(Icons.add, onPressAdd)
               ],
             ),
-          )
-        ],
-      )
-          : Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          UIText(
-            titleAfter,
-            size: DimensManager.dimens.setSp(18),
-          ),
-          _buildIcon(Icons.add, onPressAdd)
-        ],
-      ),
     );
   }
 }

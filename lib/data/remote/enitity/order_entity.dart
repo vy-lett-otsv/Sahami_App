@@ -34,6 +34,7 @@ class OrderEntity {
   });
 
   Map<String, dynamic> toJson() => {
+        'image': image,
         'name_product': nameProduct,
         'price': price,
         'priceSale': priceSale,
@@ -72,6 +73,7 @@ class OrderEntity {
   @override
   String toString() {
     return 'OptionEntity{'
+        'image: $image, '
         'nameProduct: $nameProduct, '
         'price: $price, '
         'priceSale: $priceSale, '

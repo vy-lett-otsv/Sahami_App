@@ -301,7 +301,7 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                       right: DimensManager.dimens.setWidth(30),
                       child: UIIconButton(
                         icon: Icons.add,
-                        size: DimensManager.dimens.setSp(64),
+                        radius: DimensManager.dimens.setSp(64),
                         backgroundColor: UIColors.primary,
                         iconColor: UIColors.white,
                         onPressed: () {

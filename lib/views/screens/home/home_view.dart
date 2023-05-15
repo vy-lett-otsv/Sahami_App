@@ -10,6 +10,7 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 import '../../../utils/constants.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
+import '../../widget/ui_text_price.dart';
 import '../../widget/ui_textinput_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:intl/intl.dart' as intl;
@@ -270,42 +271,16 @@ Widget _buildProduct(ProductViewModel productViewModel) {
                         SizedBox(height: DimensManager.dimens.setHeight(10)),
                         SizedBox(
                           width: DimensManager.dimens.setWidth(250),
-                          child:
-                              productViewModel.productList[index].priceSale != 0
-                                  ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          "${formatter.format(productViewModel.productList[index].price)} VNĐ",
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              DimensManager.dimens.setWidth(10),
-                                        ),
-                                        Text(
-                                          "${formatter.format(productViewModel.productList[index].priceSale)} VNĐ",
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ],
-                                    )
-                                  : Text(
-                                      "${formatter.format(productViewModel.productList[index].price)} VNĐ",
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
+                          child: productViewModel.productList[index].priceSale != 0 ?
+                              UITextPrice(
+                                  price: productViewModel.productList[index].price,
+                                  priceSale: productViewModel.productList[index].priceSale,
+                                  isPriceSale: true,
+                                  end: true,
+                                )
+                              : UITextPrice(
+                            price: productViewModel.productList[index].price
+                          ),
                         ),
                       ],
                     ),
