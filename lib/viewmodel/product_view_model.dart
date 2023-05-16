@@ -10,9 +10,6 @@ import '../views/constants/ui_strings.dart';
 import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
-  bool _favorite = false;
-  bool get favorite => _favorite;
-
   late TextEditingController categoryController;
   String categoryName = "";
 
@@ -33,7 +30,6 @@ class ProductViewModel extends ChangeNotifier {
 
   String get category => _category;
 
-  int _currentProductTab = 0;
 
   ViewState _viewState = ViewState.idle;
 
@@ -164,14 +160,5 @@ class ProductViewModel extends ChangeNotifier {
         .delete();
     fetchProducts("product");
     if(context.mounted) Navigator.pop(context);
-  }
-
-  void changeStaffTab(productTab) {
-    _currentProductTab = productTab;
-  }
-
-  void setFavorite() {
-    _favorite = !_favorite;
-    notifyListeners();
   }
 }

@@ -68,60 +68,72 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              UITitle(
-                                widget.productEntity.productName,
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                  vertical: DimensManager.dimens.setHeight(20)
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    UITitle(
+                                      widget.productEntity.productName,
+                                    ),
+                                    SizedBox(
+                                      height: DimensManager.dimens.setHeight(10),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        widget.productEntity.priceSale != 0
+                                            ? UITextPrice(
+                                          price: widget.productEntity.price,
+                                          priceSale: widget.productEntity.priceSale,
+                                          isPriceSale: true,
+                                          color: UIColors.primary,
+                                        )
+                                            : UITextPrice(
+                                          price: widget.productEntity.price,
+                                          color: UIColors.primary,
+                                        ),
+                                        SizedBox(
+                                          width: DimensManager.dimens.setWidth(120),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              UIIconButton(
+                                                icon: Icons.remove,
+                                                radius:
+                                                DimensManager.dimens.setSp(36),
+                                                backgroundColor:
+                                                UIColors.primarySecond,
+                                                iconColor: UIColors.white,
+                                                circle: false,
+                                                onPressed: () {
+                                                  viewModel.setQuantity(false);
+                                                },
+                                              ),
+                                              UIText("${viewModel.optionEntity.quantity}"),
+                                              UIIconButton(
+                                                icon: Icons.add,
+                                                radius:
+                                                DimensManager.dimens.setSp(36),
+                                                backgroundColor:
+                                                UIColors.primarySecond,
+                                                iconColor: UIColors.white,
+                                                circle: false,
+                                                onPressed: () {
+                                                  viewModel.setQuantity(true);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                height: DimensManager.dimens.setHeight(10),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  widget.productEntity.priceSale != 0
-                                      ? UITextPrice(
-                                        price: widget.productEntity.price,
-                                        priceSale: widget.productEntity.priceSale,
-                                        isPriceSale: true,
-                                        color: UIColors.primary,
-                                      )
-                                      : UITextPrice(
-                                    price: widget.productEntity.price,
-                                    color: UIColors.primary,
-                                  ),
-                                  Row(
-                                    children: [
-                                      UIIconButton(
-                                        icon: Icons.remove,
-                                        radius:
-                                            DimensManager.dimens.setSp(36),
-                                        backgroundColor:
-                                            UIColors.primarySecond,
-                                        iconColor: UIColors.white,
-                                        circle: false,
-                                        onPressed: () {},
-                                      ),
-                                      SizedBox(
-                                          width: DimensManager.dimens
-                                              .setWidth(10)),
-                                      UIText("0"),
-                                      SizedBox(
-                                          width: DimensManager.dimens
-                                              .setWidth(10)),
-                                      UIIconButton(
-                                        icon: Icons.add,
-                                        radius:
-                                            DimensManager.dimens.setSp(36),
-                                        backgroundColor:
-                                            UIColors.primarySecond,
-                                        iconColor: UIColors.white,
-                                        circle: false,
-                                        onPressed: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              const Divider(),
                               _buildSize(viewModel),
                               SizedBox(
                                 height: DimensManager.dimens.setHeight(20),
@@ -186,29 +198,25 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                     size: 14,
                                   ),
                                   _buildOption(
-                                      viewModel.optionEntity
-                                          .cookieCrumbleTopping, (value) {
+                                      viewModel.optionEntity.cookieCrumbleTopping, (value) {
                                     viewModel.setCookieCrumbleTopping(value);
-                                  }, DataLocal.cookieCrumbleTopping,
+                                  },
+                                      DataLocal.cookieCrumbleTopping,
                                       UIStrings.cookieCrumbleTopping)
                                 ],
                               ),
-                              SizedBox(
-                                height: DimensManager.dimens.setHeight(20),
-                              ),
-                              UIButtonPrimary(
-                                  text: UIStrings.addCart,
-                                  onPress: () {
-                                    viewModel
-                                        .addProductList(widget.productEntity);
-                                  }),
-                              SizedBox(
-                                height: DimensManager.dimens.setHeight(20),
-                              )
                             ],
                           ),
                         ),
                       ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(10)),
+                      child: UIButtonPrimary(
+                          text: UIStrings.addCart,
+                          onPress: () {
+                            viewModel.addProductList(widget.productEntity, context);
+                          }),
                     ),
                   ],
                 ),
@@ -412,7 +420,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
     String titleDefault,
     String titleAfter,
     BottomSheetAddItemViewModel bottomSheetAddItemViewModel,
-    int pump,
+    int? pump,
     Callback onPressRemove,
     Callback onPressAdd,
   ) {

@@ -1,4 +1,4 @@
-class OrderEntity {
+class OptionEntity {
   String orderId;
   String nameProduct;
   double price;
@@ -15,7 +15,7 @@ class OrderEntity {
   bool? isExist;
   String? time;
 
-  OrderEntity({
+  OptionEntity({
     this.orderId = '',
     required this.nameProduct,
     required this.price,
@@ -49,8 +49,8 @@ class OrderEntity {
         'quantity': quantity
       };
 
-  factory OrderEntity.fromJson(Map<String, dynamic> json) {
-    return OrderEntity(
+  factory OptionEntity.fromJson(Map<String, dynamic> json) {
+    return OptionEntity(
         nameProduct: json['name_product'],
         price: json['price'],
         priceSale: json['price_sale'],

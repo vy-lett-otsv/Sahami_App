@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/data/data_local.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
-import 'package:sahami_app/viewmodel/product_view_model.dart';
+import 'package:sahami_app/services/cart_service.dart';
+import 'package:sahami_app/viewmodel/product/product_detail_view_model.dart';
 import 'package:sahami_app/viewmodel/widget/botttom_sheet_add_item_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
@@ -11,7 +12,6 @@ import '../../../../enums/fonts.dart';
 import '../../../constants/ui_color.dart';
 import '../../../widget/bottom_sheet/bottom_sheet_add_item.dart';
 import '../../../widget/expandable_text.dart';
-import '../../../widget/ui_button_primary.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
 import '../cart/cart_view.dart';
@@ -27,17 +27,17 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> with SingleTickerProviderStateMixin {
-  double productImageSize = DimensManager.dimens.setHeight(400);
-  double productFavoriteButton = DimensManager.dimens.setHeight(285);
-  final ProductViewModel _productViewModel = ProductViewModel();
-  final BottomSheetAddItemViewModel _cartViewModel = BottomSheetAddItemViewModel();
+  double productImageSize = DimensManager.dimens.setHeight(430);
+  double productFavoriteButton = DimensManager.dimens.setHeight(310);
+  final BottomSheetAddItemViewModel _bottomSheetAddItemViewModel = BottomSheetAddItemViewModel();
+  final ProductDetailViewModel _productDetailViewModel = ProductDetailViewModel();
   late TabController _tabController;
 
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: DataLocal.productTabs.length);
     _tabController.addListener(() {
-      _productViewModel.changeStaffTab(_tabController.index);
+      _productDetailViewModel.changeStaffTab(_tabController.index);
     });
     super.initState();
   }
@@ -46,275 +46,292 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => _productViewModel),
-        ChangeNotifierProvider(create: (_) => _cartViewModel)
+        ChangeNotifierProvider(create: (_) => _productDetailViewModel),
+        ChangeNotifierProvider(create: (_) => _bottomSheetAddItemViewModel),
       ],
-      child: Consumer<ProductViewModel>(
-        builder: (_, productViewModel, __) {
+      child: Consumer<ProductDetailViewModel>(
+        builder: (_, productDetailViewModel, __) {
           return Scaffold(
-            body: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: DimensManager.dimens.fullWidth,
-                    height: productImageSize,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(widget.productEntity.image),
-                        fit: BoxFit.cover,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: DimensManager.dimens.fullWidth,
+                      height: productImageSize,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(widget.productEntity.image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: DimensManager.dimens.setHeight(50),
-                  left: DimensManager.dimens.setWidth(20),
-                  right: DimensManager.dimens.setWidth(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      UIIconButton(
-                        icon: Icons.arrow_back_ios,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      UIIconButton(
-                        icon: Icons.shopping_cart_outlined,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CartView()),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  top: productImageSize - 80,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: DimensManager.dimens.setHeight(30)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(
-                              DimensManager.dimens.setRadius(20)),
-                          topLeft: Radius.circular(
-                              DimensManager.dimens.setRadius(20)),
-                        ),
-                        color: UIColors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Positioned(
+                    top: DimensManager.dimens.setHeight(20),
+                    left: DimensManager.dimens.setWidth(20),
+                    right: DimensManager.dimens.setWidth(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: DimensManager.dimens.setWidth(20),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              UITitle(widget.productEntity.productName),
-                              SizedBox(
-                                  height: DimensManager.dimens.setHeight(10)),
-                              Row(
-                                children: [
-                                  Wrap(
-                                    children: List.generate(5, (index) {
-                                      return Icon(
-                                        Icons.star,
-                                        color: UIColors.star,
-                                        size: 15,
-                                      );
-                                    }),
-                                  ),
-                                  SizedBox(
-                                      width: DimensManager.dimens.setWidth(20)),
-                                  const UIText("5.0"),
-                                  SizedBox(
-                                      width: DimensManager.dimens.setWidth(20)),
-                                  const UIText("38 Comment"),
-                                ],
-                              ),
-                              SizedBox(
-                                  height: DimensManager.dimens.setHeight(20)),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          DimensManager.dimens.setRadius(30)),
-                                    ),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: UIColors.primarySecond),
-                                    color: UIColors.white),
-                                child: TabBar(
-                                  controller: _tabController,
-                                  labelColor: UIColors.white,
-                                  unselectedLabelColor: UIColors.primarySecond,
-                                  labelStyle: TextStyle(
-                                    fontFamily: Fonts.Inter,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: DimensManager.dimens.setSp(13),
-                                    letterSpacing: 1,
-                                  ),
-                                  indicatorWeight: 1.0,
-                                  indicator: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        DimensManager.dimens.setRadius(30)),
-                                    color: UIColors.primarySecond,
-                                  ),
-                                  tabs: DataLocal.productTabs,
-                                ),
-                              ),
-                            ],
-                          ),
+                        UIIconButton(
+                          icon: Icons.arrow_back_ios,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
-                        Expanded(
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          DimensManager.dimens.setWidth(20),
-                                      vertical:
-                                          DimensManager.dimens.setWidth(30),
-                                    ),
-                                    child: UIText(
-                                      widget.productEntity.description,
-                                      textAlign: TextAlign.justify,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                             _buildNutritionInformation(),
-                              ListView.builder(itemBuilder: (context, index) {
-                                return Container(
-                                    color: UIColors.background,
-                                    margin: EdgeInsets.only(
-                                        bottom:
-                                            DimensManager.dimens.setHeight(20)),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical:
-                                            DimensManager.dimens.setHeight(10),
-                                        horizontal:
-                                            DimensManager.dimens.setWidth(20)),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const CircleAvatar(
-                                          radius: 30,
-                                          backgroundImage: NetworkImage(
-                                            "https://i.pinimg.com/564x/65/2a/fa/652afa0a7cf9bac3e8af32384e34068e.jpg",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              DimensManager.dimens.setWidth(10),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  const UIText("Nguyen Van A"),
-                                                  Wrap(
-                                                    children: List.generate(5,
-                                                        (index) {
-                                                      return Icon(
-                                                        Icons.star,
-                                                        color: UIColors.star,
-                                                        size: 18,
-                                                      );
-                                                    }),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: DimensManager.dimens
-                                                    .setHeight(10),
-                                              ),
-                                              UIText(
-                                                "16/03/2023",
-                                                size: DimensManager.dimens
-                                                    .setSp(12),
-                                              ),
-                                              SizedBox(
-                                                height: DimensManager.dimens
-                                                    .setHeight(10),
-                                              ),
-                                              const ExpandableText(
-                                                  text:
-                                                      "Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt ")
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ));
-                              })
-                            ],
-                          ),
+                        UIIconButton(
+                          icon: Icons.shopping_cart_outlined,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CartView()),
+                            );
+                          },
                         )
                       ],
                     ),
                   ),
-                ),
-                Positioned(
-                    right: DimensManager.dimens.setWidth(20),
-                    top: productFavoriteButton,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: _productViewModel.favorite
-                          ? Icon(
-                        Icons.favorite,
-                        color: UIColors.primarySecond,
-                        size: 36,
-                      )
-                          : Icon(
-                        Icons.favorite_border_outlined,
-                        color: UIColors.primarySecond,
-                        size: 36,
+                  CartService().totalQuantityCart == 0 ? Container() :
+                  Positioned(
+                    top: DimensManager.dimens.setHeight(10),
+                    right: DimensManager.dimens.setWidth(12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: UIColors.primary,
+                          shape: BoxShape.circle,
                       ),
-                      onPressed: () {
-                        productViewModel.setFavorite();
-                      },
-                    )),
-                Consumer<BottomSheetAddItemViewModel>(
-                  builder: (_, cartViewModel, __) {
-                    return Positioned(
-                      bottom: DimensManager.dimens.setHeight(30),
-                      right: DimensManager.dimens.setWidth(30),
-                      child: UIIconButton(
-                        icon: Icons.add,
-                        radius: DimensManager.dimens.setSp(64),
-                        backgroundColor: UIColors.primary,
-                        iconColor: UIColors.white,
+                      padding: EdgeInsets.all(DimensManager.dimens.setHeight(7)),
+                      child: UIText("${CartService().totalQuantityCart}", color: UIColors.white, size: DimensManager.dimens.setSp(12),),
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: productImageSize - 80,
+                    bottom: 0,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: DimensManager.dimens.setHeight(30)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(
+                                DimensManager.dimens.setRadius(20)),
+                            topLeft: Radius.circular(
+                                DimensManager.dimens.setRadius(20)),
+                          ),
+                          color: UIColors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: DimensManager.dimens.setWidth(20),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                UITitle(widget.productEntity.productName),
+                                SizedBox(
+                                    height: DimensManager.dimens.setHeight(10)),
+                                Row(
+                                  children: [
+                                    Wrap(
+                                      children: List.generate(5, (index) {
+                                        return Icon(
+                                          Icons.star,
+                                          color: UIColors.star,
+                                          size: 15,
+                                        );
+                                      }),
+                                    ),
+                                    SizedBox(
+                                        width: DimensManager.dimens.setWidth(20)),
+                                    const UIText("5.0"),
+                                    SizedBox(
+                                        width: DimensManager.dimens.setWidth(20)),
+                                    const UIText("38 Comment"),
+                                  ],
+                                ),
+                                SizedBox(
+                                    height: DimensManager.dimens.setHeight(20)),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            DimensManager.dimens.setRadius(30)),
+                                      ),
+                                      border: Border.all(
+                                          width: 1,
+                                          color: UIColors.primarySecond),
+                                      color: UIColors.white),
+                                  child: TabBar(
+                                    controller: _tabController,
+                                    labelColor: UIColors.white,
+                                    unselectedLabelColor: UIColors.primarySecond,
+                                    labelStyle: TextStyle(
+                                      fontFamily: Fonts.Inter,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: DimensManager.dimens.setSp(13),
+                                      letterSpacing: 1,
+                                    ),
+                                    indicatorWeight: 1.0,
+                                    indicator: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          DimensManager.dimens.setRadius(30)),
+                                      color: UIColors.primarySecond,
+                                    ),
+                                    tabs: DataLocal.productTabs,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            DimensManager.dimens.setWidth(20),
+                                        vertical:
+                                            DimensManager.dimens.setWidth(30),
+                                      ),
+                                      child: UIText(
+                                        widget.productEntity.description,
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                               _buildNutritionInformation(),
+                                ListView.builder(itemBuilder: (context, index) {
+                                  return Container(
+                                      color: UIColors.background,
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              DimensManager.dimens.setHeight(20)),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              DimensManager.dimens.setHeight(10),
+                                          horizontal:
+                                              DimensManager.dimens.setWidth(20)),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                              "https://i.pinimg.com/564x/65/2a/fa/652afa0a7cf9bac3e8af32384e34068e.jpg",
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width:
+                                                DimensManager.dimens.setWidth(10),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const UIText("Nguyen Van A"),
+                                                    Wrap(
+                                                      children: List.generate(5,
+                                                          (index) {
+                                                        return Icon(
+                                                          Icons.star,
+                                                          color: UIColors.star,
+                                                          size: 18,
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: DimensManager.dimens
+                                                      .setHeight(10),
+                                                ),
+                                                UIText(
+                                                  "16/03/2023",
+                                                  size: DimensManager.dimens
+                                                      .setSp(12),
+                                                ),
+                                                SizedBox(
+                                                  height: DimensManager.dimens
+                                                      .setHeight(10),
+                                                ),
+                                                const ExpandableText(
+                                                    text:
+                                                        "Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt Rất ngon, hợp khẩu vị, dễ uống, không quá ngọt ")
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ));
+                                })
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      right: DimensManager.dimens.setWidth(20),
+                      top: productFavoriteButton,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: productDetailViewModel.favorite
+                            ? Icon(
+                          Icons.favorite,
+                          color: UIColors.primarySecond,
+                          size: 36,
+                        )
+                            : Icon(
+                          Icons.favorite_border_outlined,
+                          color: UIColors.primarySecond,
+                          size: 36,
+                        ),
                         onPressed: () {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (context) => BottomSheetAddItem(productEntity: widget.productEntity,),
-                          );
+                          productDetailViewModel.setFavorite();
                         },
-                      ),
-                    );
-                  },
-                )
-              ],
+                      )),
+                  Consumer<BottomSheetAddItemViewModel>(
+                    builder: (_, cartViewModel, __) {
+                      return Positioned(
+                        bottom: DimensManager.dimens.setHeight(30),
+                        right: DimensManager.dimens.setWidth(30),
+                        child: UIIconButton(
+                          icon: Icons.add,
+                          radius: DimensManager.dimens.setSp(64),
+                          backgroundColor: UIColors.primary,
+                          iconColor: UIColors.white,
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => BottomSheetAddItem(productEntity: widget.productEntity,),
+                            ).then((value) => {
+                              productDetailViewModel.updateUI()
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
           );
         },

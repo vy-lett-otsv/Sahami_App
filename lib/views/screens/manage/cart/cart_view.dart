@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/services/cart_service.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
@@ -6,6 +7,8 @@ import 'package:sahami_app/views/widget/ui_icon_button.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../../constants/ui_color.dart';
 import '../../../widget/ui_title.dart';
+import 'package:intl/intl.dart' as intl;
+
 
 class CartView extends StatefulWidget {
   const CartView({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
+    final formatter = intl.NumberFormat.decimalPattern();
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -31,8 +35,11 @@ class _CartViewState extends State<CartView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const UIIconButton(
-                    icon: Icons.arrow_back_ios,
+                   UIIconButton(
+                    icon: Icons.arrow_back_ios_new,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   UITitle(
                     UIStrings.cart,
@@ -49,7 +56,7 @@ class _CartViewState extends State<CartView> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 3,
+                  itemCount: CartService().orderList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       height: DimensManager.dimens.setHeight(100),
@@ -61,7 +68,7 @@ class _CartViewState extends State<CartView> {
                             borderRadius: BorderRadius.circular(
                                 DimensManager.dimens.setRadius(10)),
                             child: Image.network(
-                              "https://i.pinimg.com/564x/72/42/81/7242814acfff93a8588e36a2837e95f2.jpg",
+                              CartService().orderList[index].image,
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
@@ -78,33 +85,30 @@ class _CartViewState extends State<CartView> {
                             Flexible(
                                 flex: 1,
                                 child: UIText(
-                                  "Blonde Vanilla Latte",
+                                  CartService().orderList[index].nameProduct,
                                   fontWeight: FontWeight.bold,
                                   size: DimensManager.dimens.setSp(18),
                                 )),
                             Flexible(
                                 flex: 1,
                                 child: UIText(
-                                  "Hot Coffee",
+                                  "Size ${CartService().orderList[index].size}",
                                   fontWeight: FontWeight.w100,
                                   size: DimensManager.dimens.setSp(16),
                                 )),
                             Flexible(
                               flex: 1,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   UIText(
-                                    "22,000 VNĐ",
+                                    CartService().orderList[index].priceSale != 0 ? "${formatter.format(CartService().orderList[index].priceSale)} VNĐ" : "${formatter.format(CartService().orderList[index].price)} VNĐ",
                                     fontWeight: FontWeight.bold,
                                     size: DimensManager.dimens.setSp(18),
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            DimensManager.dimens
-                                                .setRadius(20)),
+                                        borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
                                         color: UIColors.white),
                                     child: Row(
                                       children: [
@@ -112,7 +116,7 @@ class _CartViewState extends State<CartView> {
                                             padding: EdgeInsets.zero,
                                             onPressed: () {},
                                             icon: const Icon(Icons.remove)),
-                                        const UIText("1"),
+                                        UIText("${CartService().orderList[index].quantity}"),
                                         IconButton(
                                             padding: EdgeInsets.zero,
                                             onPressed: () {},

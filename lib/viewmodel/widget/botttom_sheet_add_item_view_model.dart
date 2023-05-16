@@ -2,27 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
 import 'package:sahami_app/services/cart_service.dart';
 import '../../data/data_local.dart';
-import '../../data/remote/enitity/order_entity.dart';
+import '../../data/remote/enitity/option_entity.dart';
 
 class BottomSheetAddItemViewModel extends ChangeNotifier {
-  OrderEntity _optionEntity = OrderEntity(nameProduct: "", price: 0.0, priceSale: 0.0, image: "");
-  OrderEntity get optionEntity => _optionEntity;
+  OptionEntity _optionEntity = OptionEntity(nameProduct: "", price: 0.0, priceSale: 0.0, image: "");
+  OptionEntity get optionEntity => _optionEntity;
 
   String nameSize = DataLocal.cupSize[0].name;
 
-  int quantity = 0;
 
   String dropdownValue = DataLocal.ice.first;
 
   bool isSelected = false;
 
-  void handleGetOrders(OrderEntity orderEntity, int quantity) {
-    var totalQuantity = 0;
+  bool isDisplay = true;
 
-  }
-
-  void addProductList(ProductEntity productEntity) {
-    _optionEntity = OrderEntity(
+  void addProductList(ProductEntity productEntity, BuildContext context) {
+    _optionEntity = OptionEntity(
       nameProduct: productEntity.productName,
       price: productEntity.price,
       priceSale: productEntity.priceSale,
@@ -38,18 +34,33 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
     );
     print(_optionEntity);
     CartService().orderList.add(optionEntity);
+    CartService().totalCartItem();
+    notifyListeners();
     print(CartService().orderList);
+    print(CartService().totalQuantityCart);
+
+    Navigator.pop(context);
   }
 
 
   int checkQuantity(int quantity) {
-    if(quantity<0) {
-      return 0;
-    } else if (quantity > 10) {
+    if(quantity<1) {
+      return 1;
+    } else if (quantity >10) {
       return 10;
     } else {
       return quantity;
     }
+  }
+
+  void setQuantity(bool isIncrement) {
+    isSelected = true;
+    if(isIncrement) {
+      _optionEntity.quantity = checkQuantity(_optionEntity.quantity + 1);
+    } else {
+      _optionEntity.quantity = checkQuantity(_optionEntity.quantity - 1);
+    }
+    notifyListeners();
   }
 
   void setQuantityBrownSugarSyrup(bool isIncrement) {
