@@ -32,12 +32,10 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
       cookieCrumbleTopping: _optionEntity.cookieCrumbleTopping,
       quantity: _optionEntity.quantity
     );
-    print(_optionEntity);
-    CartService().orderList.add(optionEntity);
+
+    CartService().orderList.add(_optionEntity.toJson());
     CartService().totalCartItem();
     notifyListeners();
-    print(CartService().orderList);
-    print(CartService().totalQuantityCart);
 
     Navigator.pop(context);
   }

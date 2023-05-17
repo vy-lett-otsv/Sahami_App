@@ -136,8 +136,7 @@ class _ProductViewState extends State<ProductView> {
                                 onPressed: () {
                                   product.deleteProduct(context, product.productList[index].productId);
                                 },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: UIColors.primary),
+                                style: ElevatedButton.styleFrom(backgroundColor: UIColors.primary),
                                 child: const UIText(UIStrings.ok,
                                     color: UIColors.white),
                               )

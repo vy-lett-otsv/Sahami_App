@@ -3,9 +3,9 @@ import '../views/assets/asset_icons.dart';
 
 class DataLocal {
   static List<IconCupSize> cupSize = [
-    IconCupSize(image: AssetIcons.iconCupSizeM, name: "M", price: "0", isSelected: true),
-    IconCupSize(image: AssetIcons.iconCupSizeM, name: "L", price: "10,000", isSelected: false),
-    IconCupSize(image: AssetIcons.iconCupSizeM, name: "XL", price: "20,000", isSelected: false)
+    IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size M", price: "0", isSelected: true),
+    IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size L", price: "10,000", isSelected: false),
+    IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size XL", price: "20,000", isSelected: false)
   ];
 
   static const List<Tab> productTabs = <Tab>[

@@ -1,3 +1,5 @@
+import '../../data_local.dart';
+
 class OptionEntity {
   String orderId;
   String nameProduct;
@@ -10,7 +12,7 @@ class OptionEntity {
   int brownSugarSyrup;
   int caramelSyrup;
   int vanillaSyrup;
-  String? cookieCrumbleTopping;
+  String cookieCrumbleTopping;
   int quantity;
   bool? isExist;
   String? time;
@@ -19,7 +21,7 @@ class OptionEntity {
     this.orderId = '',
     required this.nameProduct,
     required this.price,
-    required this.priceSale,
+    this.priceSale = 0,
     required this.image,
     this.size = 'M',
     this.ice = 'Bình thường',
@@ -27,7 +29,7 @@ class OptionEntity {
     this.brownSugarSyrup = 0,
     this.caramelSyrup = 0,
     this.vanillaSyrup = 0,
-    this.cookieCrumbleTopping,
+    this.cookieCrumbleTopping = 'Cookie Crumble Topping',
     this.quantity = 1,
     this.isExist,
     this.time
@@ -37,14 +39,14 @@ class OptionEntity {
         'image': image,
         'name_product': nameProduct,
         'price': price,
-        'priceSale': priceSale,
+        if (priceSale != 0) 'priceSale': priceSale,
         'size': size,
-        'ice': ice,
-        'sugar': sugar,
+        if (ice !=  DataLocal.ice.first)'ice': ice,
+        if (sugar !=  DataLocal.sugar.first)'sugar': sugar,
         if (brownSugarSyrup != 0) 'brown_sugar_syrup': brownSugarSyrup,
-        if (brownSugarSyrup != 0) 'caramel_syrup': caramelSyrup,
-        if (brownSugarSyrup != 0) 'vanilla_syrup': vanillaSyrup,
-        if (cookieCrumbleTopping != null)
+        if (caramelSyrup != 0) 'caramel_syrup': caramelSyrup,
+        if (vanillaSyrup != 0) 'vanilla_syrup': vanillaSyrup,
+        if (cookieCrumbleTopping !=  DataLocal.cookieCrumbleTopping.first)
           'cookie_crumble_topping': cookieCrumbleTopping,
         'quantity': quantity
       };

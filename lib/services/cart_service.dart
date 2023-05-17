@@ -1,5 +1,3 @@
-import '../data/remote/enitity/option_entity.dart';
-
 class CartService {
   static final CartService _cartService = CartService._internal();
 
@@ -7,13 +5,14 @@ class CartService {
     return _cartService;
   }
 
-  List<OptionEntity> orderList = [];
+  List<dynamic> orderList = [];
 
   int _totalQuantityCart = 0;
   int get totalQuantityCart => _totalQuantityCart;
 
+
   void totalCartItem() {
-    _totalQuantityCart = orderList.map((item) => item.quantity).fold(0, (previous, current) => previous + current);
+    _totalQuantityCart = orderList.fold(0, (previous, current) => previous + current['quantity'] as int);
   }
 
   CartService._internal();
