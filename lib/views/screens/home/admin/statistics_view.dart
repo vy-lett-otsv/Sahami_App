@@ -100,7 +100,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                 NavigationServices.instance
                     .navigationToSettingAdminScreen(context);
               },
-              child: AuthService().avaAdmin.isEmpty
+              child: AuthService().userEntity.image.isEmpty
                   ? const CircleAvatar(
                       radius: 30,
                       backgroundImage: NetworkImage(UIStrings.defaultImage),
@@ -108,14 +108,14 @@ class _StatisticsViewState extends State<StatisticsView> {
                   : CircleAvatar(
                       radius: 30,
                       backgroundColor: null,
-                      backgroundImage: NetworkImage(AuthService().avaAdmin),
+                      backgroundImage: NetworkImage(AuthService().userEntity.image),
                     )),
           SizedBox(width: DimensManager.dimens.setWidth(10)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UIText(AuthService().userName,
+              UIText(AuthService().userEntity.userName,
                   color: UIColors.white, fontWeight: FontWeight.bold, size: 20),
               const SizedBox(height: 5),
               const UIText(UIStrings.admin, color: UIColors.white, size: 16)

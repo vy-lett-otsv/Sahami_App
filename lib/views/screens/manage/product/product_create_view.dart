@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/main_view_model.dart';
 import 'package:sahami_app/viewmodel/product_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
@@ -12,7 +11,7 @@ import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_label.dart';
 import 'package:sahami_app/views/widget/ui_label_text_input.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
-import '../../../../data/remote/enitity/product_entity.dart';
+import '../../../../data/remote/entity/product_entity.dart';
 import '../../../../viewmodel/category_view_model.dart';
 import '../../../widget/bottomsheet_model.dart';
 import '../../../widget/ui_button_small.dart';

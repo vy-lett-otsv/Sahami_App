@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
-import '../../data/remote/enitity/category_entity.dart';
+import '../../data/remote/entity/category_entity.dart';
 import '../constants/ui_color.dart';
 import '../constants/ui_strings.dart';
 
@@ -128,6 +128,4 @@ class BottomSheetDialog {
           });
         });
   }
-
-
 }

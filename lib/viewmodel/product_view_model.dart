@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/views/screens/home/main_view.dart';
 import '../enums/enum.dart';
 import '../views/constants/ui_strings.dart';
@@ -149,7 +149,6 @@ class ProductViewModel extends ChangeNotifier {
     final json = product.toJson();
     await docProduct.set(json);
     await fetchProducts("product");
-    ToastWidget.showToastSuccess(message: UIStrings.success);
   }
 
 

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:sahami_app/data/remote/entity/user_entity.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/containers/toast_widget.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';

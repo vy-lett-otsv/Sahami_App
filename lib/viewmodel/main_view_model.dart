@@ -16,7 +16,7 @@ class MainViewModel extends ChangeNotifier {
   int get selectedIndex => _selectedIndex;
 
   void bottomBarItem() {
-    if (AuthService().roleUserEntity == "admin") {
+    if (AuthService().userEntity.role == "admin") {
       _pages = const [
         StatisticsView(),
         CustomerView(),

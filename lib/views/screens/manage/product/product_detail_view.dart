@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/data/data_local.dart';
-import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/services/cart_service.dart';
 import 'package:sahami_app/viewmodel/product/product_detail_view_model.dart';
 import 'package:sahami_app/viewmodel/widget/botttom_sheet_add_item_view_model.dart';
@@ -14,7 +14,8 @@ import '../../../widget/bottom_sheet/bottom_sheet_add_item.dart';
 import '../../../widget/expandable_text.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
-import '../cart/cart_view.dart';
+import '../../cart/cart_view.dart';
+
 
 class ProductDetailView extends StatefulWidget {
   final ProductEntity productEntity;
@@ -89,7 +90,9 @@ class _ProductDetailViewState extends State<ProductDetailView> with SingleTicker
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const CartView()),
-                            );
+                            ).then((value) {
+                              productDetailViewModel.updateUI();
+                            });
                           },
                         )
                       ],

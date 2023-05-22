@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:sahami_app/data/remote/entity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';

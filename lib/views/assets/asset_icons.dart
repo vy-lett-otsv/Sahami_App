@@ -11,5 +11,9 @@ class AssetIcons {
   static const String iconProductWhite = "assets/icons/ic-product-white.png";
   static const String iconCartEmpty = "assets/icons/ic-cart-empty.png";
   static const String iconCupSizeM = "assets/icons/ic-cup-size-m.png";
-  static const String iconCash = "assets/icons/ic-cash.png";
+  static const String iconCashPick = "assets/icons/ic-cash-pick.png";
+  static const String iconCashNotPick = "assets/icons/ic-cash-not-pick.png";
+  static const String iconTick = "assets/icons/ic-tick.png";
+  static const String iconDigitalNotPick = "assets/icons/ic-digital-not-pick.png";
+  static const String iconDigitalPick = "assets/icons/ic-digital-pick.png";
 }

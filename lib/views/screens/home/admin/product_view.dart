@@ -5,6 +5,7 @@ import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../../../../enums/enum.dart';
+import '../../../../services/cart_service.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../../viewmodel/product_view_model.dart';
 import '../../../widget/ui_text.dart';
@@ -23,6 +24,7 @@ class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
     _productViewModel.fetchProducts("product");
+    CartService().total();
     super.initState();
   }
 

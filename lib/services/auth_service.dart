@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../data/remote/enitity/user_entity.dart';
+import '../data/remote/entity/user_entity.dart';
 import 'navigation_service.dart';
 
 class AuthService {
@@ -11,17 +11,20 @@ class AuthService {
     return _singleton;
   }
 
-  String _avaAdmin = "";
+  // String _avaAdmin = "";
+  //
+  // String get avaAdmin => _avaAdmin;
+  //
+  // String _userName = "";
+  //
+  // String get userName => _userName;
+  //
+  // String _roleUserEntity = "";
+  //
+  // String get roleUserEntity => _roleUserEntity;
 
-  String get avaAdmin => _avaAdmin;
-
-  String _userName = "";
-
-  String get userName => _userName;
-
-  String _roleUserEntity = "";
-
-  String get roleUserEntity => _roleUserEntity;
+  UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
+  UserEntity get userEntity => _userEntity;
 
 
   Future<void> loginUser(
@@ -47,13 +50,14 @@ class AuthService {
     await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
           (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
+        _userEntity = UserEntity.fromJson(data);
         String role = data['role'];
-        _avaAdmin = data['image'];
-        _userName = data['name'];
+        // _avaAdmin = data['image'];
+        // _userName = data['name'];
         if (role == "admin") {
-          _roleUserEntity = "admin";
+          _userEntity.role = "admin";
         } else {
-          _roleUserEntity = "User";
+          _userEntity.role = "User";
         }
         NavigationServices.instance.navigationToMainScreen(context);
       },

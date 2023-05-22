@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/remote/enitity/user_entity.dart';
+import '../data/remote/entity/user_entity.dart';
 import '../services/auth_service.dart';
 
 class AuthViewModel extends ChangeNotifier{

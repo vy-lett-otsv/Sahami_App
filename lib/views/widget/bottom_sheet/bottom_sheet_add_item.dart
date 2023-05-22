@@ -1,6 +1,6 @@
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/viewmodel/widget/botttom_sheet_add_item_view_model.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_text_price.dart';
@@ -12,6 +12,7 @@ import '../ui_icon_button.dart';
 import '../ui_text.dart';
 import '../ui_title.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 
 class BottomSheetAddItem extends StatefulWidget {
   final ProductEntity productEntity;
@@ -26,6 +27,11 @@ class BottomSheetAddItem extends StatefulWidget {
 class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
   final BottomSheetAddItemViewModel _cartViewModel = BottomSheetAddItemViewModel();
 
+  @override
+  void initState() {
+    _cartViewModel.initProduct();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     _cartViewModel.initProduct();
@@ -227,6 +233,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
   }
 
   Widget _buildSize(BottomSheetAddItemViewModel viewModel) {
+    final formatter = intl.NumberFormat.decimalPattern();
     return SizedBox(
       height: DimensManager.dimens.setHeight(200),
       child: Column(
@@ -292,7 +299,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                         DimensManager.dimens.setWidth(20),
                                     vertical: DimensManager.dimens.setWidth(5)),
                                 child: UIText(
-                                  iconCupSize.price,
+                                  formatter.format(iconCupSize.price),
                                   fontWeight: FontWeight.bold,
                                   size: 14,
                                   color: iconCupSize.isSelected
@@ -301,8 +308,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                 ),
                               ),
                               onTap: () {
-                                viewModel.updateSelectedSize(
-                                    index, iconCupSize.name);
+                                viewModel.updateSelectedSize(index);
                               },
                             )
                           ],

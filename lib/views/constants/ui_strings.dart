@@ -76,7 +76,8 @@ class UIStrings {
 
   static const String fullName = "Full Name";
   static const String contact = "Contact";
-  static const String address = "Address";
+  static const String address = "Địa chỉ";
+  static const String addressDelivery = "Địa chỉ giao hàng";
   static const String addAddress = "Add address";
 
   static const String createCustomer = "Create Customer";
@@ -114,7 +115,7 @@ class UIStrings {
 
   //cart
   static const String cart = "Giỏ hàng";
-  static const String paymentOption = "Phương thức thanh toán và giao hàng";
+  static const String paymentOption = "Phương thức thanh toán";
   static const String checkout = "Thanh toán";
 
   //bottom sheet add item
@@ -127,6 +128,19 @@ class UIStrings {
   static const String addCart = "Thêm vào giỏ hàng";
   static const String refresh = "Làm mới";
 
+  //bottom payment
+  static const String cash = "Tiền mặt";
+  static const String cashDes = "Trả tiền sau khi nhận đồ uống";
+
+  static const String digital = "Thẻ tín dụng/ Ghi nợ";
+  static const String digitalDes = "Nhanh chóng và an toàn khi gửi tiền";
+
+  //payment
+  static const String payment = "Thanh toán";
+  static const String deliveryOption = "Phương thức giao hàng";
+  static const String note = "Ghi chú";
+  static const String hintNote = "Vui lòng để lại ghi chú ...";
+  static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
 
   static const String defaultImage = "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg";
 }

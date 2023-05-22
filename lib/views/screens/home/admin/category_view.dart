@@ -7,7 +7,7 @@ import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_textinput.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
-import '../../../../data/remote/enitity/category_entity.dart';
+import '../../../../data/remote/entity/category_entity.dart';
 import '../../../../enums/fonts.dart';
 
 class CategoryView extends StatefulWidget {

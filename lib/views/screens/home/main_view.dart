@@ -48,7 +48,7 @@ class _MainViewState extends State<MainView> {
                 currentIndex: mainViewModel.selectedIndex,
                 onTap: mainViewModel.onTapNav,
                 type: BottomNavigationBarType.fixed,
-                items: AuthService().roleUserEntity == "admin"
+                items: AuthService().userEntity.role == "admin"
                     ? const [
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home),

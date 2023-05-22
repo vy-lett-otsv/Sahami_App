@@ -1,7 +1,7 @@
 import '../../data_local.dart';
 
 class OptionEntity {
-  String orderId;
+  String optionId;
   String nameProduct;
   double price;
   double priceSale;
@@ -14,11 +14,10 @@ class OptionEntity {
   int vanillaSyrup;
   String cookieCrumbleTopping;
   int quantity;
-  bool? isExist;
-  String? time;
+  double total;
 
   OptionEntity({
-    this.orderId = '',
+    this.optionId = '',
     required this.nameProduct,
     required this.price,
     this.priceSale = 0,
@@ -31,8 +30,7 @@ class OptionEntity {
     this.vanillaSyrup = 0,
     this.cookieCrumbleTopping = 'Cookie Crumble Topping',
     this.quantity = 1,
-    this.isExist,
-    this.time
+    this.total = 0
   });
 
   Map<String, dynamic> toJson() => {
@@ -48,7 +46,8 @@ class OptionEntity {
         if (vanillaSyrup != 0) 'vanilla_syrup': vanillaSyrup,
         if (cookieCrumbleTopping !=  DataLocal.cookieCrumbleTopping.first)
           'cookie_crumble_topping': cookieCrumbleTopping,
-        'quantity': quantity
+        'quantity': quantity,
+        'total': total
       };
 
   factory OptionEntity.fromJson(Map<String, dynamic> json) {
@@ -67,25 +66,7 @@ class OptionEntity {
             ? json['cookie_crumble_topping']
             : null,
         quantity: json['quantity'],
-        isExist: json['is_exist'],
-        time: json['time'],
+        total: json['total']
     );
-  }
-
-  @override
-  String toString() {
-    return 'OptionEntity{'
-        'image: $image, '
-        'nameProduct: $nameProduct, '
-        'price: $price, '
-        'priceSale: $priceSale, '
-        'size: $size, '
-        'ice: $ice, '
-        'sugar: $sugar, '
-        'brownSugarSyrup: $brownSugarSyrup, '
-        'caramelSyrup: $caramelSyrup, '
-        'vanillaSyrup: $vanillaSyrup, '
-        'cookieCrumbleTopping: $cookieCrumbleTopping '
-        'quantity: $quantity';
   }
 }

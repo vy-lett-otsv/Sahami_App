@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sahami_app/data/remote/enitity/product_entity.dart';
+import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/services/cart_service.dart';
 import '../../data/data_local.dart';
-import '../../data/remote/enitity/option_entity.dart';
+import '../../data/remote/entity/option_entity.dart';
 
 class BottomSheetAddItemViewModel extends ChangeNotifier {
   OptionEntity _optionEntity = OptionEntity(nameProduct: "", price: 0.0, priceSale: 0.0, image: "");
   OptionEntity get optionEntity => _optionEntity;
-
-  String nameSize = DataLocal.cupSize[0].name;
-
 
   String dropdownValue = DataLocal.ice.first;
 
@@ -17,24 +14,27 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
 
   bool isDisplay = true;
 
+  double total = 0;
+
   void addProductList(ProductEntity productEntity, BuildContext context) {
     _optionEntity = OptionEntity(
       nameProduct: productEntity.productName,
       price: productEntity.price,
       priceSale: productEntity.priceSale,
       image: productEntity.image,
-      size: nameSize,
+      size: DataLocal.cupSize[indexSize].name,
       ice: _optionEntity.ice,
       sugar: _optionEntity.sugar,
       brownSugarSyrup: _optionEntity.brownSugarSyrup,
       caramelSyrup: _optionEntity.caramelSyrup,
       vanillaSyrup: _optionEntity.vanillaSyrup,
       cookieCrumbleTopping: _optionEntity.cookieCrumbleTopping,
-      quantity: _optionEntity.quantity
+      quantity: _optionEntity.quantity,
+      total: productEntity.priceSale != 0 ? (productEntity.priceSale + DataLocal.cupSize[indexSize].price) * _optionEntity.quantity : (productEntity.price + DataLocal.cupSize[indexSize].price) * _optionEntity.quantity
     );
-
+    print(_optionEntity.toJson());
     CartService().orderList.add(_optionEntity.toJson());
-    CartService().totalCartItem();
+    CartService().total();
     notifyListeners();
 
     Navigator.pop(context);
@@ -91,14 +91,20 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedSize(int index, String name) {
-    int currentIndex = DataLocal.cupSize.indexWhere((item) => item.isSelected);
-    if (currentIndex != index) {
-      DataLocal.cupSize[currentIndex].isSelected = false;
+  late int _currentIndex;
+  int get currentIndex => _currentIndex;
+
+  int indexSize = 0;
+
+  void updateSelectedSize(int index) {
+    print(index);
+    _currentIndex = DataLocal.cupSize.indexWhere((item) => item.isSelected);
+    if (_currentIndex != index) {
+      DataLocal.cupSize[_currentIndex].isSelected = false;
       DataLocal.cupSize[index].isSelected = true;
       notifyListeners();
     }
-    nameSize = name;
+    indexSize = index;
   }
 
   void setIce(String? value) {
@@ -129,7 +135,7 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
 
   void initProduct() {
     isSelected = false;
-    updateSelectedSize(0, nameSize);
+    updateSelectedSize(0);
     _optionEntity.ice = DataLocal.ice.first;
     _optionEntity.sugar = DataLocal.sugar.first;
     _optionEntity.brownSugarSyrup = 0;
