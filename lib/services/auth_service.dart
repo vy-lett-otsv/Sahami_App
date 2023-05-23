@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/assets/asset_images.dart';
 import '../data/remote/entity/user_entity.dart';
 import 'navigation_service.dart';
 
@@ -10,18 +11,6 @@ class AuthService {
   factory AuthService() {
     return _singleton;
   }
-
-  // String _avaAdmin = "";
-  //
-  // String get avaAdmin => _avaAdmin;
-  //
-  // String _userName = "";
-  //
-  // String get userName => _userName;
-  //
-  // String _roleUserEntity = "";
-  //
-  // String get roleUserEntity => _roleUserEntity;
 
   UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
   UserEntity get userEntity => _userEntity;
@@ -42,7 +31,7 @@ class AuthService {
         .createUserWithEmailAndPassword(email: email, password: pass)
         .then((value) {
       addUserFirestore(userEntity, value.user?.uid, user, phone, email);
-      NavigationServices.instance.navigationToHomeScreen(context);
+      AuthService().roleUser(context, value.user!.uid);
     });
   }
 
@@ -52,8 +41,6 @@ class AuthService {
         final data = doc.data() as Map<String, dynamic>;
         _userEntity = UserEntity.fromJson(data);
         String role = data['role'];
-        // _avaAdmin = data['image'];
-        // _userName = data['name'];
         if (role == "admin") {
           _userEntity.role = "admin";
         } else {
@@ -64,14 +51,14 @@ class AuthService {
     );
   }
 
-  Future<void> addUserFirestore(UserEntity userEntity, String? userId,
-      String username, String phone, String email) async {
+  Future<void> addUserFirestore(UserEntity userEntity, String? userId, String username, String phone, String email) async {
     String newDocId = userId!;
     final docUser = FirebaseFirestore.instance.collection('user').doc(newDocId);
     userEntity.userId = userId;
     userEntity.userName = username;
     userEntity.contact = phone;
     userEntity.email = email;
+    userEntity.image = AssetImages.avaDefault;
     final json = userEntity.toJson();
     await docUser.set(json);
   }

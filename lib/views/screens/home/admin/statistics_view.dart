@@ -100,12 +100,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                 NavigationServices.instance
                     .navigationToSettingAdminScreen(context);
               },
-              child: AuthService().userEntity.image.isEmpty
-                  ? const CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(UIStrings.defaultImage),
-                    )
-                  : CircleAvatar(
+              child: CircleAvatar(
                       radius: 30,
                       backgroundColor: null,
                       backgroundImage: NetworkImage(AuthService().userEntity.image),

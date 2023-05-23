@@ -14,7 +14,7 @@ import '../../../widget/bottom_sheet/bottom_sheet_add_item.dart';
 import '../../../widget/expandable_text.dart';
 import '../../../widget/ui_text.dart';
 import '../../../widget/ui_title.dart';
-import '../../cart/cart_view.dart';
+import '../../home/user/payment_view.dart';
 
 
 class ProductDetailView extends StatefulWidget {

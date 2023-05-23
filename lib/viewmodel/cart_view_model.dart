@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/assets/asset_images.dart';
+import 'package:sahami_app/views/constants/dimens_manager.dart';
+import 'package:sahami_app/views/constants/ui_color.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/widget/ui_title.dart';
 import '../data/data_local.dart';
 import '../data/remote/entity/order_entity.dart';
 import '../services/auth_service.dart';
 import '../services/cart_service.dart';
-import '../views/constants/ui_strings.dart';
-import '../views/containers/toast_widget.dart';
 
 class CartViewModel extends ChangeNotifier{
   Map<dynamic, dynamic> updatedElement = {};
@@ -97,7 +100,7 @@ class CartViewModel extends ChangeNotifier{
   double _total = 0;
   double get total => _total;
 
-  void createOrder(BuildContext context) {
+  void createOrder() {
     CartService().orderEntity = OrderEntity(
         userEntity: AuthService().userEntity,
         items: CartService().orderList,
@@ -105,11 +108,53 @@ class CartViewModel extends ChangeNotifier{
         deliveryCharge: deliverCharge,
         orderAmount: total,
         orderNote: noteController.text,
-        address: addressController.text.isEmpty ? AuthService().userEntity.address : addressController.text);
-    addOrder(CartService().orderEntity);
-    CartService().initOrderList();
-    CartService().total();
-    notifyListeners();
+        address: addressController.text.isNotEmpty ? addressController.text : AuthService().userEntity.address);
+  }
+
+  void notificationSuccess(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.of(context).pop(true);
+      }).whenComplete(() {
+        CartService().initOrderList();
+        CartService().total();
+        Navigator.pop(context);
+      });
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(30)))
+        ),
+        content: SizedBox(
+          height: DimensManager.dimens.setHeight(150),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                AssetImages.success,
+                width: DimensManager.dimens.setWidth(100),
+                height: DimensManager.dimens.setHeight(100),
+              ),
+              UITitle(UIStrings.createOrderSuccess, size: DimensManager.dimens.setSp(16), color: UIColors.text,)
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  bool isAddress = true;
+
+  void checkAddress(BuildContext context) {
+    createOrder();
+    if(CartService().orderEntity.address.isEmpty) {
+      isAddress = false;
+      notifyListeners();
+    } else {
+      addOrder(CartService().orderEntity);
+      notificationSuccess(context);
+      CartService().total();
+      notifyListeners();
+    }
   }
 
   void calculate() {
@@ -118,13 +163,22 @@ class CartViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  int id = 1;
 
   Future<void> addOrder(OrderEntity orderEntity) async{
-    final docOrder = FirebaseFirestore.instance.collection('order').doc('#100000$id');
-    orderEntity.orderId = docOrder.id;
-    await docOrder.set(orderEntity.toJson());
-    ToastWidget.showToastSuccess(message: UIStrings.success);
-    id++;
+    var collectionRef = FirebaseFirestore.instance.collection('order');
+    var querySnapshot = await collectionRef.orderBy('orderId', descending: true).limit(1).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var doc = querySnapshot.docs[0];
+      var docId = doc.id;
+      var id = int.parse(docId.substring(docId.lastIndexOf('#')+1));
+      final docOrder = collectionRef.doc("#${id+1}");
+      orderEntity.orderId = docOrder.id;
+      await docOrder.set(orderEntity.toJson());
+    } else {
+      final docOrder = collectionRef.doc('#1000001');
+      orderEntity.orderId = docOrder.id;
+      await docOrder.set(orderEntity.toJson());
+    }
+    notifyListeners();
   }
 }

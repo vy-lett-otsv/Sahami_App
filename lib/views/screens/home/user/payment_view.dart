@@ -10,11 +10,11 @@ import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_icon_button.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:intl/intl.dart' as intl;
-import '../../../data/data_local.dart';
-import '../../assets/asset_icons.dart';
-import '../../constants/ui_color.dart';
-import '../../widget/ui_title.dart';
-import '../home/main_view.dart';
+import '../../../../data/data_local.dart';
+import '../../../assets/asset_icons.dart';
+import '../../../constants/ui_color.dart';
+import '../../../widget/ui_title.dart';
+import '../main_view.dart';
 
 class CartView extends StatefulWidget {
   const CartView({Key? key}) : super(key: key);
@@ -53,6 +53,7 @@ class _CartViewState extends State<CartView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        //header
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -85,6 +86,8 @@ class _CartViewState extends State<CartView> {
                         SizedBox(
                           height: DimensManager.dimens.setHeight(30),
                         ),
+
+                        //product
                         SizedBox(
                           height: DimensManager.dimens.setHeight(300),
                           child: ListView.separated(
@@ -223,45 +226,15 @@ class _CartViewState extends State<CartView> {
                         ),
                         DataLocal.deliveryOption[0].isSelected == true ?
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
                                   onTap: () {
                                     cartViewModel.optionDelivery(0);
                                     cartViewModel.calculate();
+                                    cartViewModel.isAddress = true;
                                   },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Container(
-                                            height: DimensManager.dimens.setHeight(20),
-                                            width: DimensManager.dimens.setWidth(20),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    width: 2,
-                                                    color: UIColors.primary)),
-                                          ),
-                                          DataLocal.deliveryOption[0].isSelected
-                                              ? Container(
-                                            height: DimensManager.dimens.setHeight(10),
-                                            width: DimensManager.dimens.setWidth(10),
-                                            decoration: BoxDecoration(color: UIColors.primary, shape: BoxShape.circle,
-                                            ),
-                                          )
-                                              : Container(),
-                                        ],
-                                      ),
-                                      SizedBox(width: DimensManager.dimens.setWidth(10),),
-                                      UIText(DataLocal.deliveryOption[0].name),
-                                      SizedBox(width: DimensManager.dimens.setWidth(3),),
-                                      UITitle("(${DataLocal.deliveryOption[0].price})", size: DimensManager.dimens.setSp(18),
-                                      )
-                                    ],
-                                  ),
+                                  child: _buildDelivery(0)
                                 ),
                                 SizedBox(height: DimensManager.dimens.setHeight(10),),
                                 Container(
@@ -271,51 +244,29 @@ class _CartViewState extends State<CartView> {
                                     color: UIColors.white,
                                   ),
                                   child: TextField(
+                                    controller: cartViewModel.addressController,
                                     decoration: InputDecoration.collapsed(
                                       hintText: AuthService().userEntity.address,
                                     ),
-                                  ),
+                                  )
+                                ),
+                                cartViewModel.isAddress ? Container()
+                                    : Column(
+                                    children: [
+                                      SizedBox(height: DimensManager.dimens.setHeight(10),),
+                                      UIText(UIStrings.inputAddress, color: UIColors.red, size: DimensManager.dimens.setSp(16),),
+                                  ],
                                 ),
                                 SizedBox(height: DimensManager.dimens.setHeight(10),),
                                 InkWell(
                                   onTap: () {
                                     cartViewModel.optionDelivery(1);
                                     cartViewModel.calculate();
+                                    cartViewModel.isAddress = true;
                                   },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Container(
-                                            height: DimensManager.dimens.setHeight(20),
-                                            width: DimensManager.dimens.setWidth(20),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                    width: 2,
-                                                    color: UIColors.primary)),
-                                          ),
-                                          DataLocal.deliveryOption[1].isSelected
-                                              ? Container(
-                                            height: DimensManager.dimens.setHeight(10),
-                                            width: DimensManager.dimens.setWidth(10),
-                                            decoration: BoxDecoration(color: UIColors.primary, shape: BoxShape.circle,
-                                            ),
-                                          )
-                                              : Container(),
-                                        ],
-                                      ),
-                                      SizedBox(width: DimensManager.dimens.setWidth(10),),
-                                      UIText(DataLocal.deliveryOption[1].name),
-                                      SizedBox(width: DimensManager.dimens.setWidth(3),),
-                                      UITitle("(${DataLocal.deliveryOption[1].price})", size: DimensManager.dimens.setSp(18),
-                                      )
-                                    ],
-                                  ),
+                                  child: _buildDelivery(1)
                                 ),
+                                SizedBox(height: DimensManager.dimens.setHeight(10),),
                               ],
                             )
                             : SizedBox(
@@ -327,42 +278,11 @@ class _CartViewState extends State<CartView> {
                                     onTap: () {
                                       cartViewModel.optionDelivery(index);
                                       cartViewModel.calculate();
+                                      cartViewModel.isAddress = true;
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(bottom: DimensManager.dimens.setHeight(10)),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Container(
-                                                height: DimensManager.dimens.setHeight(20),
-                                                width: DimensManager.dimens.setWidth(20),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                        width: 2,
-                                                        color: UIColors.primary)),
-                                              ),
-                                              DataLocal.deliveryOption[index].isSelected
-                                                  ? Container(
-                                                height: DimensManager.dimens.setHeight(10),
-                                                width: DimensManager.dimens.setWidth(10),
-                                                decoration: BoxDecoration(color: UIColors.primary, shape: BoxShape.circle,
-                                                ),
-                                              )
-                                                  : Container(),
-                                            ],
-                                          ),
-                                          SizedBox(width: DimensManager.dimens.setWidth(10),),
-                                          UIText(DataLocal.deliveryOption[index].name),
-                                          SizedBox(width: DimensManager.dimens.setWidth(3),),
-                                          UITitle("(${DataLocal.deliveryOption[index].price})", size: DimensManager.dimens.setSp(18),
-                                          )
-                                        ],
-                                      ),
+                                      child: _buildDelivery(index)
                                     ));
                               }),
                         ),
@@ -458,10 +378,7 @@ class _CartViewState extends State<CartView> {
                       radius: DimensManager.dimens.setRadius(10),
                       backgroundColor: UIColors.primarySecond,
                       onPress: () {
-                        cartViewModel.createOrder(context);
-                        Future.delayed(const Duration(seconds: 1), () {
-                          Navigator.pop(context);
-                        });
+                        cartViewModel.checkAddress(context);
                       },
                     )
                   ],
@@ -472,8 +389,43 @@ class _CartViewState extends State<CartView> {
         ));
   }
 
-  Widget _buildPayment(Callback onPress, String iconNotPick, String iconPick,
-      String title, String des, bool isSelected) {
+  Widget _buildDelivery(int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: DimensManager.dimens.setHeight(20),
+              width: DimensManager.dimens.setWidth(20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      width: 2,
+                      color: UIColors.primary)),
+            ),
+            DataLocal.deliveryOption[index].isSelected
+                ? Container(
+              height: DimensManager.dimens.setHeight(10),
+              width: DimensManager.dimens.setWidth(10),
+              decoration: BoxDecoration(color: UIColors.primary, shape: BoxShape.circle,
+              ),
+            )
+                : Container(),
+          ],
+        ),
+        SizedBox(width: DimensManager.dimens.setWidth(10),),
+        UIText(DataLocal.deliveryOption[index].name),
+        SizedBox(width: DimensManager.dimens.setWidth(3),),
+        UITitle("(${DataLocal.deliveryOption[index].price})", size: DimensManager.dimens.setSp(18),
+        )
+      ],
+    );
+  }
+
+  Widget _buildPayment(Callback onPress, String iconNotPick, String iconPick, String title, String des, bool isSelected) {
     return GestureDetector(
       onTap: onPress,
       child: Container(

@@ -141,6 +141,8 @@ class UIStrings {
   static const String note = "Ghi chú";
   static const String hintNote = "Vui lòng để lại ghi chú ...";
   static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
+  static const String createOrderSuccess = "Tạo đơn hành thành công";
+  static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";
 
-  static const String defaultImage = "https://i.pinimg.com/564x/2c/bb/0e/2cbb0ee6c1c55b1041642128c902dadd.jpg";
+
 }
