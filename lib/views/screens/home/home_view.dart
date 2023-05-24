@@ -13,7 +13,6 @@ import '../../constants/ui_color.dart';
 import '../../widget/ui_text_price.dart';
 import '../../widget/ui_textinput_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:intl/intl.dart' as intl;
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -211,7 +210,6 @@ Widget _buildHeader() {
 }
 
 Widget _buildProduct(ProductViewModel productViewModel) {
-  final formatter = intl.NumberFormat.decimalPattern();
   return StickyHeader(
     header: Container(
       height: DimensManager.dimens.setHeight(70),

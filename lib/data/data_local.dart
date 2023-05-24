@@ -14,6 +14,11 @@ class DataLocal {
     Tab(text: 'Bình luận'),
   ];
 
+  static const List<Tab> orderTabs = <Tab>[
+    Tab(text: 'Hiện tại'),
+    Tab(text: 'Lịch sử'),
+  ];
+
   static const List<String> ice = ["Bình thường", "Nhiều đá", "Ít đá", "Không đá"];
   static const List<String> sugar = ["Bình thường", "Nhiều đường", "Ít đường", "Không đường"];
   static const List<String> cookieCrumbleTopping = ["Cookie Crumble Topping", "Nhiều Cookie Crumble Topping", "Không Cookie Crumble Topping", "Substitute Cookie Crumble Topping"];

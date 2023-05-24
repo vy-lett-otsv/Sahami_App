@@ -16,4 +16,5 @@ class AssetIcons {
   static const String iconTick = "assets/icons/ic-tick.png";
   static const String iconDigitalNotPick = "assets/icons/ic-digital-not-pick.png";
   static const String iconDigitalPick = "assets/icons/ic-digital-pick.png";
+  static const String iconOrderEmpty = "assets/icons/ic-order-empty.jpg";
 }

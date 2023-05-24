@@ -104,7 +104,7 @@ class CartViewModel extends ChangeNotifier{
     CartService().orderEntity = OrderEntity(
         userEntity: AuthService().userEntity,
         items: CartService().orderList,
-        createAt: DateTime.now().toString(),
+        createAt: DateTime.now(),
         deliveryCharge: deliverCharge,
         orderAmount: total,
         orderNote: noteController.text,

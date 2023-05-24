@@ -145,4 +145,9 @@ class UIStrings {
   static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";
 
 
+  //order
+ static const String myOrder = "Đơn hàng";
+ static const String myOrderEmpty = "Hiện tại bạn không có đơn hàng nào";
+  static const String rate = "Đánh giá";
+
 }

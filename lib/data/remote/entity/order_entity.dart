@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sahami_app/data/remote/entity/user_entity.dart';
 
 class OrderEntity {
@@ -7,8 +8,8 @@ class OrderEntity {
   String? orderStatus;
   String? paymentStatus;
   String? orderNote;
-  String? createAt;
-  String? updateAt;
+  DateTime createAt;
+  DateTime? updateAt;
   double? deliveryCharge;
   List<dynamic> items;
   String address;
@@ -17,14 +18,15 @@ class OrderEntity {
     this.orderId = '',
     required this.userEntity,
     this.orderAmount,
-    this.orderStatus = 'Đơn hàng mới',
+    this.orderStatus = 'Chờ xác nhận',
     this.paymentStatus = "Chưa thanh toán",
     this.orderNote,
-    this.createAt,
+    DateTime? createAt,
     this.updateAt,
     this.deliveryCharge,
     required this.items,
-    required this.address});
+    required this.address})
+    :createAt = createAt ?? DateTime.now();
 
   Map<String, dynamic> toJson() => {
     'orderId': orderId,
@@ -49,11 +51,16 @@ class OrderEntity {
       orderStatus: json['orderStatus'],
       paymentStatus: json['paymentStatus'],
       orderNote: json['orderNote'],
-      createAt: json['createAt'],
+      createAt: ( json["createAt"] as Timestamp).toDate(),
       updateAt: json['updateAt'],
       deliveryCharge: json['deliveryCharge'],
       items: List<dynamic>.from(json['items']),
       address: json['address']
     );
+  }
+
+  @override
+  String toString() {
+    return 'OrderEntity{orderId: $orderId}';
   }
 }

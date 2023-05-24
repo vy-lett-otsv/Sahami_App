@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/home/home_view.dart';
+import 'package:sahami_app/views/screens/home/user/my_order_view.dart';
 import '../services/auth_service.dart';
 import '../views/screens/home/admin/customer_view.dart';
 import '../views/screens/home/admin/order_view.dart';
@@ -26,7 +27,7 @@ class MainViewModel extends ChangeNotifier {
     } else {
       _pages = const [
         HomeView(),
-        OrderView(),
+        MyOrderView(),
         OrderView(),
       ];
     }
