@@ -6,6 +6,7 @@ import '../views/screens/home/admin/customer_view.dart';
 import '../views/screens/home/admin/order_view.dart';
 import '../views/screens/home/admin/product_view.dart';
 import '../views/screens/home/admin/statistics_view.dart';
+import '../views/screens/home/user/profile_view.dart';
 
 class MainViewModel extends ChangeNotifier {
   List _pages = [];
@@ -28,7 +29,7 @@ class MainViewModel extends ChangeNotifier {
       _pages = const [
         HomeView(),
         MyOrderView(),
-        OrderView(),
+        ProfileView(),
       ];
     }
   }

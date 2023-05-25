@@ -8,8 +8,8 @@ class UIStrings {
   static const String signUp = "Sign up";
   static const String signIn = "Sign in";
   static const String email = "Email";
-  static const String phone = "Phone number";
-  static const String logout = "Log out";
+  static const String phone = "Số điện thoại";
+  static const String logout = "Đăng xuất";
 
   static const String product = "Product";
   static const String order = "Order";
@@ -148,6 +148,11 @@ class UIStrings {
   //order
  static const String myOrder = "Đơn hàng";
  static const String myOrderEmpty = "Hiện tại bạn không có đơn hàng nào";
-  static const String rate = "Đánh giá";
+ static const String myOrderFinishEmpty = "Chà, không tìm thấy đơn hàng phù hợp rồi. Bạn vui lòng kiểm tra và thử lại nhé";
+ static const String rate = "Đánh giá";
+
+ //profile
+  static const String updatePhone = "Cập nhật số điện thoại";
+  static const String update = "Cập nhật";
 
 }

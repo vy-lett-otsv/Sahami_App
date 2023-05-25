@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
+import '../enums/enum.dart';
 
 class OrderViewModel extends ChangeNotifier {
   int _currentProductTab = 0;
@@ -23,6 +24,10 @@ class OrderViewModel extends ChangeNotifier {
 
   String _date = "Hôm nay";
   String get date => _date;
+
+  ViewState _viewState = ViewState.idle;
+
+  ViewState get viewState => _viewState;
 
   void changeTab(productTab) {
     _currentProductTab = productTab;
@@ -105,6 +110,7 @@ class OrderViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchOrder() async {
+    _viewState = ViewState.busy;
     final orderSnapshot = await docOrder
         .where("userEntity.id", isEqualTo: idUser)
         .where("orderStatus", isNotEqualTo: 'Đã hoàn thành')
@@ -113,6 +119,7 @@ class OrderViewModel extends ChangeNotifier {
     _orderList = getOrderListFromSnapshot(orderSnapshot);
     await listOrderByDay();
     notifyListeners();
+    _viewState = ViewState.success;
   }
 
   List<OrderEntity> getOrderListFromSnapshot(QuerySnapshot querySnapshot) {
