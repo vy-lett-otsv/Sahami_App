@@ -42,6 +42,7 @@ class NavigationServices {
   static const String PRODUCT_DETAIL_VIEW_ROUTE = "/PRODUCT_DETAIL_VIEW_ROUTE";
   static const String CATEGORY_VIEW_ROUTE = "/CATEGORY_VIEW_ROUTE";
 
+  static const String MAIN_VIEW_ROUTE = "/MAIN_VIEW_ROUTE";
 
 
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
@@ -69,6 +70,13 @@ class NavigationServices {
         return MaterialPageRoute(
             builder: (_) => CustomerDetailView(
               userEntity: args[Constants.ENTITY],
+            )
+        );
+      case MAIN_VIEW_ROUTE:
+        final args = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => MainView(
+              index: args,
             )
         );
       case PRODUCT_DETAIL_VIEW_ROUTE:
@@ -113,6 +121,13 @@ class NavigationServices {
       Object? arguments,
   }) {
     Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE, arguments: arguments);
+  }
+
+  void navigationToMainViewScreen(
+      BuildContext context, {
+        Object? arguments,
+      }) {
+    Navigator.pushNamed(context, MAIN_VIEW_ROUTE, arguments: arguments);
   }
 
   void navigationToProductDetailScreen(

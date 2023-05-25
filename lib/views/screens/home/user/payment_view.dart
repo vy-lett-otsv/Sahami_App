@@ -11,10 +11,10 @@ import 'package:sahami_app/views/widget/ui_icon_button.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:intl/intl.dart' as intl;
 import '../../../../data/data_local.dart';
+import '../../../../services/navigation_service.dart';
 import '../../../assets/asset_icons.dart';
 import '../../../constants/ui_color.dart';
 import '../../../widget/ui_title.dart';
-import '../main_view.dart';
 
 class CartView extends StatefulWidget {
   const CartView({Key? key}) : super(key: key);
@@ -71,14 +71,7 @@ class _CartViewState extends State<CartView> {
                             UIIconButton(
                               icon: Icons.home,
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => MainView(
-                                      index: 0,
-                                    ),
-                                  ),
-                                );
+                                NavigationServices().navigationToMainViewScreen(context, arguments: 0);
                               },
                             )
                           ],

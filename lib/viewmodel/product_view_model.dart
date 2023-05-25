@@ -4,10 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/entity/product_entity.dart';
-import 'package:sahami_app/views/screens/home/main_view.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import '../enums/enum.dart';
-import '../views/constants/ui_strings.dart';
-import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
   late TextEditingController categoryController;
@@ -80,14 +78,7 @@ class ProductViewModel extends ChangeNotifier {
       context,
       categoryName,
     ).then(
-      (value) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MainView(
-            index: 2,
-          ),
-        ),
-      ),
+      (value) => NavigationServices().navigationToMainViewScreen(context, arguments: 2)
     );
   }
 

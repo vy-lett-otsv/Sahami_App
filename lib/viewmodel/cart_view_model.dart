@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
+import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 import '../data/data_local.dart';
 import '../data/remote/entity/order_entity.dart';
@@ -104,7 +107,8 @@ class CartViewModel extends ChangeNotifier{
     CartService().orderEntity = OrderEntity(
         userEntity: AuthService().userEntity,
         items: CartService().orderList,
-        createAt: DateTime.now(),
+        createAt: DateFormat.yMMMMd().format(DateTime.now()),
+        createAtTime: DateFormat.Hms().format(DateTime.now()),
         deliveryCharge: deliverCharge,
         orderAmount: total,
         orderNote: noteController.text,
@@ -118,7 +122,7 @@ class CartViewModel extends ChangeNotifier{
       }).whenComplete(() {
         CartService().initOrderList();
         CartService().total();
-        Navigator.pop(context);
+        NavigationServices().navigationToMainViewScreen(context, arguments: 1);
       });
       return AlertDialog(
         shape: RoundedRectangleBorder(
@@ -146,15 +150,54 @@ class CartViewModel extends ChangeNotifier{
 
   void checkAddress(BuildContext context) {
     createOrder();
-    if(CartService().orderEntity.address.isEmpty) {
+    if(CartService().orderEntity.address.isEmpty && DataLocal.deliveryOption[0].isSelected) {
       isAddress = false;
       notifyListeners();
-    } else {
+    } else if(CartService().orderEntity.address.isNotEmpty){
       addOrder(CartService().orderEntity);
       notificationSuccess(context);
       CartService().total();
       notifyListeners();
+    } else {
+      setAddressDefault(context);
     }
+  }
+
+  void setAddressDefault(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(30)))
+        ),
+        content: const UIText("Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?"),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, '');
+            },
+            style:
+            ElevatedButton.styleFrom(backgroundColor: UIColors.white),
+            child: UIText(UIStrings.cancel, color: UIColors.primary),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              addOrder(CartService().orderEntity);
+              AuthService().userEntity.address = addressController.text;
+              final docUser = FirebaseFirestore.instance.collection('user').doc(AuthService().userEntity.userId);
+              AuthService().userEntity.address = addressController.text;
+              final json = AuthService().userEntity.toJson();
+              await docUser.set(json);
+              notificationSuccess(context);
+              CartService().total();
+              notifyListeners();
+            },
+            style:
+            ElevatedButton.styleFrom(backgroundColor: UIColors.primary),
+            child: const UIText(UIStrings.ok, color: UIColors.white),
+          )
+        ],
+      );
+    });
   }
 
   void calculate() {

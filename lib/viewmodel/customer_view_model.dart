@@ -10,8 +10,8 @@ import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/containers/toast_widget.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_create_view.dart';
 import '../enums/enum.dart';
+import '../services/navigation_service.dart';
 import '../views/constants/ui_strings.dart';
-import '../views/screens/home/main_view.dart';
 
 class CustomerViewModel extends ChangeNotifier{
 
@@ -75,14 +75,7 @@ class CustomerViewModel extends ChangeNotifier{
         address: addressController.text
     );
     createCustomer(customerEntity, context).then(
-          (value) => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => MainView(
-            index: 1,
-          ),
-        ),
-      ),
+          (value) => NavigationServices().navigationToMainViewScreen(context, arguments: 1)
     );
   }
 

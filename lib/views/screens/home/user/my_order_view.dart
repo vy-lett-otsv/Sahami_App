@@ -27,6 +27,7 @@ class _MyOrderViewState extends State<MyOrderView>
   void initState() {
     _tabController = TabController(vsync: this, length: DataLocal.orderTabs.length);
     _orderViewModel.updateChangeTab(_tabController);
+    _orderViewModel.formatDate();
     super.initState();
   }
 
@@ -131,7 +132,6 @@ class _MyOrderViewState extends State<MyOrderView>
     return ListView.separated(
       itemCount: orderList.length,
       itemBuilder: (context, index) {
-        final formatter = DateFormat.yMd();
         final formatterPrice = NumberFormat.decimalPattern();
         return Container(
             padding: EdgeInsets.symmetric(
@@ -151,7 +151,7 @@ class _MyOrderViewState extends State<MyOrderView>
                         "Order ${orderList[index].orderId}",
                         color: UIColors.textDart,
                       ),
-                      UIText(formatter.format(orderList[index].createAt))
+                      UIText(orderList[index].createAt!)
                     ],
                   ),
                 ),
