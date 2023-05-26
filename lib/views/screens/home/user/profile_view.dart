@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sahami_app/enums/enum.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
@@ -10,7 +11,7 @@ import 'package:sahami_app/views/widget/ui_button_primary.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 
-import '../../../../services/navigation_service.dart';
+
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -26,7 +27,6 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
    _customerViewModel.initialTextController();
    _customerViewModel.fetchProfileUser();
-   print(_customerViewModel.userEntityProfile);
     super.initState();
   }
 
@@ -45,7 +45,9 @@ class _ProfileViewState extends State<ProfileView> {
             return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: UIColors.background,
-              body: ListView(
+              body: viewModel.viewState == ViewState.busy ?
+                  const Center(child: CircularProgressIndicator(),)
+                  : ListView(
                 children: [
                   _buildHeader(viewModel),
                   Container(
@@ -87,7 +89,6 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildHeader(CustomerViewModel customerViewModel) {
-    print(customerViewModel.userEntityProfile.image);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -126,7 +127,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     leading: const Icon(Icons.photo_camera),
                                     title: const UIText(UIStrings.camera),
                                     onTap: () {
-                                      customerViewModel.updateImage(false);
+                                      customerViewModel.selectFile(false);
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -134,7 +135,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     leading: const Icon(Icons.photo_library),
                                     title: const UIText(UIStrings.gallery),
                                     onTap: () {
-                                      customerViewModel.updateImage(true);
+                                      customerViewModel.selectFile(true);
                                       Navigator.of(context).pop();
                                     },
                                   ),

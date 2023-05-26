@@ -14,14 +14,16 @@ class HomeViewModel extends ChangeNotifier {
   PageController pageController = PageController(viewportFraction: 0.9); //Phần nhỏ của khung nhìn mà mỗi trang sẽ chiếm.
 
   void matrixSlide(int index) {
-    var currentScale, currentTrans;
+    double currentScale, currentTrans;
 
     if (index == currPageValue.floor()) {
       currentScale = 1 - (currPageValue - index) * (1 - _scaleFactor);
-    } else if (index == currPageValue.floor() + 1 ||
-        index == currPageValue.floor() - 1) {
+    } else if (index == currPageValue.floor() + 1) {
       currentScale = _scaleFactor + (currPageValue - index + 1) * (1 - _scaleFactor);
-    } else {
+    } else if (index == currPageValue.floor() - 1) {
+      currentScale = 1 - (currPageValue-index)*(1-_scaleFactor);
+    }
+    else {
       currentScale = 0.8;
     }
 

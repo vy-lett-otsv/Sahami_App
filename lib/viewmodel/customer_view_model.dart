@@ -52,10 +52,8 @@ class CustomerViewModel extends ChangeNotifier {
     print(selectedFileName);
   }
 
-  Future<void> createCustomer(
-      UserEntity userEntity, BuildContext context) async {
-    Reference ref =
-        FirebaseStorage.instance.ref().child('user').child('/${file!.name}');
+  Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
+    Reference ref = FirebaseStorage.instance.ref().child('user').child('/${file!.name}');
     UploadTask uploadTask = ref.putFile(File(file!.path));
     await uploadTask.whenComplete(() => null);
     _imageUrl = await ref.getDownloadURL();
@@ -74,30 +72,16 @@ class CustomerViewModel extends ChangeNotifier {
     ToastWidget.showToastSuccess(message: UIStrings.success);
   }
 
-  void updateImage(bool imageFrom) async {
-    selectFile(imageFrom);
-    print(selectedFileName);
-    final file = this.file;
-    if (file != null) {
-      Reference ref = FirebaseStorage.instance.ref().child('user').child('/${file.name}');
-      UploadTask uploadTask = ref.putFile(File(file.path));
-      await uploadTask.whenComplete(() => null);
-      _imageUrl = await ref.getDownloadURL();
-      await FirebaseFirestore.instance
-          .collection("user")
-          .doc(AuthService().userEntity.userId)
-          .update({"image": imageUrl});
-      notifyListeners();
-      await fetchProfileUser();
-    }
+  void updateImage() async {
+
   }
 
-  UserEntity _userEntityProfile =
-      UserEntity(userName: "", contact: "", email: "", tokenDevice: []);
+  UserEntity _userEntityProfile = UserEntity(userName: "", contact: "", email: "", tokenDevice: []);
 
   UserEntity get userEntityProfile => _userEntityProfile;
 
   Future<void> fetchProfileUser() async {
+    _viewState = ViewState.busy;
     DocumentSnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("user")
         .doc(AuthService().userEntity.userId)
@@ -106,6 +90,7 @@ class CustomerViewModel extends ChangeNotifier {
     _userEntityProfile = UserEntity.fromJson(data);
     print(userEntityProfile);
     notifyListeners();
+    _viewState = ViewState.success;
   }
 
   final nameController = TextEditingController();
