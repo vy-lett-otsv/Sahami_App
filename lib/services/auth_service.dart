@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../data/remote/entity/user_entity.dart';
-import 'navigation_service.dart';
 
 class AuthService {
   static final AuthService _singleton = AuthService._internal();
@@ -13,9 +12,9 @@ class AuthService {
     return _singleton;
   }
 
-  String keyFCM = "";
+  String keyFCM = " ";
 
-  UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
+  UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '', tokenDevice: []);
   UserEntity get userEntity => _userEntity;
 
 
@@ -51,9 +50,6 @@ class AuthService {
           _userEntity.role = "User";
         }
         print("Token login $keyFCM");
-        FirebaseFirestore.instance.collection("user").doc(idUser).update({"tokenDevice":keyFCM});
-        // _userEntity.tokenDevice = keyFCM;
-        NavigationServices.instance.navigationToMainScreen(context);
       },
     );
   }
@@ -67,7 +63,7 @@ class AuthService {
     userEntity.email = email;
     userEntity.image = AssetImages.avaDefault;
     userEntity.address = UIStrings.notYetAddress;
-    userEntity.tokenDevice = AuthService().keyFCM;
+    userEntity.tokenDevice.add(AuthService().keyFCM);
     final json = userEntity.toJson();
     await docUser.set(json);
   }

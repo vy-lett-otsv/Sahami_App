@@ -34,7 +34,7 @@ class CustomerViewModel extends ChangeNotifier {
   List<UserEntity> get userList => _userList;
 
   final UserEntity _customerDetail =
-      UserEntity(userName: "", contact: " ", email: " ");
+      UserEntity(userName: "", contact: " ", email: " ", tokenDevice: []);
 
   UserEntity get customer => _customerDetail;
 
@@ -93,7 +93,7 @@ class CustomerViewModel extends ChangeNotifier {
   }
 
   UserEntity _userEntityProfile =
-      UserEntity(userName: "", contact: "", email: "");
+      UserEntity(userName: "", contact: "", email: "", tokenDevice: []);
 
   UserEntity get userEntityProfile => _userEntityProfile;
 
@@ -118,7 +118,8 @@ class CustomerViewModel extends ChangeNotifier {
         userName: nameController.text,
         contact: contactController.text,
         email: emailController.text,
-        address: addressController.text);
+        address: addressController.text,
+        tokenDevice: []);
     createCustomer(customerEntity, context).then((value) =>
         NavigationServices().navigationToMainViewScreen(context, arguments: 1));
   }
@@ -205,10 +206,19 @@ class CustomerViewModel extends ChangeNotifier {
   }
 
   void signOut(BuildContext context) async {
-    await FirebaseFirestore.instance
-        .collection("user")
-        .doc(AuthService().userEntity.userId)
-        .update({"tokenDevice": ""});
+    var tokensArray = AuthService().keyFCM;
+    final userRef = FirebaseFirestore.instance.collection("user").doc(AuthService().userEntity.userId);
+    await userRef.get().then((docSnapshot) {
+      if(docSnapshot.exists) {
+        var data = docSnapshot.data();
+        List<dynamic> token = data?['tokenDevice'] ?? [];
+        if (token.contains(tokensArray)) {
+          userRef.update({
+            "tokenDevice": FieldValue.arrayRemove([tokensArray]),
+          });
+        }
+      }
+    });
     AuthService().signOut();
     if (context.mounted) NavigationServices.instance.navigationToLoginScreen(context);
   }

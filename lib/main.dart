@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sahami_app/services/navigation_service.dart';
-import 'package:sahami_app/viewmodel/notification_view_model.dart';
+import 'package:sahami_app/services/notification_service.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationViewModel.initializeLocalNotifications(debug: true);
-  await NotificationViewModel.initializeRemoteNotifications(debug: true);
+  await NotificationService().initializeLocalNotifications(debug: true);
+  await NotificationService().initializeRemoteNotifications(debug: true);
+  // await NotificationService().requestFirebaseToken();
   runApp(const MyApp());
 }
 

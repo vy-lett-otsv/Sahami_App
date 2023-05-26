@@ -8,7 +8,7 @@ class UserEntity {
   String role;
   String image;
   String address;
-  String? tokenDevice;
+  List<String> tokenDevice;
 
   UserEntity({
     this.userId = '',
@@ -20,7 +20,7 @@ class UserEntity {
     this.role = 'user',
     this.image = '',
     this.address = '',
-    this.tokenDevice
+    required this.tokenDevice
   });
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +47,7 @@ class UserEntity {
       role: json['role'],
       image: json['image'],
       address: json['address'],
-      tokenDevice: json['tokenDevice']
+      tokenDevice: List<String>.from(json['tokenDevice']) ?? [],
     );
   }
 

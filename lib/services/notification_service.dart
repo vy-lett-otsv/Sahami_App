@@ -4,8 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/services/auth_service.dart';
 
-class NotificationViewModel{
-  static Future<void> initializeLocalNotifications(
+class NotificationService{
+  static final NotificationService _singleton = NotificationService._internal();
+
+  factory NotificationService() {
+    return _singleton;
+  }
+
+  Future<void> initializeLocalNotifications(
       {required bool debug}) async {
     await AwesomeNotifications().initialize(
         null,
@@ -24,16 +30,16 @@ class NotificationViewModel{
   }
 
   // Hàm này dùng để Khởi tạo Push Notification.
-  static Future<void> initializeRemoteNotifications(
+   Future<void> initializeRemoteNotifications(
       {required bool debug}) async {
     await Firebase.initializeApp();
     await AwesomeNotificationsFcm().initialize(
       // Handle Silent data
-        onFcmSilentDataHandle: NotificationViewModel.mySilentDataHandle,
+        onFcmSilentDataHandle: NotificationService.mySilentDataHandle,
         // Method này dùng để phát hiện khi nhận được fcm token mới.
-        onFcmTokenHandle: NotificationViewModel.myFcmTokenHandle,
+        onFcmTokenHandle: NotificationService.myFcmTokenHandle,
         // Method này dùng để phát hiện khi nhận được native token mới.
-        onNativeTokenHandle: NotificationViewModel.myNativeTokenHandle,
+        onNativeTokenHandle: NotificationService.myNativeTokenHandle,
         // Bài sau mình sẽ đi chi tiết hơn về 3 Method trên nhé.
 
         // This license key is necessary only to remove the watermark for
@@ -114,4 +120,6 @@ class NotificationViewModel{
   static Future<void> myNativeTokenHandle(String token) async {
     debugPrint('Native Token:"$token"');
   }
+
+  NotificationService._internal();
 }
