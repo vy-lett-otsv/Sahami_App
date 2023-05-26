@@ -204,22 +204,4 @@ class CustomerViewModel extends ChangeNotifier {
     contactController.text = AuthService().userEntity.contact;
     addressController.text = AuthService().userEntity.address;
   }
-
-  void signOut(BuildContext context) async {
-    var tokensArray = AuthService().keyFCM;
-    final userRef = FirebaseFirestore.instance.collection("user").doc(AuthService().userEntity.userId);
-    await userRef.get().then((docSnapshot) {
-      if(docSnapshot.exists) {
-        var data = docSnapshot.data();
-        List<dynamic> token = data?['tokenDevice'] ?? [];
-        if (token.contains(tokensArray)) {
-          userRef.update({
-            "tokenDevice": FieldValue.arrayRemove([tokensArray]),
-          });
-        }
-      }
-    });
-    AuthService().signOut();
-    if (context.mounted) NavigationServices.instance.navigationToLoginScreen(context);
-  }
 }

@@ -20,7 +20,7 @@ class _SettingAdminViewState extends State<SettingAdminView> {
         child: ElevatedButton(
           child: const UIText(UIStrings.logout),
           onPressed: () {
-            authService.signOut();
+            // authService.signOut();
             NavigationServices.instance.navigationToLoginScreen(context);
           },
         ),

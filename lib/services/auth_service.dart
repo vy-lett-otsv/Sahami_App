@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../data/remote/entity/user_entity.dart';
@@ -49,7 +51,7 @@ class AuthService {
         } else {
           _userEntity.role = "User";
         }
-        print("Token login $keyFCM");
+        checkExistToken(context);
       },
     );
   }
@@ -68,8 +70,50 @@ class AuthService {
     await docUser.set(json);
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
+    var tokensArray = AuthService().keyFCM;
+    final userRef = FirebaseFirestore.instance.collection("user").doc(AuthService().userEntity.userId);
+    await userRef.get().then((docSnapshot) {
+      if(docSnapshot.exists) {
+        var data = docSnapshot.data();
+        List<dynamic> token = data?['tokenDevice'] ?? [];
+        if (token.contains(tokensArray)) {
+          userRef.update({
+            "tokenDevice": FieldValue.arrayRemove([tokensArray]),
+          });
+        }
+      }
+    });
     await FirebaseAuth.instance.signOut();
+    if (context.mounted) NavigationServices.instance.navigationToLoginScreen(context);
+  }
+
+  Future<void> checkExistToken(BuildContext context) async {
+    await getToken();
+    var tokensArray = AuthService().keyFCM;
+    final userRef = FirebaseFirestore.instance.collection("user").doc(AuthService().userEntity.userId);
+    userRef.get().then((docSnapshot) {
+      if(docSnapshot.exists) {
+        var data = docSnapshot.data();
+        List<dynamic> token = data?['tokenDevice'] ?? [];
+        if (token.contains(tokensArray)) {
+          NavigationServices.instance.navigationToMainScreen(context);
+        } else {
+          userRef.update({
+            "tokenDevice": FieldValue.arrayUnion([tokensArray]),
+          });
+          NavigationServices.instance.navigationToMainScreen(context);
+        }
+      }
+    });
+  }
+
+  String tokenDevice = "";
+  Future<void> getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      tokenDevice = token!;
+    });
+    AuthService().keyFCM = tokenDevice;
   }
 
   AuthService._internal();
