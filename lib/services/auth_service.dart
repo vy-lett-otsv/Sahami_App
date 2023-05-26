@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../data/remote/entity/user_entity.dart';
 import 'navigation_service.dart';
 
@@ -11,6 +12,8 @@ class AuthService {
   factory AuthService() {
     return _singleton;
   }
+
+  String keyFCM = "";
 
   UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
   UserEntity get userEntity => _userEntity;
@@ -24,6 +27,7 @@ class AuthService {
       AuthService().roleUser(context, value.user!.uid);
     });
   }
+
 
   Future<void> registerUser(BuildContext context, String email, String pass,
       String user, String phone, UserEntity userEntity) async {
@@ -46,6 +50,9 @@ class AuthService {
         } else {
           _userEntity.role = "User";
         }
+        print("Token login $keyFCM");
+        FirebaseFirestore.instance.collection("user").doc(idUser).update({"tokenDevice":keyFCM});
+        // _userEntity.tokenDevice = keyFCM;
         NavigationServices.instance.navigationToMainScreen(context);
       },
     );
@@ -59,6 +66,8 @@ class AuthService {
     userEntity.contact = phone;
     userEntity.email = email;
     userEntity.image = AssetImages.avaDefault;
+    userEntity.address = UIStrings.notYetAddress;
+    userEntity.tokenDevice = AuthService().keyFCM;
     final json = userEntity.toJson();
     await docUser.set(json);
   }

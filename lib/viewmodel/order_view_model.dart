@@ -117,7 +117,7 @@ class OrderViewModel extends ChangeNotifier {
         .get();
 
     _orderList = getOrderListFromSnapshot(orderSnapshot);
-    await listOrderByDay();
+    listOrderByDay();
     notifyListeners();
     _viewState = ViewState.success;
   }

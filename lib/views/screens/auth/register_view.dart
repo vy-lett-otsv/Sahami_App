@@ -105,7 +105,7 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
       UITextInputIcon(
-        text: UIStrings.phone,
+        text: UIStrings.phoneEn,
         icon: Icons.phone,
         controller: phone,
         isNumber: true,

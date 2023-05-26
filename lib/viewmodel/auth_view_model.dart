@@ -29,5 +29,6 @@ class AuthViewModel extends ChangeNotifier{
       notifyListeners();
       print("Token $tokenDevice");
     });
+    AuthService().keyFCM = tokenDevice;
   }
 }

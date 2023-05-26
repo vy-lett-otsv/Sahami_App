@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sahami_app/data/api/notification_api.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
@@ -64,6 +65,13 @@ class CartViewModel extends ChangeNotifier{
     } else {
       return quantity;
     }
+  }
+
+  final NotificationApi _notificationApi = NotificationApi();
+
+  void notificationOrderNew() {
+    _notificationApi.createNotification("Bạn có đơn hàng mới");
+    notifyListeners();
   }
 
   //payment

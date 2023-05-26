@@ -8,6 +8,7 @@ class UserEntity {
   String role;
   String image;
   String address;
+  String? tokenDevice;
 
   UserEntity({
     this.userId = '',
@@ -18,7 +19,8 @@ class UserEntity {
     this.gender = '',
     this.role = 'user',
     this.image = '',
-    this.address = ''
+    this.address = '',
+    this.tokenDevice
   });
 
   Map<String, dynamic> toJson() => {
@@ -30,7 +32,8 @@ class UserEntity {
     'gender': gender,
     'role':role,
     'image': image,
-    'address': address
+    'address': address,
+    'tokenDevice': tokenDevice
   };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -43,7 +46,8 @@ class UserEntity {
       gender: json['gender'],
       role: json['role'],
       image: json['image'],
-      address: json['address']
+      address: json['address'],
+      tokenDevice: json['tokenDevice']
     );
   }
 

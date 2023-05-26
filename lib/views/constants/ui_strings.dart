@@ -10,6 +10,8 @@ class UIStrings {
   static const String email = "Email";
   static const String phone = "Số điện thoại";
   static const String logout = "Đăng xuất";
+  static const String phoneEn = "Contact";
+
 
   static const String product = "Product";
   static const String order = "Order";
@@ -77,6 +79,7 @@ class UIStrings {
   static const String fullName = "Full Name";
   static const String contact = "Contact";
   static const String address = "Địa chỉ";
+  static const String notYetAddress = "Chưa có địa chỉ";
   static const String addressDelivery = "Địa chỉ giao hàng";
   static const String addAddress = "Add address";
 
@@ -150,6 +153,7 @@ class UIStrings {
  static const String myOrderEmpty = "Hiện tại bạn không có đơn hàng nào";
  static const String myOrderFinishEmpty = "Chà, không tìm thấy đơn hàng phù hợp rồi. Bạn vui lòng kiểm tra và thử lại nhé";
  static const String rate = "Đánh giá";
+ static const String orderListEmpty = "Quên chưa đặt món rồi nè bạn ơi?";
 
  //profile
   static const String updatePhone = "Cập nhật số điện thoại";

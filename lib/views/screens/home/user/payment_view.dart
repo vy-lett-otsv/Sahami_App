@@ -79,27 +79,31 @@ class _CartViewState extends State<CartView> {
                         SizedBox(
                           height: DimensManager.dimens.setHeight(30),
                         ),
-
                         //product
                         SizedBox(
                           height: DimensManager.dimens.setHeight(300),
-                          child: ListView.separated(
+                          child: CartService().orderList.isEmpty ?
+                              const Align(
+                                alignment: Alignment.topCenter,
+                                  child: UIText(UIStrings.orderListEmpty)
+                              )
+                              : ListView.separated(
                             itemCount: CartService().orderList.length,
                             separatorBuilder: (context, index) =>
-                                const Divider(),
+                            const Divider(),
                             itemBuilder: (context, index) {
                               cartViewModel.displayTextOptionItem(index);
                               return Container(
                                 margin: EdgeInsets.symmetric(
                                     vertical:
-                                        DimensManager.dimens.setHeight(10)),
+                                    DimensManager.dimens.setHeight(10)),
                                 constraints: BoxConstraints(
                                   minHeight:
-                                      DimensManager.dimens.setHeight(100),
+                                  DimensManager.dimens.setHeight(100),
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
@@ -108,9 +112,9 @@ class _CartViewState extends State<CartView> {
                                       child: Image.network(
                                         CartService().orderList[index]['image'],
                                         width:
-                                            DimensManager.dimens.setWidth(100),
+                                        DimensManager.dimens.setWidth(100),
                                         height:
-                                            DimensManager.dimens.setHeight(100),
+                                        DimensManager.dimens.setHeight(100),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -120,16 +124,16 @@ class _CartViewState extends State<CartView> {
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           UIText(
                                             CartService().orderList[index]
-                                                ['name_product'],
+                                            ['name_product'],
                                             fontWeight: FontWeight.bold,
                                             size:
-                                                DimensManager.dimens.setSp(18),
+                                            DimensManager.dimens.setSp(18),
                                           ),
                                           SizedBox(
                                             height: DimensManager.dimens
@@ -142,7 +146,7 @@ class _CartViewState extends State<CartView> {
                                                 .join('\n'),
                                             fontWeight: FontWeight.w100,
                                             size:
-                                                DimensManager.dimens.setSp(16),
+                                            DimensManager.dimens.setSp(16),
                                           ),
                                           SizedBox(
                                             height: DimensManager.dimens
@@ -150,12 +154,12 @@ class _CartViewState extends State<CartView> {
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               UIText(
                                                 CartService().orderList[index]
-                                                            ['priceSale'] !=
-                                                        null
+                                                ['priceSale'] !=
+                                                    null
                                                     ? "${formatter.format(CartService().orderList[index]['priceSale'])} VNĐ"
                                                     : "${formatter.format(CartService().orderList[index]['price'])} VNĐ",
                                                 fontWeight: FontWeight.bold,
@@ -165,9 +169,9 @@ class _CartViewState extends State<CartView> {
                                               Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            DimensManager.dimens
-                                                                .setRadius(20)),
+                                                    BorderRadius.circular(
+                                                        DimensManager.dimens
+                                                            .setRadius(20)),
                                                     color: UIColors.white),
                                                 height: DimensManager.dimens
                                                     .setHeight(40),
@@ -175,11 +179,11 @@ class _CartViewState extends State<CartView> {
                                                   children: [
                                                     IconButton(
                                                         padding:
-                                                            EdgeInsets.zero,
+                                                        EdgeInsets.zero,
                                                         onPressed: () {
                                                           cartViewModel
                                                               .quantityItem(
-                                                                  false, index);
+                                                              false, index);
                                                         },
                                                         icon: const Icon(
                                                             Icons.remove)),
@@ -187,11 +191,11 @@ class _CartViewState extends State<CartView> {
                                                         "${CartService().orderList[index]['quantity']}"),
                                                     IconButton(
                                                         padding:
-                                                            EdgeInsets.zero,
+                                                        EdgeInsets.zero,
                                                         onPressed: () {
                                                           cartViewModel
                                                               .quantityItem(
-                                                                  true, index);
+                                                              true, index);
                                                         },
                                                         icon: const Icon(
                                                             Icons.add)),
@@ -371,7 +375,9 @@ class _CartViewState extends State<CartView> {
                       radius: DimensManager.dimens.setRadius(10),
                       backgroundColor: UIColors.primarySecond,
                       onPress: () {
-                        cartViewModel.checkAddress(context);
+                        // cartViewModel.checkAddress(context);
+                        // _notificationViewModel.localNotification();
+                        cartViewModel.notificationOrderNew();
                       },
                     )
                   ],
