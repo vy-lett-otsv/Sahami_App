@@ -19,7 +19,7 @@ class OrderEntity {
       required this.userEntity,
       this.orderAmount,
       this.orderStatus = 'Chờ xác nhận',
-      this.paymentStatus = "Chưa thanh toán",
+      this.paymentStatus = "",
       this.orderNote,
       this.createAt,
       this.createAtTime,

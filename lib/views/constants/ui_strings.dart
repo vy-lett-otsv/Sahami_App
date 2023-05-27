@@ -158,5 +158,6 @@ class UIStrings {
  //profile
   static const String updatePhone = "Cập nhật số điện thoại";
   static const String update = "Cập nhật";
+  static const String setAddress = "Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?";
 
 }

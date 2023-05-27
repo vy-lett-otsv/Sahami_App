@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../data/remote/entity/user_entity.dart';
 import '../services/auth_service.dart';
-import '../services/navigation_service.dart';
 
 class AuthViewModel extends ChangeNotifier{
   TextEditingController email = TextEditingController();

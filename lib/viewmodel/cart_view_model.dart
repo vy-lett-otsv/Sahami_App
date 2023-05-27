@@ -19,6 +19,7 @@ class CartViewModel extends ChangeNotifier{
 
   int totalAmount = 0;
 
+
   void calculateTotal() {
     totalAmount = CartService().orderList.fold(0, (previous, current) => previous + current['quantity'] as int);
   }
@@ -69,8 +70,8 @@ class CartViewModel extends ChangeNotifier{
 
   final NotificationApi _notificationApi = NotificationApi();
 
-  void notificationOrderNew() {
-    _notificationApi.createNotification("Bạn có đơn hàng mới");
+  Future<void> notificationOrderNew() async {
+    await _notificationApi.createNotification("Bạn có đơn hàng mới");
     notifyListeners();
   }
 
@@ -161,13 +162,14 @@ class CartViewModel extends ChangeNotifier{
     if(CartService().orderEntity.address.isEmpty && DataLocal.deliveryOption[0].isSelected) {
       isAddress = false;
       notifyListeners();
-    } else if(CartService().orderEntity.address.isNotEmpty){
+    } else if(addressController.text.isNotEmpty){
+      setAddressDefault(context);
+    } else {
       addOrder(CartService().orderEntity);
+      notificationOrderNew();
       notificationSuccess(context);
       CartService().total();
       notifyListeners();
-    } else {
-      setAddressDefault(context);
     }
   }
 
@@ -177,7 +179,7 @@ class CartViewModel extends ChangeNotifier{
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(30)))
         ),
-        content: const UIText("Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?"),
+        content: const UIText(UIStrings.setAddress),
         actions: [
           ElevatedButton(
             onPressed: () {

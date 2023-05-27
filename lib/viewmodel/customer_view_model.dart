@@ -49,7 +49,7 @@ class CustomerViewModel extends ChangeNotifier {
       _selectedFileName = file!.name;
       notifyListeners();
     }
-    print(selectedFileName);
+    // print(selectedFileName);
   }
 
   Future<void> createCustomer(UserEntity userEntity, BuildContext context) async {
@@ -88,7 +88,6 @@ class CustomerViewModel extends ChangeNotifier {
         .get();
     final data = querySnapshot.data() as Map<String, dynamic>;
     _userEntityProfile = UserEntity.fromJson(data);
-    print(userEntityProfile);
     notifyListeners();
     _viewState = ViewState.success;
   }
@@ -132,9 +131,9 @@ class CustomerViewModel extends ChangeNotifier {
           if (user != null && user.uid == documentId) {
             try {
               await user.delete();
-              print("User deleted successfully.");
+              // print("User deleted successfully.");
             } catch (error) {
-              print("Failed to delete user: $error");
+              // print("Failed to delete user: $error");
             }
           }
         });
@@ -166,18 +165,20 @@ class CustomerViewModel extends ChangeNotifier {
   }
 
   //profile
-  TextEditingController contactProfileController = TextEditingController();
-  TextEditingController addressProfileController = TextEditingController();
+  final TextEditingController _contactProfileController = TextEditingController();
+  TextEditingController get contactProfileController => _contactProfileController;
+  final TextEditingController _addressProfileController = TextEditingController();
+  TextEditingController get addressProfileController => _addressProfileController;
 
   final docUserProfile = FirebaseFirestore.instance
       .collection('user')
       .doc(AuthService().userEntity.userId);
 
   Future<void> updateUser() async {
-    if (contactProfileController.text != AuthService().userEntity.contact) {
+    if (_contactProfileController.text != AuthService().userEntity.contact) {
       AuthService().userEntity.contact = contactProfileController.text;
     }
-    if (addressProfileController.text != AuthService().userEntity.address) {
+    if (_addressProfileController.text != AuthService().userEntity.address && _addressProfileController.text != UIStrings.notYetAddress) {
       AuthService().userEntity.address = addressProfileController.text;
     }
     final json = AuthService().userEntity.toJson();
@@ -186,7 +187,8 @@ class CustomerViewModel extends ChangeNotifier {
   }
 
   void initialTextController() {
-    contactController.text = AuthService().userEntity.contact;
-    addressController.text = AuthService().userEntity.address;
+    _contactProfileController.text = AuthService().userEntity.contact;
+    _addressProfileController.text = AuthService().userEntity.address;
+    notifyListeners();
   }
 }

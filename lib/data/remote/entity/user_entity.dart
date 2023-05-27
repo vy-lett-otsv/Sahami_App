@@ -53,6 +53,6 @@ class UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity{userName: $userName, contact: $contact, email: $email, image: $image}';
+    return 'UserEntity{userName: $userName, contact: $contact, email: $email, image: $image, token: $tokenDevice}';
   }
 }

@@ -8,7 +8,6 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().initializeLocalNotifications(debug: true);
   await NotificationService().initializeRemoteNotifications(debug: true);
-  // await NotificationService().requestFirebaseToken();
   runApp(const MyApp());
 }
 

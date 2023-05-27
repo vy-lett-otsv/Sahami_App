@@ -1,12 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../services/auth_service.dart';
+import '../remote/entity/user_entity.dart';
 
 class NotificationApi {
   String key = 'key=AAAAg4lulGk:APA91bE5yXKokZ4Jh6h5DSRdfbc7XJUZrhFeOYycPwnOErPtuV2BNtiQDs-SDKgw49rw7yaCJKR1nSamZK8Yex9GaQ7qrNXtAWJQPlDP9PNpq1fxufhkvJGKH3WaRUH0HJ-PhvbOaxYA';
 
+  List<dynamic> _userListKey = [];
+
+  List<dynamic> get userListKey => _userListKey;
+
+  List<UserEntity> _userList = [];
+
+  List<UserEntity> get userList => _userList;
+
+  Future<void> filterKeyAdmin() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .where('role', isEqualTo: 'admin')
+        .get();
+    List<UserEntity> users = querySnapshot.docs.map((docSnapshot) {
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      return UserEntity.fromJson(data);
+    }).toList();
+    _userList = users;
+    _userListKey = userList
+        .map((user) => user.tokenDevice)
+        .toList()
+        .expand((tokens) => tokens)
+        .toList();
+  }
+
   Future<void> createNotification(String title) async{
-    print(AuthService().keyFCM);
+    filterKeyAdmin();
     final response =  await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -14,10 +40,7 @@ class NotificationApi {
         'Authorization': key,
       },
       body: jsonEncode({
-        "registration_ids": [
-          // Gắn FCM token vào đây
-          AuthService().keyFCM
-        ],
+        "registration_ids": userListKey,
         "notification": {
           // "body": "Bạn có đơn hàng mới",
           "title": title,
@@ -42,21 +65,4 @@ class NotificationApi {
       throw Exception('Failed to create notification.');
     }
   }
-
-  // Future<NotificationEntity>? _futureNotification;
-  //
-  // FutureBuilder<NotificationEntity> buildFutureBuilder() {
-  //   return FutureBuilder<NotificationEntity>(
-  //     future: _futureNotification,
-  //     builder: (context, snapshot) {
-  //       if (snapshot.hasData) {
-  //         return Text(snapshot.data!.title);
-  //       } else if (snapshot.hasError) {
-  //         return Text('${snapshot.error}');
-  //       }
-  //
-  //       return const CircularProgressIndicator();
-  //     },
-  //   );
-  // }
 }

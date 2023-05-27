@@ -42,6 +42,7 @@ class _ProfileViewState extends State<ProfileView> {
         providers: [ChangeNotifierProvider(create: (_) => _customerViewModel)],
         child: Consumer<CustomerViewModel>(
           builder: (_, viewModel, __) {
+            print("build ${viewModel.addressProfileController.text}");
             return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: UIColors.background,
@@ -64,7 +65,9 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         _buildItem(AssetIcons.iconProfileEmail, viewModel.userEntityProfile.email, false),
                         _buildInformation(
-                            _buildItem(AssetIcons.iconLocation, viewModel.userEntityProfile.address, true),
+                            _buildItem(AssetIcons.iconLocation,
+                                viewModel.userEntityProfile.address.isEmpty ? UIStrings.notYetAddress : viewModel.userEntityProfile.address,
+                                true),
                             UIStrings.address,
                             viewModel.addressProfileController,
                             Icons.location_on_outlined,
@@ -212,6 +215,9 @@ class _ProfileViewState extends State<ProfileView> {
                               )
                           ),
                       ),
+                      // style: TextStyle(
+                      //   color: Colors.blue
+                      // ),
                     ),
                   ],
                 ),

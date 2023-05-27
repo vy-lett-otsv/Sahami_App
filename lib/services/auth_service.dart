@@ -64,7 +64,6 @@ class AuthService {
     userEntity.contact = phone;
     userEntity.email = email;
     userEntity.image = AssetImages.avaDefault;
-    userEntity.address = UIStrings.notYetAddress;
     userEntity.tokenDevice.add(AuthService().keyFCM);
     final json = userEntity.toJson();
     await docUser.set(json);
@@ -114,6 +113,7 @@ class AuthService {
       tokenDevice = token!;
     });
     AuthService().keyFCM = tokenDevice;
+    print("Token $tokenDevice");
   }
 
   AuthService._internal();
