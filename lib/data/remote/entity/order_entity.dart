@@ -3,7 +3,7 @@ import 'package:sahami_app/data/remote/entity/user_entity.dart';
 class OrderEntity {
   String orderId;
   UserEntity userEntity;
-  double? orderAmount;
+  double orderAmount;
   String? orderStatus;
   String? paymentStatus;
   String? orderNote;
@@ -17,7 +17,7 @@ class OrderEntity {
   OrderEntity(
       {this.orderId = '',
       required this.userEntity,
-      this.orderAmount,
+      this.orderAmount = 0,
       this.orderStatus = 'Chờ xác nhận',
       this.paymentStatus = "",
       this.orderNote,
@@ -62,6 +62,6 @@ class OrderEntity {
 
   @override
   String toString() {
-    return 'OrderEntity{orderId: $orderId}';
+    return 'OrderEntity{orderId: $orderId, orderAmount: $orderAmount}';
   }
 }

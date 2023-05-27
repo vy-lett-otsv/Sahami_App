@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
-import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../data/remote/entity/user_entity.dart';
 
 class AuthService {

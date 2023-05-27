@@ -52,15 +52,15 @@ class UIStrings {
   static const String manageProduct = "Manage Product";
   static const String manageCustomer = "Manage Customer";
 
-  static const String addProduct = "Add Product";
-  static const String addOrder = "Add Order";
-  static const String addCustomer = "Add Customer";
-  static const String addCategory = "Add Category";
+  static const String addProduct = "Thêm sản phẩm";
+  static const String addOrder = "Thêm đơn hàng";
+  static const String addCustomer = "Thêm khách hàng";
+  static const String addCategory = "Thêm danh mục";
 
-  static const String totalProduct = "Total Product";
-  static const String totalOrder = "Total Order";
-  static const String totalCustomer = "Total Customer";
-  static const String totalRevenue = "Total Revenue";
+  static const String totalProduct = "Tổng số sản phẩm";
+  static const String totalOrder = "Tổng số hóa đơn";
+  static const String totalCustomer = "Tổng số khách hàng";
+  static const String totalRevenue = "Tổng doanh thu";
 
   //customer
   static const String customerDetail = "Customer Detail";

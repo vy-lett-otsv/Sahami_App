@@ -6,6 +6,7 @@ import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/viewmodel/product_view_model.dart';
+import 'package:sahami_app/viewmodel/statistics_view_model.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
@@ -36,6 +37,7 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   final ProductViewModel _productViewModel = ProductViewModel();
   final CustomerViewModel _customerViewModel = CustomerViewModel();
+  final StatisticsViewModel _statisticsViewModel = StatisticsViewModel();
 
   @override
   void initState() {
@@ -44,6 +46,8 @@ class _StatisticsViewState extends State<StatisticsView> {
     _tooltipBehavior = TooltipBehavior(enable: true);
     _productViewModel.fetchProducts("product");
     _customerViewModel.fetchCustomer();
+    _statisticsViewModel.fetchStatistics();
+    // _statisticsViewModel.calculateTotal();
     super.initState();
   }
 
@@ -52,7 +56,8 @@ class _StatisticsViewState extends State<StatisticsView> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => _productViewModel),
-        ChangeNotifierProvider(create: (_) => _customerViewModel)
+        ChangeNotifierProvider(create: (_) => _customerViewModel),
+        ChangeNotifierProvider(create: (_) => _statisticsViewModel)
       ],
       child: Scaffold(
         backgroundColor: UIColors.background,
@@ -174,8 +179,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                 title: UIStrings.totalProduct,
                 data: "${productViewModel.productList.length}");
           }),
-          const UICardStatistics(
-              title: UIStrings.totalRevenue, data: "10.000K"),
+          Consumer<StatisticsViewModel>(builder: (_, statisticsViewModel, __) {
+            return UICardStatistics(
+                title: UIStrings.totalOrder, data: "${statisticsViewModel.orderList.length}");
+          }),
           Consumer<CustomerViewModel>(
             builder: (_, customerViewModel, __) {
               return UICardStatistics(
@@ -183,7 +190,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                   data: "${customerViewModel.userList.length}");
             },
           ),
-          const UICardStatistics(title: UIStrings.totalOrder, data: "10.000"),
+          Consumer<StatisticsViewModel>(builder: (_, statisticsViewModel, __) {
+            return UICardStatistics(
+                title: UIStrings.totalRevenue, data: "${statisticsViewModel.totalRevenue}");
+          }),
         ],
       ),
     );
