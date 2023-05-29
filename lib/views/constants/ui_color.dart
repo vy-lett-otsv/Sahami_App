@@ -14,6 +14,7 @@ class UIColors {
   static final Color border = HexColor.fromHex("#D9D9D9");
   static final Color yellow = HexColor.fromHex("#f9ca24");
   static final Color textDart = HexColor.fromHex("#2f3640");
+  static final Color orange = HexColor.fromHex("#ffbe76");
 
 
   static final Color backgroundBottom = HexColor.fromHex("#E5E5E5");

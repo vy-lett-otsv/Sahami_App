@@ -32,7 +32,8 @@ class NotificationApi {
   }
 
   Future<void> createNotification(String title) async{
-    filterKeyAdmin();
+    await filterKeyAdmin();
+    print(userListKey);
     final response =  await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{

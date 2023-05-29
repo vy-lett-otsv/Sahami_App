@@ -6,6 +6,7 @@ import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import '../enums/enum.dart';
+import '../views/constants/ui_strings.dart';
 
 class OrderViewModel extends ChangeNotifier {
   int _currentProductTab = 0;
@@ -92,14 +93,14 @@ class OrderViewModel extends ChangeNotifier {
     if(dateRange.start == dateRange.end || date == "Hôm nay") {
       final orderSnapshot = await docOrder
           .where("userEntity.id", isEqualTo: idUser)
-          .where("orderStatus", isEqualTo: 'Đã hoàn thành')
+          .where("orderStatus", isEqualTo: UIStrings.finish)
           .where("createAt", isEqualTo: DateFormat.yMMMMd().format(dateRange.start))
           .get();
       _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
     } else {
       final orderSnapshot = await docOrder
           .where("userEntity.id", isEqualTo: idUser)
-          .where("orderStatus", isEqualTo: 'Đã hoàn thành')
+          .where("orderStatus", isEqualTo: UIStrings.finish)
           .where("createAt", isGreaterThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.start))
           .where("createAt", isLessThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.end))
           .get();
@@ -113,7 +114,7 @@ class OrderViewModel extends ChangeNotifier {
     _viewState = ViewState.busy;
     final orderSnapshot = await docOrder
         .where("userEntity.id", isEqualTo: idUser)
-        .where("orderStatus", isNotEqualTo: 'Đã hoàn thành')
+        .where("orderStatus", isNotEqualTo: UIStrings.finish)
         .get();
 
     _orderList = getOrderListFromSnapshot(orderSnapshot);

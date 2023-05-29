@@ -15,7 +15,6 @@ import 'package:sahami_app/views/widget/ui_button_statistics.dart';
 import 'package:sahami_app/views/widget/ui_card_statistics.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../../../widget/indicator.dart';
 import '../../../widget/ui_header_chart.dart';
 
 class StatisticsView extends StatefulWidget {
@@ -27,7 +26,6 @@ class StatisticsView extends StatefulWidget {
 
 class _StatisticsViewState extends State<StatisticsView> {
   int touchedIndex = -1;
-  String dropdownValueOrder = FakeData().listOrder.first;
   String dropdownValueRevenue = FakeData().listRevenue.first;
 
   List<RevenueData> _chartMonthData = [];
@@ -46,8 +44,8 @@ class _StatisticsViewState extends State<StatisticsView> {
     _tooltipBehavior = TooltipBehavior(enable: true);
     _productViewModel.fetchProducts("product");
     _customerViewModel.fetchCustomer();
-    _statisticsViewModel.fetchStatistics();
-    // _statisticsViewModel.calculateTotal();
+    _statisticsViewModel.fetch();
+    _statisticsViewModel.pieChartList(FakeData().listOrder.first);
     super.initState();
   }
 
@@ -76,7 +74,9 @@ class _StatisticsViewState extends State<StatisticsView> {
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
                   _buildStatistics(),
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
-                  _buildPieChart(),
+                  Consumer<StatisticsViewModel>(builder: (_, viewModel, __) {
+                    return _buildPieChart(viewModel);
+                  }),
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
                   _buildLineChart()
                 ],
@@ -92,11 +92,11 @@ class _StatisticsViewState extends State<StatisticsView> {
     return Container(
       color: UIColors.primarySecond,
       padding: EdgeInsets.only(
-          top: DimensManager.dimens.setHeight(50),
+          top: DimensManager.dimens.setHeight(70),
           left: DimensManager.dimens.setWidth(20),
           right: DimensManager.dimens.setWidth(20),
           bottom: DimensManager.dimens.setHeight(10)),
-      height: DimensManager.dimens.setHeight(140),
+      height: DimensManager.dimens.setHeight(150),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -192,14 +192,14 @@ class _StatisticsViewState extends State<StatisticsView> {
           ),
           Consumer<StatisticsViewModel>(builder: (_, statisticsViewModel, __) {
             return UICardStatistics(
-                title: UIStrings.totalRevenue, data: "${statisticsViewModel.totalRevenue}");
+                title: UIStrings.totalRevenue, data: statisticsViewModel.formatRevenue);
           }),
         ],
       ),
     );
   }
 
-  Widget _buildPieChart() {
+  Widget _buildPieChart(StatisticsViewModel viewModel) {
     return Container(
       margin: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
       decoration: BoxDecoration(
@@ -214,11 +214,9 @@ class _StatisticsViewState extends State<StatisticsView> {
           children: [
             StatisticsHeaderWidget(
               title: UIStrings.order,
-              dropdownValue: dropdownValueOrder,
+              dropdownValue: viewModel.dropdownValueOrder,
               onChange: (String? value) {
-                setState(() {
-                  dropdownValueOrder = value!;
-                });
+                viewModel.updateDropDownPieChart(value!);
               },
               list: FakeData().listOrder,
             ),
@@ -230,19 +228,72 @@ class _StatisticsViewState extends State<StatisticsView> {
                   Flexible(
                     flex: 1,
                     child: PieChart(PieChartData(
-                        sections: FakeData().getSections(touchedIndex),
+                        sections: viewModel.getSections(touchedIndex),
                         sectionsSpace: 0)),
                   ),
                   SizedBox(width: DimensManager.dimens.setHeight(15)),
-                  const Flexible(
+                  Flexible(
                     flex: 1,
-                    child: Indicator(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: viewModel.dataPieChart.map((data) => Container(
+                        child: _buildIndicatorItem(
+                          color: data.color,
+                          text: data.name,
+                        ),
+                      )).toList(),
+                    ),
                   ),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Widget _buildIndicator() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: _statisticsViewModel.dataPieChart.map((data) => Container(
+  //       child: _buildIndicatorItem(
+  //         color: data.color,
+  //         text: data.name,
+  //       ),
+  //     )).toList(),
+  //   );
+  // }
+
+  Widget _buildIndicatorItem({
+    required Color color,
+    required String text,
+    double size = 16,
+    Color textColor = const Color(0xff505050),
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(5)),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(5))
+            ),
+          ),
+          SizedBox(width: DimensManager.dimens.setHeight(10)),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              color: textColor,
+            ),
+          )
+        ],
       ),
     );
   }

@@ -14,7 +14,7 @@ class UIStrings {
 
 
   static const String product = "Product";
-  static const String order = "Order";
+  static const String order = "Đơn hàng";
   static const String revenue = "Revenue";
   static const String statistics = "Statistic";
   static const String customer = "Customer";
@@ -58,7 +58,7 @@ class UIStrings {
   static const String addCategory = "Thêm danh mục";
 
   static const String totalProduct = "Tổng số sản phẩm";
-  static const String totalOrder = "Tổng số hóa đơn";
+  static const String totalOrder = "Tổng số đơn hàng";
   static const String totalCustomer = "Tổng số khách hàng";
   static const String totalRevenue = "Tổng doanh thu";
 
@@ -154,6 +154,16 @@ class UIStrings {
  static const String myOrderFinishEmpty = "Chà, không tìm thấy đơn hàng phù hợp rồi. Bạn vui lòng kiểm tra và thử lại nhé";
  static const String rate = "Đánh giá";
  static const String orderListEmpty = "Quên chưa đặt món rồi nè bạn ơi?";
+
+ //status order
+  static const String pending = "Đang xử lý";
+  static const String confirmed = "Đã xác nhận";
+  static const String delivery = "Đang vận chuyển";
+  static const String finish = "Hoàn thành";
+  static const String cancelOrder = "Hủy bỏ";
+
+  //status payment
+  static const String pendingPayment = "Chờ thanh toán";
 
  //profile
   static const String updatePhone = "Cập nhật số điện thoại";

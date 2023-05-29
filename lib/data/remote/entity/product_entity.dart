@@ -19,7 +19,7 @@ class ProductEntity {
       required this.productName,
       required this.description,
       required this.price,
-      this.priceSale = 0.0,
+      this.priceSale = 0,
       this.servingSize = 0,
       this.saturatedFat = 0,
       this.protein = 0,

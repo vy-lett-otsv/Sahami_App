@@ -3,7 +3,7 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/services/cart_service.dart';
-import 'package:sahami_app/viewmodel/cart_view_model.dart';
+import 'package:sahami_app/viewmodel/payment_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 import 'package:sahami_app/views/widget/ui_button_primary.dart';
@@ -11,7 +11,6 @@ import 'package:sahami_app/views/widget/ui_icon_button.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:intl/intl.dart' as intl;
 import '../../../../data/data_local.dart';
-import '../../../../enums/enum.dart';
 import '../../../../services/navigation_service.dart';
 import '../../../assets/asset_icons.dart';
 import '../../../constants/ui_color.dart';
@@ -25,7 +24,7 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  final CartViewModel _cartViewModel = CartViewModel();
+  final PaymentViewModel _cartViewModel = PaymentViewModel();
 
   @override
   void initState() {
@@ -40,7 +39,7 @@ class _CartViewState extends State<CartView> {
         providers: [
           ChangeNotifierProvider(create: (_) => _cartViewModel),
         ],
-        child: Consumer<CartViewModel>(
+        child: Consumer<PaymentViewModel>(
           builder: (_, cartViewModel, __) {
             return Scaffold(
               body: SafeArea(

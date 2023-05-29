@@ -44,7 +44,7 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
               child: Container(
                 color: UIColors.white,
                 margin: EdgeInsets.only(
-                  bottom: DimensManager.dimens.setHeight(80),
+                  bottom: DimensManager.dimens.setHeight(150),
                 ),
                 child: Column(
                   children: [

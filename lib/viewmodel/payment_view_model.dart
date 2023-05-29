@@ -14,7 +14,7 @@ import '../data/remote/entity/order_entity.dart';
 import '../services/auth_service.dart';
 import '../services/cart_service.dart';
 
-class CartViewModel extends ChangeNotifier{
+class PaymentViewModel extends ChangeNotifier{
   Map<dynamic, dynamic> updatedElement = {};
 
   int totalAmount = 0;
@@ -70,11 +70,6 @@ class CartViewModel extends ChangeNotifier{
 
   final NotificationApi _notificationApi = NotificationApi();
 
-  Future<void> notificationOrderNew() async {
-    await _notificationApi.createNotification("Bạn có đơn hàng mới");
-    notifyListeners();
-  }
-
   //payment
   bool _isSelectedCash = true;
 
@@ -118,6 +113,8 @@ class CartViewModel extends ChangeNotifier{
         items: CartService().orderList,
         createAt: DateFormat.yMMMMd().format(DateTime.now()),
         createAtTime: DateFormat.Hms().format(DateTime.now()),
+        createAtMonth: DateFormat.M().format(DateTime.now()),
+        createAtYear: DateFormat.y().format(DateTime.now()),
         deliveryCharge: deliverCharge,
         orderAmount: total,
         orderNote: noteController.text,
@@ -166,7 +163,7 @@ class CartViewModel extends ChangeNotifier{
       setAddressDefault(context);
     } else {
       addOrder(CartService().orderEntity);
-      notificationOrderNew();
+      _notificationApi.createNotification("Bạn có đơn hàng mới");
       notificationSuccess(context);
       CartService().total();
       notifyListeners();
