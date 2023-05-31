@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/auth_view_model.dart';
 import '../../../enums/fonts.dart';
 import '../../../services/navigation_service.dart';
@@ -12,7 +12,6 @@ import '../../constants/ui_strings.dart';
 import '../../widget/ui_button_primary.dart';
 import '../../widget/ui_text.dart';
 import '../../widget/ui_textinput_icon.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -22,40 +21,44 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final TextEditingController _userTextController = TextEditingController();
-  final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _passwordTextController = TextEditingController();
-  final TextEditingController _phoneTextController = TextEditingController();
   final AuthViewModel _authViewModel = AuthViewModel();
-  final UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '');
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UIColors.background,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: DimensManager.dimens.setWidth(20)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: DimensManager.dimens.setHeight(20)),
-              _buildLogo(),
-              SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildTextField(_userTextController, _emailTextController,
-                  _passwordTextController, _phoneTextController),
-              SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildSignUp(
-                  context,
-                  _userTextController,
-                  _emailTextController,
-                  _passwordTextController,
-                  _phoneTextController,
-                  _authViewModel,
-                  _userEntity)
-            ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _authViewModel),
+      ],
+      child: Scaffold(
+        backgroundColor: UIColors.background,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: DimensManager.dimens.setWidth(20)),
+            child: Consumer<AuthViewModel>(
+              builder: (_, authViewModel, __) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: DimensManager.dimens.setHeight(20)),
+                    _buildLogo(),
+                    SizedBox(height: DimensManager.dimens.setHeight(50)),
+                    _buildTextField(
+                      authViewModel.userName,
+                      authViewModel.email,
+                      authViewModel.pass,
+                      authViewModel.phone,
+                    ),
+                    SizedBox(height: DimensManager.dimens.setHeight(50)),
+                    _buildSignUp(
+                      context,
+                      authViewModel,
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -102,7 +105,7 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
       UITextInputIcon(
-        text: UIStrings.phone,
+        text: UIStrings.phoneEn,
         icon: Icons.phone,
         controller: phone,
         isNumber: true,
@@ -111,27 +114,15 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
   );
 }
 
-Widget _buildSignUp(
-    BuildContext context,
-    TextEditingController user,
-    TextEditingController email,
-    TextEditingController pass,
-    TextEditingController phone,
-    AuthViewModel authViewModel,
-    UserEntity userEntity) {
+Widget _buildSignUp(BuildContext context, AuthViewModel authViewModel) {
   return Column(
     children: [
       UIButtonPrimary(
           text: UIStrings.signUp,
           onPress: () {
-            FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: email.text,
-                password: pass.text).then((value) {
-                  authViewModel.createUser(userEntity, value.user?.uid, user.text, phone.text, email.text);
-                  NavigationServices.instance.navigationToHomeScreen(context);
-                }).onError((error, stackTrace) {
-              // print("Error ${error.toString()}");
-            });
+            // AuthService().registerUser(context, email.text, pass.text,
+            //     user.text, phone.text, userEntity);
+            authViewModel.register(context);
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
       Center(

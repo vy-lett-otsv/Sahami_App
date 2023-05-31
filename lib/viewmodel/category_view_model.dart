@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../data/remote/enitity/category_entity.dart';
+import '../data/remote/entity/category_entity.dart';
 
 class CategoryViewModel extends ChangeNotifier {
 
@@ -10,6 +10,10 @@ class CategoryViewModel extends ChangeNotifier {
 
   final int _selectedCategory = 0;
   int get selectedCategory => _selectedCategory;
+
+  final TextEditingController controllerName = TextEditingController();
+  final TextEditingController controllerNameUpdate = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   void getAllCategory() async {
     final querySnapshot = await FirebaseFirestore.instance
@@ -21,10 +25,6 @@ class CategoryViewModel extends ChangeNotifier {
         .toList();
     _categories = cats;
     notifyListeners();
-  }
-
-  void clearText(TextEditingController controllerName) {
-    controllerName.clear();
   }
 
   Future<void> createCategory(CategoryEntity category) async {
@@ -50,5 +50,12 @@ class CategoryViewModel extends ChangeNotifier {
         .doc(category.categoryId);
     await docCategory.delete();
     getAllCategory();
+  }
+
+  void addCategory() {
+    final category = CategoryEntity(categoryName: controllerName.text);
+    createCategory(category);
+    focusNode.unfocus();
+    controllerName.clear();
   }
 }

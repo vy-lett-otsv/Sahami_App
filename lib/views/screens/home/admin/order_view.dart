@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
-import '../../constants/dimens_manager.dart';
-import '../../constants/ui_color.dart';
-import '../../constants/ui_strings.dart';
+import '../../../constants/dimens_manager.dart';
+import '../../../constants/ui_color.dart';
+import '../../../constants/ui_strings.dart';
 
 class OrderView extends StatefulWidget {
   const OrderView({Key? key}) : super(key: key);

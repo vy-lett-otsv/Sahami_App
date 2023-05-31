@@ -23,14 +23,14 @@ class UICardStatistics extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.topLeft,
-                child: UITilte(title, size: 14),
+                child: UITitle(title, size: 14),
               ),
               SizedBox(
                 height: DimensManager.dimens.setHeight(10),
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: UITilte(data, size: 24, fontWeight: FontWeight.w800),
+                child: UITitle(data, size: 24, fontWeight: FontWeight.w800),
               )
             ],
           ),

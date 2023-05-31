@@ -8,6 +8,7 @@ class UserEntity {
   String role;
   String image;
   String address;
+  List<String> tokenDevice;
 
   UserEntity({
     this.userId = '',
@@ -18,7 +19,8 @@ class UserEntity {
     this.gender = '',
     this.role = 'user',
     this.image = '',
-    this.address = ''
+    this.address = '',
+    required this.tokenDevice
   });
 
   Map<String, dynamic> toJson() => {
@@ -30,7 +32,8 @@ class UserEntity {
     'gender': gender,
     'role':role,
     'image': image,
-    'address': address
+    'address': address,
+    'tokenDevice': tokenDevice
   };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -43,12 +46,13 @@ class UserEntity {
       gender: json['gender'],
       role: json['role'],
       image: json['image'],
-      address: json['address']
+      address: json['address'],
+      tokenDevice: List<String>.from(json['tokenDevice']) ?? [],
     );
   }
 
   @override
   String toString() {
-    return 'UserEntity{userName: $userName, contact: $contact, email: $email, image: $image}';
+    return 'UserEntity{userName: $userName, contact: $contact, email: $email, image: $image, token: $tokenDevice}';
   }
 }

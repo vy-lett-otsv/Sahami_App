@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
+import 'package:sahami_app/data/remote/entity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/assets/asset_icons.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
@@ -99,7 +99,7 @@ class _CustomerDetailViewState extends State<CustomerDetailView> {
                   ),
                 ),
                 SizedBox(height: DimensManager.dimens.setHeight(30)),
-                UITilte(UIStrings.order, color: UIColors.primary, fontWeight: FontWeight.bold),
+                UITitle(UIStrings.order, color: UIColors.primary, fontWeight: FontWeight.bold),
                 SizedBox(height: DimensManager.dimens.setHeight(30)),
                 order == true ?
                 Expanded(

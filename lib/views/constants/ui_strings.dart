@@ -1,16 +1,20 @@
 class UIStrings {
   UIStrings._();
   static const String appName = "Sahami";
+  static const String admin = "Admin";
   static const String welcome = "Hello";
   static const String userName = "User name";
   static const String password = "Password";
   static const String signUp = "Sign up";
   static const String signIn = "Sign in";
   static const String email = "Email";
-  static const String phone = "Phone number";
+  static const String phone = "Số điện thoại";
+  static const String logout = "Đăng xuất";
+  static const String phoneEn = "Contact";
+
 
   static const String product = "Product";
-  static const String order = "Order";
+  static const String order = "Đơn hàng";
   static const String revenue = "Revenue";
   static const String statistics = "Statistic";
   static const String customer = "Customer";
@@ -35,21 +39,28 @@ class UIStrings {
   static const String edit = "Edit";
   static const String delete = "Delete";
   static const String filter = "Filter";
+  static const String success = "Success";
+  static const String showMore = "Xem thêm";
+  static const String showLess = "Rút gọn";
+  static const String addNewItem = "Thêm món mới";
+  static const String size = "Size";
+  static const String ice = "Lượng đá";
+  static const String quantitySugar = "Lượng đường";
 
 
   static const String manageCategory = "Manage Category";
   static const String manageProduct = "Manage Product";
   static const String manageCustomer = "Manage Customer";
 
-  static const String addProduct = "Add Product";
-  static const String addOrder = "Add Order";
-  static const String addCustomer = "Add Customer";
-  static const String addCategory = "Add Category";
+  static const String addProduct = "Thêm sản phẩm";
+  static const String addOrder = "Thêm đơn hàng";
+  static const String addCustomer = "Thêm khách hàng";
+  static const String addCategory = "Thêm danh mục";
 
-  static const String totalProduct = "Total Product";
-  static const String totalOrder = "Total Order";
-  static const String totalCustomer = "Total Customer";
-  static const String totalRevenue = "Total Revenue";
+  static const String totalProduct = "Tổng số sản phẩm";
+  static const String totalOrder = "Tổng số đơn hàng";
+  static const String totalCustomer = "Tổng số khách hàng";
+  static const String totalRevenue = "Tổng doanh thu";
 
   //customer
   static const String customerDetail = "Customer Detail";
@@ -67,7 +78,9 @@ class UIStrings {
 
   static const String fullName = "Full Name";
   static const String contact = "Contact";
-  static const String address = "Address";
+  static const String address = "Địa chỉ";
+  static const String notYetAddress = "Chưa có địa chỉ";
+  static const String addressDelivery = "Địa chỉ giao hàng";
   static const String addAddress = "Add address";
 
   static const String createCustomer = "Create Customer";
@@ -101,5 +114,60 @@ class UIStrings {
   static const String notYet = "Chưa có";
 
   //product
-  static const String product1 = "Cool Lime Physio";
+  static const String nutritionInformation = "Thông tin dinh dưỡng";
+
+  //cart
+  static const String cart = "Giỏ hàng";
+  static const String paymentOption = "Phương thức thanh toán";
+  static const String checkout = "Thanh toán";
+
+  //bottom sheet add item
+  static const String flavor = "Hương vị";
+  static const String syrup = "Siro";
+  static const String brownSugar = "Brown Sugar Syrup pump";
+  static const String addBrownSugar = "Thêm siro Brown Sugar";
+  static const String toppings = "Toppings";
+  static const String cookieCrumbleTopping = "Cookie Crumble Topping";
+  static const String addCart = "Thêm vào giỏ hàng";
+  static const String refresh = "Làm mới";
+
+  //bottom payment
+  static const String cash = "Tiền mặt";
+  static const String cashDes = "Trả tiền sau khi nhận đồ uống";
+
+  static const String digital = "Thẻ tín dụng/ Ghi nợ";
+  static const String digitalDes = "Nhanh chóng và an toàn khi gửi tiền";
+
+  //payment
+  static const String payment = "Thanh toán";
+  static const String deliveryOption = "Phương thức giao hàng";
+  static const String note = "Ghi chú";
+  static const String hintNote = "Vui lòng để lại ghi chú ...";
+  static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
+  static const String createOrderSuccess = "Tạo đơn hành thành công";
+  static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";
+
+
+  //order
+ static const String myOrder = "Đơn hàng";
+ static const String myOrderEmpty = "Hiện tại bạn không có đơn hàng nào";
+ static const String myOrderFinishEmpty = "Chà, không tìm thấy đơn hàng phù hợp rồi. Bạn vui lòng kiểm tra và thử lại nhé";
+ static const String rate = "Đánh giá";
+ static const String orderListEmpty = "Quên chưa đặt món rồi nè bạn ơi?";
+
+ //status order
+  static const String pending = "Đang xử lý";
+  static const String confirmed = "Đã xác nhận";
+  static const String delivery = "Đang vận chuyển";
+  static const String finish = "Hoàn thành";
+  static const String cancelOrder = "Hủy bỏ";
+
+  //status payment
+  static const String pendingPayment = "Chờ thanh toán";
+
+ //profile
+  static const String updatePhone = "Cập nhật số điện thoại";
+  static const String update = "Cập nhật";
+  static const String setAddress = "Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?";
+
 }

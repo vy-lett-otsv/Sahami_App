@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 
 class FakeData {
-  List<String> listOrder = <String>['Today', 'Week', 'Month', 'Year'];
-  List<String> listRevenue = <String>['Month', 'Year'];
+  List<String> listOrder = <String>['Hôm nay', 'Tuần', 'Tháng', 'Năm'];
+  List<String> listRevenue = <String>['Tháng', 'Năm'];
   
-  static List<OrderData> dataPieChart = [
-    OrderData(name: "Pending order", percent: 25, color: UIColors.lightRed),
-    OrderData(name: "Pending payment", percent: 12, color: UIColors.star),
-    OrderData(name: "Confirm", percent: 63, color: UIColors.primary),
-  ];
+  // static List<OrderData> dataPieChart = [
+  //   OrderData(name: "Pending order", percent: 25, color: UIColors.lightRed),
+  //   OrderData(name: "Pending payment", percent: 12, color: UIColors.star),
+  //   OrderData(name: "Confirm", percent: 63, color: UIColors.primary),
+  // ];
 
   List<RevenueData> getMonthRevenueData() {
     final List<RevenueData> chartData = [
@@ -39,26 +39,6 @@ class FakeData {
     ];
     return chartData;
   }
-  List<PieChartSectionData> getSections(int touchedIndex) => dataPieChart
-      .asMap()
-      .map<int, PieChartSectionData>((index, data) {
-
-    final value = PieChartSectionData(
-      color: data.color,
-      value: data.percent,
-      title: '${data.percent}%',
-      radius: 40,
-      titleStyle: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-        color: UIColors.black,
-      ),
-    );
-
-    return MapEntry(index, value);
-  })
-      .values
-      .toList();
 }
 
 class OrderData {
@@ -67,6 +47,11 @@ class OrderData {
   final Color color;
 
   OrderData({required this.name, required this.percent, required this.color});
+
+  @override
+  String toString() {
+    return 'OrderData{name: $name, orderAmount: $percent}';
+  }
 }
 
 class RevenueData {

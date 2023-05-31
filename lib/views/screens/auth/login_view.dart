@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/auth_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
@@ -20,33 +20,36 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _passwordTextController = TextEditingController();
-
   final AuthViewModel _authViewModel = AuthViewModel();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UIColors.background,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(20),
-            vertical: DimensManager.dimens.setHeight(10),
-          ),
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              SizedBox(height: DimensManager.dimens.setHeight(30)),
-              _buildTextField(_emailTextController, _passwordTextController,
-                  _authViewModel),
-              SizedBox(height: DimensManager.dimens.setHeight(50)),
-              _buildLogin(
-                  context, _emailTextController, _passwordTextController, _authViewModel)
-            ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _authViewModel),
+      ],
+      child: Scaffold(
+        backgroundColor: UIColors.background,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: DimensManager.dimens.setWidth(20),
+              vertical: DimensManager.dimens.setHeight(10),
+            ),
+            child: Consumer<AuthViewModel>(
+              builder: (_, authViewModel, __) {
+                return Column(
+                  children: [
+                    _buildHeader(),
+                    SizedBox(height: DimensManager.dimens.setHeight(30)),
+                    _buildTextField(authViewModel.email, authViewModel.pass),
+                    SizedBox(height: DimensManager.dimens.setHeight(50)),
+                    _buildButtonLogin(context, authViewModel)
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -83,8 +86,8 @@ Widget _buildHeader() {
   );
 }
 
-Widget _buildTextField(TextEditingController email, TextEditingController pass,
-    AuthViewModel authViewModel) {
+Widget _buildTextField(
+    TextEditingController email, TextEditingController pass) {
   return Column(
     children: [
       UITextInputIcon(
@@ -119,29 +122,21 @@ Widget _buildTextField(TextEditingController email, TextEditingController pass,
   );
 }
 
-Widget _buildLogin(
-    BuildContext context,
-    TextEditingController email,
-    TextEditingController pass,
-    AuthViewModel authViewModel
-    ) {
+Widget _buildButtonLogin(
+  BuildContext context,
+  AuthViewModel authViewModel,
+) {
   return Column(
     children: [
       UIButtonPrimary(
           text: UIStrings.signIn,
           onPress: () {
-            FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: email.text,
-                password: pass.text
-            ).then((value) async {
-              authViewModel.roleUser(context, value.user!.uid);
-            }).onError((error, stackTrace) {
-              print("Error ${error.toString()}");
-            });
+            authViewModel.login(context);
           }),
       SizedBox(height: DimensManager.dimens.setHeight(20)),
       Center(
-        child: Text.rich(TextSpan(
+        child: Text.rich(
+          TextSpan(
             text: UIStrings.noAccount,
             style: TextStyle(
                 fontSize: DimensManager.dimens.setSp(18),
@@ -149,18 +144,21 @@ Widget _buildLogin(
                 color: UIColors.text),
             children: <InlineSpan>[
               TextSpan(
-                  text: UIStrings.create,
-                  style: TextStyle(
-                      fontSize: DimensManager.dimens.setSp(18),
-                      fontWeight: FontWeight.bold,
-                      fontFamily: Fonts.Outfit,
-                      color: UIColors.text),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      NavigationServices.instance
-                          .navigationToRegisterScreen(context);
-                    })
-            ])),
+                text: UIStrings.create,
+                style: TextStyle(
+                    fontSize: DimensManager.dimens.setSp(18),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: Fonts.Outfit,
+                    color: UIColors.text),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    NavigationServices.instance
+                        .navigationToRegisterScreen(context);
+                  },
+              )
+            ],
+          ),
+        ),
       ),
     ],
   );

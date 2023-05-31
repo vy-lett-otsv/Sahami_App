@@ -39,7 +39,7 @@ class UIButtonStatistics extends StatelessWidget {
             : Icon(icon, color: Colors.white, size: 40),
           ),
           SizedBox(height: DimensManager.dimens.setHeight(10)),
-          UIText(title, size: 10)
+          UIText(title, size: DimensManager.dimens.setSp(10))
         ],
       ),
     );

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahami_app/data/remote/enitity/user_entity.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/widget/ui_add_image.dart';
@@ -20,12 +19,8 @@ class CustomerCreateView extends StatefulWidget {
 }
 
 class _CustomerCreateViewState extends State<CustomerCreateView> {
-  int isAddress = 0;
+
   final CustomerViewModel _customerViewModel = CustomerViewModel();
-  final _nameController = TextEditingController();
-  final _contactController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,32 +40,25 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
           centerTitle: true,
         ),
         body: SafeArea(child: Consumer<CustomerViewModel>(
-          builder: (_, customer, __) {
+          builder: (_, customerViewModel, __) {
             return Container(
               margin: EdgeInsets.all(DimensManager.dimens.setWidth(20)),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildAddImage(customer),
+                    _buildAddImage(customerViewModel),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
                     _buildInformation(
-                        fullName: _nameController,
-                        contact: _contactController,
-                        email: _emailController,
-                        address: _addressController
+                        fullName: customerViewModel.nameController,
+                        contact: customerViewModel.contactController,
+                        email: customerViewModel.emailController,
+                        address: customerViewModel.addressController
                     ),
                     SizedBox(height: DimensManager.dimens.setHeight(20)),
                     UIButtonPrimary(
                         text: UIStrings.createCustomer,
                         onPress: () {
-                          final customerEntity = UserEntity(
-                              userName: _nameController.text,
-                              contact: _contactController.text,
-                              email: _emailController.text,
-                              address: _addressController.text
-                          );
-                          _customerViewModel.createCustomer(customerEntity, context);
-                          // _productViewModel.setTest();
+                            customerViewModel.addCustomer(context);
                         })
                   ],
                 ),
