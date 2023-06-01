@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -48,7 +49,14 @@ class StatisticsViewModel extends ChangeNotifier {
 
   String dropdownValueOrder = FakeData().listOrder.first;
 
+  final now = DateTime.now();
+  String startOfWeek = "";
+  String endOfWeek = "";
 
+  void setDay() {
+    startOfWeek = DateFormat.yMMMMd().format(now.add(Duration(days: DateTime.daysPerWeek - now.weekday - 7)));
+    endOfWeek = DateFormat.yMMMMd().format(now.subtract(Duration(days: now.day - 1)));
+  }
 
   Future<void> updateDropDownPieChart(String value) async {
     dropdownValueOrder = value;
@@ -69,14 +77,10 @@ class StatisticsViewModel extends ChangeNotifier {
   }
 
   Future<List<OrderEntity>> fetchDataOrderListWeek() async {
-    final now = DateTime.now();
-    final startOfWeek = DateFormat.yMMMMd().format(now.subtract(Duration(days: now.weekday - 1)));
-    final endOfWeek = DateFormat.yMMMMd().format(now.add(Duration(days: DateTime.daysPerWeek - now.weekday - 7)));
-    print("start $startOfWeek");
-    print(endOfWeek);
+    setDay();
     final orderSnapshot = await FirebaseFirestore.instance
         .collection('order')
-        .where('createAt', isLessThanOrEqualTo: startOfWeek, isGreaterThanOrEqualTo: endOfWeek)
+        .where('createAt', isGreaterThanOrEqualTo: startOfWeek, isLessThanOrEqualTo: endOfWeek)
         .get();
     return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
       final data = docSnapshot.data();
@@ -120,16 +124,20 @@ class StatisticsViewModel extends ChangeNotifier {
   }
 
   Future<List<OrderEntity>> fetchDataOptionWeek(String option) async {
-    final now = DateTime.now();
-    final startOfWeek = DateFormat.yMMMMd().format(now.subtract(Duration(days: now.weekday - 1)));
-    final endOfWeek = DateFormat.yMMMMd().format(now.add(Duration(days: DateTime.daysPerWeek - now.weekday - 7)));
+    setDay();
+    print(startOfWeek);
+    print(endOfWeek);
+    print(option);
     final orderSnapshot = await FirebaseFirestore.instance
         .collection('order')
         .where('orderStatus', isEqualTo: option)
-        .where('createAt', isLessThanOrEqualTo: startOfWeek, isGreaterThanOrEqualTo: endOfWeek)
+        // .where("createAt", isGreaterThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.start))
+        // .where("createAt", isLessThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.end))
         .get();
+    print('orderSnapshot: ${orderSnapshot.docs}');
     return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
       final data = docSnapshot.data();
+      print(data.length);
       return OrderEntity.fromJson(data);
     }).toList();
   }
@@ -158,14 +166,6 @@ class StatisticsViewModel extends ChangeNotifier {
       return OrderEntity.fromJson(data);
     }).toList();
   }
-
-  // Future<List<OrderEntity>> emptyPieChart() async {
-  //   final collectionRef = await FirebaseFirestore.instance.collection('order').where("userEntity.id", isEqualTo: AuthService().userEntity.userId).get();
-  //   return collectionRef.docs.map<OrderEntity>((docSnapshot) {
-  //     final data = docSnapshot.data();
-  //     return OrderEntity.fromJson(data);
-  //   }).toList();
-  // }
 
   Future<void> pieChartList(String dropdownValueOrder) async {
     switch(dropdownValueOrder) {
@@ -214,23 +214,24 @@ class StatisticsViewModel extends ChangeNotifier {
   }
 
   void addDataPieChart(List<OrderEntity> orderList) {
-    dataPieChart = [];
     double pendingOrder = (pendingOrderList.length / orderList.length * 100).roundToDouble();
     double confirm = (confirmedOrderList.length / orderList.length * 100).roundToDouble();
     double pendingDelivery = (pendingDeliveryList.length / orderList.length * 100).roundToDouble();
     double finish = (finishOrderList.length / orderList.length * 100).roundToDouble();
     double cancel = (cancelOrderList.length / orderList.length * 100).roundToDouble();
 
-    if(pendingOrder.isNaN && pendingDelivery.isNaN && finish.isNaN && cancel.isNaN) {
+    dataPieChart.add(OrderData(name: UIStrings.pending, percent: pendingOrder, color: UIColors.star));
+    dataPieChart.add(OrderData(name: UIStrings.confirmed, percent: confirm, color: UIColors.orange));
+    dataPieChart.add(OrderData(name: UIStrings.delivery, percent: pendingDelivery, color: UIColors.delivery));
+    dataPieChart.add(OrderData(name: UIStrings.finish, percent: finish, color: UIColors.primary));
+    dataPieChart.add(OrderData(name: UIStrings.cancelOrder, percent: cancel, color: UIColors.lightRed));
+
+    if(pendingOrder.isNaN && confirm.isNaN && pendingDelivery.isNaN && finish.isNaN && cancel.isNaN) {
       dataPieChart = [];
-    } else {
-      dataPieChart.add(OrderData(name: UIStrings.pending, percent: pendingOrder, color: UIColors.star));
-      dataPieChart.add(OrderData(name: UIStrings.confirmed, percent: confirm, color: UIColors.orange));
-      dataPieChart.add(OrderData(name: UIStrings.delivery, percent: pendingDelivery, color: UIColors.delivery));
-      dataPieChart.add(OrderData(name: UIStrings.finish, percent: finish, color: UIColors.primary));
-      dataPieChart.add(OrderData(name: UIStrings.cancelOrder, percent: cancel, color: UIColors.lightRed));
     }
-    print(dataPieChart.toString());
+    // print(pendingOrder);
+    // print(confirm);
+    // print(dataPieChart.toString());
   }
 
   List<PieChartSectionData> getSections(int touchedIndex) {

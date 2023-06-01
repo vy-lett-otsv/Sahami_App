@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sahami_app/data/remote/entity/user_entity.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
 
@@ -8,10 +9,10 @@ class OrderEntity {
   String orderStatus;
   String paymentStatus;
   String? orderNote;
-  String? createAt;
-  String? createAtTime;
-  String? createAtMonth;
-  String? createAtYear;
+  Timestamp? createAt;  // String? createAtTime;
+  // String? createAtMonth;
+  // String? createAtYear;
+
   DateTime? updateAt;
   double? deliveryCharge;
   List<dynamic> items;
@@ -25,9 +26,9 @@ class OrderEntity {
       this.paymentStatus = UIStrings.pendingPayment,
       this.orderNote,
       this.createAt,
-      this.createAtTime,
-      this.createAtMonth,
-      this.createAtYear,
+      // this.createAtTime,
+      // this.createAtMonth,
+      // this.createAtYear,
       this.updateAt,
       this.deliveryCharge,
       required this.items,
@@ -42,9 +43,9 @@ class OrderEntity {
         'orderNote': orderNote,
         'note': orderNote,
         'createAt': createAt,
-        'createAtTime': createAtTime,
-        'createAtMonth': createAtMonth,
-        'createAtYear': createAtYear,
+        // 'createAtTime': createAtTime,
+        // 'createAtMonth': createAtMonth,
+        // 'createAtYear': createAtYear,
         'updateAt': updateAt,
         'deliveryCharge': deliveryCharge,
         'items': items,
@@ -60,9 +61,9 @@ class OrderEntity {
         paymentStatus: json['paymentStatus'],
         orderNote: json['orderNote'],
         createAt: json["createAt"],
-        createAtMonth: json["createAtMonth"],
-        createAtYear: json["createAtYear"],
-        createAtTime: json["createAtTime"],
+        // createAtMonth: json["createAtMonth"],
+        // createAtYear: json["createAtYear"],
+        // createAtTime: json["createAtTime"],
         updateAt: json['updateAt'],
         deliveryCharge: json['deliveryCharge'],
         items: List<dynamic>.from(json['items']),

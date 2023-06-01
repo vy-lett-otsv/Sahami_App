@@ -28,7 +28,8 @@ class _MyOrderViewState extends State<MyOrderView>
   void initState() {
     _tabController = TabController(vsync: this, length: DataLocal.orderTabs.length);
     _orderViewModel.updateChangeTab(_tabController);
-    _orderViewModel.formatDate();
+    // _orderViewModel.formatDate();
+    _orderViewModel.fetchOrder();
     super.initState();
   }
 
@@ -186,7 +187,7 @@ class _MyOrderViewState extends State<MyOrderView>
                         "Order ${orderList[index].orderId}",
                         color: UIColors.textDart,
                       ),
-                      UIText(orderList[index].createAt!)
+                      UIText(DateFormat('dd/MM/yyy').format(orderList[index].createAt!.toDate()))
                     ],
                   ),
                 ),

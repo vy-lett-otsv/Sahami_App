@@ -51,10 +51,10 @@ class _OrderDetailViewState extends State<OrderDetailView> {
               margin: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: UIText("${widget.orderEntity.createAt}, ${widget.orderEntity.createAtTime}"),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: UIText("${widget.orderEntity.createAt}, ${widget.orderEntity.createAtTime}"),
+                  // ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: widget.orderEntity.items.length,

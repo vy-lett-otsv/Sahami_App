@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/order_view_model.dart';
 
 import '../../data/remote/entity/order_entity.dart';
@@ -12,26 +13,33 @@ import '../widget/ui_text.dart';
 
 class OrderListView extends StatelessWidget {
   final int selected;
-  final PageController pageController;
   final OrderViewModel orderViewModel;
-  const OrderListView({Key? key, required this.selected, required this.pageController, required this.orderViewModel}) : super(key: key);
+  const OrderListView({Key? key, required this.selected, required this.orderViewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(orderViewModel.selected);
-    return  Expanded(
-        child: PageView(
-          controller: pageController,
-          // onPageChanged: (index) {
-          //   index = orderViewModel.selected;
-          //   print(index);
-          // },
-          children: [
-            _buildListOrder(orderViewModel.orderPendingList),
-            _buildListOrder(orderViewModel.confirmList),
-            _buildListOrder(orderViewModel.pendingDelivery),
-          ],
-        ));
+    return ChangeNotifierProvider(
+        create: (_) => orderViewModel,
+      child: Consumer<OrderViewModel>(
+        builder: (_, viewModel, __) {
+          print(orderViewModel.selectedIndex);
+          print(viewModel.pageController.toString());
+          return Expanded(
+              child: PageView(
+                controller: viewModel.pageController,
+                // onPageChanged: (index) {
+                //   index = orderViewModel.selected;
+                //   print(index);
+                // },
+                children: [
+                  _buildListOrder(orderViewModel.orderPendingList),
+                  _buildListOrder(orderViewModel.confirmList),
+                  _buildListOrder(orderViewModel.pendingDelivery),
+                ],
+              ));
+        },
+      ),
+    );
   }
 
   Widget _buildListOrder(List<OrderEntity> list) {
@@ -86,9 +94,9 @@ class OrderListView extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        UIText(
-                            "${list[index].createAt}, ${list[index].createAtTime}",
-                            size: DimensManager.dimens.setSp(14)),
+                        // UIText(
+                        //     "${list[index].createAt}, ${list[index].createAtTime}",
+                        //     size: DimensManager.dimens.setSp(14)),
                         UIText(
                             "${list[index].items.length} món")
                       ],
