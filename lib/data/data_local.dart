@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/constants/ui_strings.dart';
 import '../views/assets/asset_icons.dart';
 
 class DataLocal {
@@ -7,6 +8,8 @@ class DataLocal {
     IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size L", price: 10000, isSelected: false),
     IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size XL", price: 20000, isSelected: false)
   ];
+
+  static List<String> orderStatus = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivery, UIStrings.finish, UIStrings.cancelOrder];
 
   static const List<Tab> productTabs = <Tab>[
     Tab(text: 'Mô tả'),

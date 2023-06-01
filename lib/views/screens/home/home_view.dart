@@ -111,81 +111,92 @@ class _HomeViewState extends State<HomeView> {
       ProductViewModel productViewModel, int index) {
     return Transform(
       transform: homeViewModel.matrix,
-      child: Stack(children: [
-        Container(
-          margin: EdgeInsets.only(
-            bottom: DimensManager.dimens.setHeight(40),
-            right: DimensManager.dimens.setHeight(10),
-            left: DimensManager.dimens.setHeight(10),
-          ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: UIColors.primary,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    productViewModel.featureProductList[index].image),
-              )),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: DimensManager.dimens.setHeight(100),
+      child: GestureDetector(
+        onTap: () {
+          NavigationServices.instance.navigationToProductDetailScreen(
+            context,
+            arguments: {
+              Constants.ENTITY:
+              productViewModel.featureProductList.elementAt(index),
+            },
+          );
+        },
+        child: Stack(children: [
+          Container(
             margin: EdgeInsets.only(
-                right: DimensManager.dimens.setWidth(40),
-                left: DimensManager.dimens.setWidth(40),
-                top: DimensManager.dimens.setHeight(30)),
+              bottom: DimensManager.dimens.setHeight(40),
+              right: DimensManager.dimens.setHeight(10),
+              left: DimensManager.dimens.setHeight(10),
+            ),
             decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(DimensManager.dimens.setRadius(20)),
-                color: UIColors.white,
-                boxShadow: const [
-                  BoxShadow(
-                      color: Color(0xFFe8e8e8),
-                      blurRadius: 5.0, // độ tán của bóng
-                      offset: Offset(0, 5) // (x, y) x y dời qua 5 px
-                      ),
-                  BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
-                  BoxShadow(color: Colors.white, offset: Offset(5, 0))
-                ]),
-            child: Container(
-                padding: EdgeInsets.only(
-                  top: DimensManager.dimens.setHeight(15),
-                  right: DimensManager.dimens.setWidth(15),
-                  left: DimensManager.dimens.setWidth(15),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    UITitle(
-                        productViewModel.featureProductList[index].productName),
-                    SizedBox(height: DimensManager.dimens.setHeight(10)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Wrap(
-                              children: List.generate(5, (index) {
-                                return Icon(
-                                  Icons.star,
-                                  color: UIColors.star,
-                                  size: 15,
-                                );
-                              }),
-                            ),
-                            SizedBox(width: DimensManager.dimens.setWidth(10)),
-                            const UIText("5.0"),
-                          ],
-                        ),
-                        const UIText("38 Comment"),
-                      ],
-                    )
-                  ],
+                borderRadius: BorderRadius.circular(30),
+                color: UIColors.primary,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      productViewModel.featureProductList[index].image),
                 )),
           ),
-        )
-      ]),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: DimensManager.dimens.setHeight(100),
+              margin: EdgeInsets.only(
+                  right: DimensManager.dimens.setWidth(40),
+                  left: DimensManager.dimens.setWidth(40),
+                  top: DimensManager.dimens.setHeight(30)),
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+                  color: UIColors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color(0xFFe8e8e8),
+                        blurRadius: 5.0, // độ tán của bóng
+                        offset: Offset(0, 5) // (x, y) x y dời qua 5 px
+                        ),
+                    BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
+                    BoxShadow(color: Colors.white, offset: Offset(5, 0))
+                  ]),
+              child: Container(
+                  padding: EdgeInsets.only(
+                    top: DimensManager.dimens.setHeight(15),
+                    right: DimensManager.dimens.setWidth(15),
+                    left: DimensManager.dimens.setWidth(15),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      UITitle(
+                          productViewModel.featureProductList[index].productName),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Wrap(
+                                children: List.generate(5, (index) {
+                                  return Icon(
+                                    Icons.star,
+                                    color: UIColors.star,
+                                    size: 15,
+                                  );
+                                }),
+                              ),
+                              SizedBox(width: DimensManager.dimens.setWidth(10)),
+                              const UIText("5.0"),
+                            ],
+                          ),
+                          const UIText("38 Comment"),
+                        ],
+                      )
+                    ],
+                  )),
+            ),
+          )
+        ]),
+      ),
     );
   }
 }

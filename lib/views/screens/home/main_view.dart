@@ -32,6 +32,7 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
+    print(AuthService().userEntity.role);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => _mainViewModel),

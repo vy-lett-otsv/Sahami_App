@@ -34,15 +34,47 @@ class PaymentViewModel extends ChangeNotifier{
       ..remove('quantity');
   }
 
-  Map<String, dynamic> getNamedSyrup() => {
-    'size': updatedElement['size'],
-    if (updatedElement.containsKey('ice')) 'ice': updatedElement['ice'],
-    if (updatedElement.containsKey('sugar')) 'sugar': updatedElement['sugar'],
-    if (updatedElement.containsKey('brown_sugar_syrup')) 'brown_sugar_syrup': 'Thêm ${updatedElement['brown_sugar_syrup']} pump si rô brown sugar',
-    if (updatedElement.containsKey('caramel_syrup')) 'caramelSyrup': 'Thêm ${updatedElement['caramel_syrup']} pump si rô caramel',
-    if (updatedElement.containsKey('vanilla_syrup')) 'vanillaSyrup': 'Thêm ${updatedElement['vanilla_syrup']} pump si rô vanilla',
-    if (updatedElement.containsKey('cookie_crumble_topping')) 'cookie_crumble_topping': updatedElement['cookie_crumble_topping'],
-  };
+  void displayTextOrder(int index, OrderEntity orderEntity) {
+    updatedElement = Map.from(orderEntity.items[index]);
+  }
+
+  // Map<String, dynamic> getNamedSyrup(bool isSize) => {
+  //   if(isSize) 'size': updatedElement['size'],
+  //   if (updatedElement.containsKey('ice')) 'ice': updatedElement['ice'],
+  //   if (updatedElement.containsKey('sugar')) 'sugar': updatedElement['sugar'],
+  //   if (updatedElement.containsKey('brown_sugar_syrup')) 'brown_sugar_syrup': 'Thêm ${updatedElement['brown_sugar_syrup']} pump si rô brown sugar',
+  //   if (updatedElement.containsKey('caramel_syrup')) 'caramelSyrup': 'Thêm ${updatedElement['caramel_syrup']} pump si rô caramel',
+  //   if (updatedElement.containsKey('vanilla_syrup')) 'vanillaSyrup': 'Thêm ${updatedElement['vanilla_syrup']} pump si rô vanilla',
+  //   if (updatedElement.containsKey('cookie_crumble_topping')) 'cookie_crumble_topping': updatedElement['cookie_crumble_topping'],
+  // };
+
+  Map<String, dynamic> getNamedSyrup(bool isSize) {
+    Map<String, dynamic> namedSyrup = {};
+
+    if (isSize) {
+      namedSyrup['size'] = updatedElement['size'];
+    }
+    if (updatedElement.containsKey('ice')) {
+      namedSyrup['ice'] = updatedElement['ice'];
+    }
+    if (updatedElement.containsKey('sugar')) {
+      namedSyrup['sugar'] = updatedElement['sugar'];
+    }
+    if (updatedElement.containsKey('brown_sugar_syrup')) {
+      namedSyrup['brown_sugar_syrup'] = 'Thêm ${updatedElement['brown_sugar_syrup']} pump si rô brown sugar';
+    }
+    if (updatedElement.containsKey('caramel_syrup')) {
+      namedSyrup['caramelSyrup'] = 'Thêm ${updatedElement['caramel_syrup']} pump si rô caramel';
+    }
+    if (updatedElement.containsKey('vanilla_syrup')) {
+      namedSyrup['vanillaSyrup'] = 'Thêm ${updatedElement['vanilla_syrup']} pump si rô vanilla';
+    }
+    if (updatedElement.containsKey('cookie_crumble_topping')) {
+      namedSyrup['cookie_crumble_topping'] = updatedElement['cookie_crumble_topping'];
+    }
+    print(namedSyrup.toString());
+    return namedSyrup;
+  }
 
   void quantityItem (bool isIncrement, int index) {
     if(isIncrement) {

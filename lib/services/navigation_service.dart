@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/views/screens/auth/login_view.dart';
 import 'package:sahami_app/views/screens/auth/register_view.dart';
 import 'package:sahami_app/views/screens/home/admin/category_view.dart';
+import 'package:sahami_app/views/screens/home/admin/order_detail_view.dart';
 import 'package:sahami_app/views/screens/manage/customer/customer_detail_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_create_view.dart';
 import 'package:sahami_app/views/screens/manage/product/product_detail_view.dart';
@@ -16,11 +17,13 @@ import '../views/screens/manage/customer/customer_create_view.dart';
 
 class NavigationServices {
   static NavigationServices _instance = const NavigationServices._internal();
+
   static NavigationServices get instance => _instance;
+
   const NavigationServices._internal();
 
   factory NavigationServices() {
-    if(instance == null) {
+    if (instance == null) {
       _instance = const NavigationServices._internal();
     }
     return _instance;
@@ -40,15 +43,15 @@ class NavigationServices {
   static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
   static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
   static const String PRODUCT_DETAIL_VIEW_ROUTE = "/PRODUCT_DETAIL_VIEW_ROUTE";
+  static const String ORDER_DETAIL_VIEW_ROUTE = "/ORDER_DETAIL_VIEW_ROUTE";
   static const String CATEGORY_VIEW_ROUTE = "/CATEGORY_VIEW_ROUTE";
 
   static const String MAIN_VIEW_ROUTE = "/MAIN_VIEW_ROUTE";
 
-
   String initialRoute() => SPLASH_PROGRESS_ROUTE;
 
   Route<dynamic> routeBuilders(RouteSettings settings) {
-    switch(settings.name) {
+    switch (settings.name) {
       case SPLASH_PROGRESS_ROUTE:
         return MaterialPageRoute(builder: (_) => const SplashView());
       case HOME_ROUTE:
@@ -69,23 +72,26 @@ class NavigationServices {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
             builder: (_) => CustomerDetailView(
-              userEntity: args[Constants.ENTITY],
-            )
-        );
+                  userEntity: args[Constants.ENTITY],
+                ));
       case MAIN_VIEW_ROUTE:
         final args = settings.arguments as int;
         return MaterialPageRoute(
             builder: (_) => MainView(
-              index: args,
-            )
-        );
+                  index: args,
+                ));
+      case ORDER_DETAIL_VIEW_ROUTE:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => OrderDetailView(
+                  orderEntity: args[Constants.ENTITY],
+                ));
       case PRODUCT_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
             builder: (_) => ProductDetailView(
               productEntity: args[Constants.ENTITY],
-            )
-        );
+            ));
       case PRODUCT_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const ProductCreateView());
       case SETTING_VIEW_ROUTE:
@@ -93,48 +99,62 @@ class NavigationServices {
       case CATEGORY_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CategoryView());
       default:
-        return MaterialPageRoute(builder: (_) => const SplashView());
+        return MaterialPageRoute(builder: (_) =>  const SplashView());
     }
   }
 
   void navigationToHomeScreen(BuildContext context) {
     Navigator.pushNamed(context, HOME_ROUTE);
   }
+
   void navigationToMainScreen(BuildContext context) {
-    Navigator.pushNamed(context, MAIN_ADMIN_ROUTE);
+    Navigator.pushNamedAndRemoveUntil(context, MAIN_ADMIN_ROUTE, (route) => false);
   }
+
   void navigationToLoginScreen(BuildContext context) {
-    Navigator.pushNamed(context, LOGIN_VIEW_ROUTE);
+    Navigator.pushNamedAndRemoveUntil(context, LOGIN_VIEW_ROUTE, (route) => false);
   }
+
   void navigationToRegisterScreen(BuildContext context) {
-    Navigator.pushNamed(context, REGISTER_VIEW_ROUTE);
+    Navigator.pushNamedAndRemoveUntil(context, REGISTER_VIEW_ROUTE, (route) => false);
   }
 
   void navigationToCustomerScreen(BuildContext context) {
     Navigator.pushNamed(context, CUSTOMER_VIEW_ROUTE);
   }
+
   void navigationToCustomerCreateScreen(BuildContext context) async {
     Navigator.pushNamed(context, CUSTOMER_CREATE_VIEW_ROUTE);
   }
+
   void navigationToCustomerDetailScreen(
-      BuildContext context, {
-      Object? arguments,
+    BuildContext context, {
+    Object? arguments,
   }) {
-    Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE, arguments: arguments);
+    Navigator.pushNamed(context, CUSTOMER_DETAIL_VIEW_ROUTE,
+        arguments: arguments);
   }
 
   void navigationToMainViewScreen(
-      BuildContext context, {
-        Object? arguments,
-      }) {
+    BuildContext context, {
+    Object? arguments,
+  }) {
     Navigator.pushNamed(context, MAIN_VIEW_ROUTE, arguments: arguments);
   }
 
   void navigationToProductDetailScreen(
-      BuildContext context, {
-        Object? arguments,
-      }) {
-    Navigator.pushNamed(context, PRODUCT_DETAIL_VIEW_ROUTE, arguments: arguments);
+    BuildContext context, {
+    Object? arguments,
+  }) {
+    Navigator.pushNamed(context, PRODUCT_DETAIL_VIEW_ROUTE,
+        arguments: arguments);
+  }
+
+  void navigationToOrderDetailScreen(
+    BuildContext context, {
+    Object? arguments,
+  }) {
+    Navigator.pushNamed(context, ORDER_DETAIL_VIEW_ROUTE, arguments: arguments);
   }
 
   void navigationToProductCreateScreen(BuildContext context) {

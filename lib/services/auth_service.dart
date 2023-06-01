@@ -18,6 +18,7 @@ class AuthService {
   UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '', tokenDevice: []);
   UserEntity get userEntity => _userEntity;
 
+  var isLogin = false;
 
   Future<void> loginUser(
       BuildContext context, String email, String pass) async {
@@ -48,7 +49,7 @@ class AuthService {
         if (role == "admin") {
           _userEntity.role = "admin";
         } else {
-          _userEntity.role = "User";
+          _userEntity.role = "user";
         }
         checkExistToken(context);
       },

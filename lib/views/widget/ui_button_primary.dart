@@ -35,7 +35,7 @@ class UIButtonPrimary extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(backgroundColor),
             padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                 horizontal: DimensManager.dimens.setWidth(paddingHorizontal),
-                vertical: DimensManager.dimens.setWidth(paddingVertical))),
+                vertical: DimensManager.dimens.setHeight(paddingVertical))),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               isBorder ? RoundedRectangleBorder(
                 side: BorderSide(color: UIColors.primary, width: 1),

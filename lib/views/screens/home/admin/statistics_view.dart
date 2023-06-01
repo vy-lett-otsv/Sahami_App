@@ -106,10 +106,10 @@ class _StatisticsViewState extends State<StatisticsView> {
                     .navigationToSettingAdminScreen(context);
               },
               child: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: null,
-                      backgroundImage: NetworkImage(AuthService().userEntity.image),
-                    )),
+                radius: 30,
+                backgroundColor: null,
+                backgroundImage: NetworkImage(AuthService().userEntity.image),
+              )),
           SizedBox(width: DimensManager.dimens.setWidth(10)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,8 @@ class _StatisticsViewState extends State<StatisticsView> {
                 title: UIStrings.addProduct,
                 image: AssetIcons.iconProductWhite,
                 onTap: () {
-                  NavigationServices.instance.navigationToProductCreateScreen(context);
+                  NavigationServices.instance
+                      .navigationToProductCreateScreen(context);
                 }),
             UIButtonStatistics(
                 icon: Icons.article, title: UIStrings.addOrder, onTap: () {}),
@@ -147,7 +148,8 @@ class _StatisticsViewState extends State<StatisticsView> {
                 icon: Icons.person,
                 title: UIStrings.addCustomer,
                 onTap: () {
-                  NavigationServices.instance.navigationToCustomerCreateScreen(context);
+                  NavigationServices.instance
+                      .navigationToCustomerCreateScreen(context);
                 }),
             UIButtonStatistics(
               icon: Icons.category,
@@ -181,7 +183,8 @@ class _StatisticsViewState extends State<StatisticsView> {
           }),
           Consumer<StatisticsViewModel>(builder: (_, statisticsViewModel, __) {
             return UICardStatistics(
-                title: UIStrings.totalOrder, data: "${statisticsViewModel.orderList.length}");
+                title: UIStrings.totalOrder,
+                data: "${statisticsViewModel.orderList.length}");
           }),
           Consumer<CustomerViewModel>(
             builder: (_, customerViewModel, __) {
@@ -192,7 +195,8 @@ class _StatisticsViewState extends State<StatisticsView> {
           ),
           Consumer<StatisticsViewModel>(builder: (_, statisticsViewModel, __) {
             return UICardStatistics(
-                title: UIStrings.totalRevenue, data: statisticsViewModel.formatRevenue);
+                title: UIStrings.totalRevenue,
+                data: statisticsViewModel.formatRevenue);
           }),
         ],
       ),
@@ -223,49 +227,53 @@ class _StatisticsViewState extends State<StatisticsView> {
             SizedBox(height: DimensManager.dimens.setHeight(10)),
             Flexible(
               flex: 6,
-              child: Row(
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: PieChart(PieChartData(
-                        sections: viewModel.getSections(touchedIndex),
-                        sectionsSpace: 0)),
-                  ),
-                  SizedBox(width: DimensManager.dimens.setHeight(15)),
-                  Flexible(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: viewModel.dataPieChart.map((data) => Container(
-                        child: _buildIndicatorItem(
-                          color: data.color,
-                          text: data.name,
+              child: viewModel.dataPieChart.isEmpty
+                  ? Column(
+                      children: [
+                        Image.asset(
+                          AssetIcons.iconOrderEmpty,
+                          width: DimensManager.dimens.setWidth(100),
+                          height: DimensManager.dimens.setHeight(100),
+                          fit: BoxFit.cover,
                         ),
-                      )).toList(),
+                        const UIText(
+                          UIStrings.myOrderEmpty,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: PieChart(PieChartData(
+                              sections: viewModel.getSections(touchedIndex),
+                              sectionsSpace: 0)),
+                        ),
+                        SizedBox(width: DimensManager.dimens.setHeight(15)),
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: viewModel.dataPieChart
+                                .map((data) => Container(
+                                      child: _buildIndicatorItem(
+                                        color: data.color,
+                                        text: data.name,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),
       ),
     );
   }
-
-  // Widget _buildIndicator() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: _statisticsViewModel.dataPieChart.map((data) => Container(
-  //       child: _buildIndicatorItem(
-  //         color: data.color,
-  //         text: data.name,
-  //       ),
-  //     )).toList(),
-  //   );
-  // }
 
   Widget _buildIndicatorItem({
     required Color color,
@@ -282,8 +290,8 @@ class _StatisticsViewState extends State<StatisticsView> {
             height: size,
             decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(5))
-            ),
+                borderRadius:
+                    BorderRadius.circular(DimensManager.dimens.setRadius(5))),
           ),
           SizedBox(width: DimensManager.dimens.setHeight(10)),
           Text(

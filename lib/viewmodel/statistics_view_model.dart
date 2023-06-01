@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:intl/intl.dart' as intl;
 import '../data/fake_data.dart';
+import '../services/auth_service.dart';
 import '../views/constants/ui_color.dart';
 import '../views/constants/ui_strings.dart';
 
@@ -33,6 +34,10 @@ class StatisticsViewModel extends ChangeNotifier {
 
   List<OrderEntity> get pendingDeliveryList => _pendingDeliveryList;
 
+  List<OrderEntity> _confirmedOrderList = [];
+
+  List<OrderEntity> get confirmedOrderList => _confirmedOrderList;
+
   List<OrderEntity> _cancelOrderList = [];
 
   List<OrderEntity> get cancelOrderList => _cancelOrderList;
@@ -42,6 +47,8 @@ class StatisticsViewModel extends ChangeNotifier {
   List<OrderEntity> get finishOrderList => _finishOrderList;
 
   String dropdownValueOrder = FakeData().listOrder.first;
+
+
 
   Future<void> updateDropDownPieChart(String value) async {
     dropdownValueOrder = value;
@@ -152,10 +159,19 @@ class StatisticsViewModel extends ChangeNotifier {
     }).toList();
   }
 
+  // Future<List<OrderEntity>> emptyPieChart() async {
+  //   final collectionRef = await FirebaseFirestore.instance.collection('order').where("userEntity.id", isEqualTo: AuthService().userEntity.userId).get();
+  //   return collectionRef.docs.map<OrderEntity>((docSnapshot) {
+  //     final data = docSnapshot.data();
+  //     return OrderEntity.fromJson(data);
+  //   }).toList();
+  // }
+
   Future<void> pieChartList(String dropdownValueOrder) async {
     switch(dropdownValueOrder) {
       case "Tuần": {
         _pendingOrderList = await fetchDataOptionWeek(UIStrings.pending);
+        _confirmedOrderList = await fetchDataOptionWeek(UIStrings.confirmed);
         _pendingDeliveryList = await fetchDataOptionWeek(UIStrings.delivery);
         _cancelOrderList = await fetchDataOptionWeek(UIStrings.cancelOrder);
         _finishOrderList = await fetchDataOptionWeek(UIStrings.finish);
@@ -165,6 +181,7 @@ class StatisticsViewModel extends ChangeNotifier {
       break;
       case "Tháng": {
           _pendingOrderList = await fetchDataOptionMonth(UIStrings.pending);
+          _confirmedOrderList = await fetchDataOptionMonth(UIStrings.confirmed);
           _pendingDeliveryList = await fetchDataOptionMonth(UIStrings.delivery);
           _cancelOrderList = await fetchDataOptionMonth(UIStrings.cancelOrder);
           _finishOrderList = await fetchDataOptionMonth(UIStrings.finish);
@@ -174,6 +191,7 @@ class StatisticsViewModel extends ChangeNotifier {
       break;
       case "Năm": {
         _pendingOrderList = await fetchDataOptionYear(UIStrings.pending);
+        _confirmedOrderList = await fetchDataOptionYear(UIStrings.confirmed);
         _pendingDeliveryList = await fetchDataOptionYear(UIStrings.delivery);
         _cancelOrderList = await fetchDataOptionYear(UIStrings.cancelOrder);
         _finishOrderList = await fetchDataOptionYear(UIStrings.finish);
@@ -183,6 +201,7 @@ class StatisticsViewModel extends ChangeNotifier {
       break;
       default: {
         _pendingOrderList = await fetchDataOptionToday(UIStrings.pending);
+        _confirmedOrderList = await fetchDataOptionToday(UIStrings.confirmed);
         _pendingDeliveryList = await fetchDataOptionToday(UIStrings.delivery);
         _cancelOrderList = await fetchDataOptionToday(UIStrings.cancelOrder);
         _finishOrderList = await fetchDataOptionToday(UIStrings.finish);
@@ -197,14 +216,21 @@ class StatisticsViewModel extends ChangeNotifier {
   void addDataPieChart(List<OrderEntity> orderList) {
     dataPieChart = [];
     double pendingOrder = (pendingOrderList.length / orderList.length * 100).roundToDouble();
+    double confirm = (confirmedOrderList.length / orderList.length * 100).roundToDouble();
     double pendingDelivery = (pendingDeliveryList.length / orderList.length * 100).roundToDouble();
-    double confirm = (finishOrderList.length / orderList.length * 100).roundToDouble();
+    double finish = (finishOrderList.length / orderList.length * 100).roundToDouble();
     double cancel = (cancelOrderList.length / orderList.length * 100).roundToDouble();
 
-    dataPieChart.add(OrderData(name: UIStrings.pending, percent: pendingOrder, color: UIColors.star));
-    dataPieChart.add(OrderData(name: UIStrings.delivery, percent: pendingDelivery, color: UIColors.orange));
-    dataPieChart.add(OrderData(name: UIStrings.finish, percent: confirm, color: UIColors.primary));
-    dataPieChart.add(OrderData(name: UIStrings.cancelOrder, percent: cancel, color: UIColors.lightRed));
+    if(pendingOrder.isNaN && pendingDelivery.isNaN && finish.isNaN && cancel.isNaN) {
+      dataPieChart = [];
+    } else {
+      dataPieChart.add(OrderData(name: UIStrings.pending, percent: pendingOrder, color: UIColors.star));
+      dataPieChart.add(OrderData(name: UIStrings.confirmed, percent: confirm, color: UIColors.orange));
+      dataPieChart.add(OrderData(name: UIStrings.delivery, percent: pendingDelivery, color: UIColors.delivery));
+      dataPieChart.add(OrderData(name: UIStrings.finish, percent: finish, color: UIColors.primary));
+      dataPieChart.add(OrderData(name: UIStrings.cancelOrder, percent: cancel, color: UIColors.lightRed));
+    }
+    print(dataPieChart.toString());
   }
 
   List<PieChartSectionData> getSections(int touchedIndex) {

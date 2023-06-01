@@ -49,8 +49,10 @@ class UIStrings {
 
 
   static const String manageCategory = "Manage Category";
-  static const String manageProduct = "Manage Product";
-  static const String manageCustomer = "Manage Customer";
+  static const String manageProduct = "Quản lý sản phẩm";
+  static const String manageCustomer = "Quản lý khách hàng";
+  static const String manageOrder = "Quản lý đơn hàng";
+  static const String detailOrder = "Chi tiết đơn hàng";
 
   static const String addProduct = "Thêm sản phẩm";
   static const String addOrder = "Thêm đơn hàng";
@@ -169,5 +171,12 @@ class UIStrings {
   static const String updatePhone = "Cập nhật số điện thoại";
   static const String update = "Cập nhật";
   static const String setAddress = "Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?";
+
+  //detail order
+  static const String cancelOrderButton = "Hủy đơn hàng";
+  static const String confirmOrder = "Xác nhận đơn hàng";
+  static const String notNotice = "Không có ghi chú";
+  static const String nameUser = "Tên khách hàng";
+  static const String totalAmount = "Tổng thanh toán";
 
 }

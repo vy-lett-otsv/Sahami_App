@@ -16,6 +16,15 @@ class OrderViewModel extends ChangeNotifier {
   List<OrderEntity> _orderList = [];
   List<OrderEntity> get orderList => _orderList;
 
+  List<OrderEntity> _orderPendingList = [];
+  List<OrderEntity> get orderPendingList => _orderPendingList;
+
+  List<OrderEntity> _confirmList = [];
+  List<OrderEntity> get confirmList => _confirmList;
+
+  List<OrderEntity> _pendingDelivery = [];
+  List<OrderEntity> get pendingDelivery => _pendingDelivery;
+
   List<OrderEntity> _orderListFinish = [];
   List<OrderEntity> get orderListFinish => _orderListFinish;
 
@@ -29,6 +38,53 @@ class OrderViewModel extends ChangeNotifier {
   ViewState _viewState = ViewState.idle;
 
   ViewState get viewState => _viewState;
+
+  int selected = 0;
+
+  PageController _pageController = PageController();
+  PageController get pageController => PageController();
+
+  Future<void> updateSelected(int index) async {
+    selected = index;
+    if(_pageController.hasClients) {
+      _pageController.jumpToPage(index);
+    }
+
+
+    notifyListeners();
+  }
+
+  Future<void> page(int index) async {
+
+    notifyListeners();
+  }
+
+  void changeStaffTab(productTab) {
+    _currentProductTab = productTab;
+  }
+  
+  Future<void> updateStatusOrder(String status, String id) async {
+    FirebaseFirestore.instance.collection('order').doc(id).update({'orderStatus' : status});
+    notifyListeners();
+  }
+
+  Future<void> fetchOrderStatus() async {
+    _orderPendingList = await fetchOrderStatusOption(UIStrings.pending);
+    _confirmList = await fetchOrderStatusOption(UIStrings.confirmed);
+    _pendingDelivery = await fetchOrderStatusOption(UIStrings.delivery);
+    notifyListeners();
+  }
+
+  Future<List<OrderEntity> > fetchOrderStatusOption(String status) async {
+    final orderSnapshot = await FirebaseFirestore.instance
+        .collection('order')
+        .where('orderStatus', isEqualTo: status)
+        .get();
+    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
+      final data = docSnapshot.data();
+      return OrderEntity.fromJson(data);
+    }).toList();
+  }
 
   void changeTab(productTab) {
     _currentProductTab = productTab;
