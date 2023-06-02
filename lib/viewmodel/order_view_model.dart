@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -131,26 +130,29 @@ class OrderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void formatDate() {
+    final start = DateFormat('dd/MM/yyy').format(dateRange.start);
+    final end = DateFormat('dd/MM/yyy').format(dateRange.end);
+    if(start == end && start == DateFormat('dd/MM/yyy').format(DateTime.now())) {
+      _date = "Hôm nay";
+    } else if(start == end){
+      _date = start;
+    } else {
+      _date = '$start - $end';
+    }
+    notifyListeners();
+  }
+
   Future<void> listOrderByDay() async {
     DateTime startOfDay = DateTime(dateRange.start.year, dateRange.start.month, dateRange.start.day, 0, 0, 0);
     DateTime endOfDay = DateTime(dateRange.end.year, dateRange.end.month, dateRange.end.day, 23, 59, 59);
-    if(dateRange.start == dateRange.end || date == "Hôm nay") {
-      final orderSnapshot = await docOrder
-          .where("userEntity.id", isEqualTo: idUser)
-          .where("orderStatus", isEqualTo: UIStrings.finish)
-          .where("createAt", isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
-          .where("createAt", isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
-          .get();
-      _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
-    } else {
-      final orderSnapshot = await docOrder
-          .where("userEntity.id", isEqualTo: idUser)
-          .where("orderStatus", isEqualTo: UIStrings.finish)
-          .where("createAt", isGreaterThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.start))
-          .where("createAt", isLessThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.end))
-          .get();
-      _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
-    }
+    final orderSnapshot = await docOrder
+        .where("userEntity.id", isEqualTo: idUser)
+        .where("orderStatus", isEqualTo: UIStrings.finish)
+        .where("createAt", isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where("createAt", isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+        .get();
+    _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
     print(_orderListFinish.toString());
     notifyListeners();
   }
@@ -163,6 +165,7 @@ class OrderViewModel extends ChangeNotifier {
         .get();
     _orderList = getOrderListFromSnapshot(orderSnapshot);
     listOrderByDay();
+    formatDate();
     notifyListeners();
     _viewState = ViewState.success;
   }

@@ -188,8 +188,7 @@ class _OrderViewState extends State<OrderView>
                         // UIText(
                         //     "${list[index].createAt}, ${list[index].createAtTime}",
                         //     size: DimensManager.dimens.setSp(14)),
-                        UIText(
-                            "${list[index].items.length} món")
+                        UIText("${list[index].items.length} món")
                       ],
                     ),
                     SizedBox(height: DimensManager.dimens.setHeight(10)),

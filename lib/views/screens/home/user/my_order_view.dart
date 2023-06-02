@@ -28,7 +28,6 @@ class _MyOrderViewState extends State<MyOrderView>
   void initState() {
     _tabController = TabController(vsync: this, length: DataLocal.orderTabs.length);
     _orderViewModel.updateChangeTab(_tabController);
-    // _orderViewModel.formatDate();
     _orderViewModel.fetchOrder();
     super.initState();
   }

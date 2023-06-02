@@ -15,8 +15,22 @@ enum OrderStatus {
 }
 
 extension OrderStatusExt on OrderStatus {
-  String get name {
+  String get nameOrder {
     const names = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivery, UIStrings.finish, UIStrings.cancelOrder];
+    return names[index];
+  }
+}
+
+enum TimeOption {
+  day,
+  week,
+  month,
+  year
+}
+
+extension TimeOptionExt on OrderStatus {
+  String get nameTime {
+    const names = ["Hôm nay", "Tuần", "Tháng", "Năm"];
     return names[index];
   }
 }
