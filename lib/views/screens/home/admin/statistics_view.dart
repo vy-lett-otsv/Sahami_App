@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/data/fake_data.dart';
+import 'package:sahami_app/enums/enum.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
@@ -45,7 +46,7 @@ class _StatisticsViewState extends State<StatisticsView> {
     _productViewModel.fetchProducts("product");
     _customerViewModel.fetchCustomer();
     _statisticsViewModel.fetch();
-    _statisticsViewModel.pieChartList(FakeData().listOrder.first);
+    _statisticsViewModel.pieChartList(TimeOption.day.nameTime);
     super.initState();
   }
 

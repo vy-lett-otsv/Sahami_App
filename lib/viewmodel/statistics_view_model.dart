@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:sahami_app/enums/enum.dart';
 import '../data/fake_data.dart';
-import '../services/auth_service.dart';
 import '../views/constants/ui_color.dart';
 import '../views/constants/ui_strings.dart';
 
@@ -47,28 +45,51 @@ class StatisticsViewModel extends ChangeNotifier {
 
   List<OrderEntity> get finishOrderList => _finishOrderList;
 
-  String dropdownValueOrder = FakeData().listOrder.first;
+  String dropdownValueOrder = TimeOption.day.nameTime;
 
-  final now = DateTime.now();
-  String startOfWeek = "";
-  String endOfWeek = "";
-
-  void setDay() {
-    startOfWeek = DateFormat.yMMMMd().format(now.add(Duration(days: DateTime.daysPerWeek - now.weekday - 7)));
-    endOfWeek = DateFormat.yMMMMd().format(now.subtract(Duration(days: now.day - 1)));
-  }
 
   Future<void> updateDropDownPieChart(String value) async {
     dropdownValueOrder = value;
     await pieChartList(value);
-    print(dropdownValueOrder);
     notifyListeners();
   }
 
-  Future<List<OrderEntity>> fetchDataOrderListToday() async {
+  DateTime startOfDay = DateTime.now();
+  DateTime endOfDay = DateTime.now();
+
+  void setDate(String time) {
+    startOfDay = DateTime.now();
+    endOfDay = DateTime.now();
+    if(time == TimeOption.day.nameTime) {
+      startOfDay = DateTime(startOfDay.year, startOfDay.month, startOfDay.day);
+      endOfDay = DateTime(endOfDay.year, endOfDay.month, endOfDay.day, 23, 59, 59);
+    } else if(time == TimeOption.week.nameTime) {
+      startOfDay = startOfDay.add(Duration(
+          days: DateTime.daysPerWeek - DateTime.now().weekday - 7,
+          hours: -startOfDay.hour,
+          minutes: -startOfDay.minute,
+          seconds: -startOfDay.second,
+      ));
+      endOfDay = endOfDay.add(Duration(
+          days: DateTime.now().day - 1,
+          hours: 23 - endOfDay.hour,
+          minutes: 59 - endOfDay.minute,
+          seconds: 59 - endOfDay.second,
+      ));
+    } else if(time == TimeOption.month.nameTime) {
+      startOfDay = DateTime(DateTime.now().year, DateTime.now().month, 1);
+      endOfDay = DateTime(DateTime.now().year, DateTime.now().month + 1, 0, 23, 59, 59);
+    } else {
+      startOfDay = DateTime(DateTime.now().year, 1, 1);
+      endOfDay = DateTime(DateTime.now().year + 1, 1, 0, 23, 59, 59);
+    }
+  }
+
+  Future<List<OrderEntity>> fetchDataOrderList(DateTime start, DateTime end) async {
     final orderSnapshot = await FirebaseFirestore.instance
         .collection('order')
-        .where('createAt', isEqualTo: DateFormat.yMMMMd().format(DateTime.now()))
+        .where("createAt", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where("createAt", isLessThanOrEqualTo: Timestamp.fromDate(end))
         .get();
     return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
       final data = docSnapshot.data();
@@ -76,46 +97,12 @@ class StatisticsViewModel extends ChangeNotifier {
     }).toList();
   }
 
-  Future<List<OrderEntity>> fetchDataOrderListWeek() async {
-    setDay();
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('createAt', isGreaterThanOrEqualTo: startOfWeek, isLessThanOrEqualTo: endOfWeek)
-        .get();
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      return OrderEntity.fromJson(data);
-    }).toList();
-  }
-
-  Future<List<OrderEntity>> fetchDataOrderMonth() async {
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('createAtMonth', isEqualTo: '${DateTime.now().month}')
-        .where('createAtYear', isEqualTo: '${DateTime.now().year}')
-        .get();
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      return OrderEntity.fromJson(data);
-    }).toList();
-  }
-
-  Future<List<OrderEntity>> fetchDataOrderYear() async {
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('createAtYear', isEqualTo: '${DateTime.now().year}')
-        .get();
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      return OrderEntity.fromJson(data);
-    }).toList();
-  }
-
-  Future<List<OrderEntity>> fetchDataOptionToday(String option) async {
+  Future<List<OrderEntity>> fetchDataOption(String option, DateTime start, DateTime end) async {
     final orderSnapshot = await FirebaseFirestore.instance
         .collection('order')
         .where('orderStatus', isEqualTo: option)
-        .where('createAt', isEqualTo: DateFormat.yMMMMd().format(DateTime.now()))
+        .where("createAt", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where("createAt", isLessThanOrEqualTo: Timestamp.fromDate(end))
         .get();
     return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
       final data = docSnapshot.data();
@@ -123,97 +110,34 @@ class StatisticsViewModel extends ChangeNotifier {
     }).toList();
   }
 
-  Future<List<OrderEntity>> fetchDataOptionWeek(String option) async {
-    setDay();
-    print(startOfWeek);
-    print(endOfWeek);
-    print(option);
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('orderStatus', isEqualTo: option)
-        // .where("createAt", isGreaterThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.start))
-        // .where("createAt", isLessThanOrEqualTo: DateFormat.yMMMMd().format(dateRange.end))
-        .get();
-    print('orderSnapshot: ${orderSnapshot.docs}');
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      print(data.length);
-      return OrderEntity.fromJson(data);
-    }).toList();
-  }
-
-  Future<List<OrderEntity>> fetchDataOptionMonth(String option) async {
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('orderStatus', isEqualTo: option)
-        .where('createAtMonth', isEqualTo: '${DateTime.now().month}')
-        .where('createAtYear', isEqualTo: '${DateTime.now().year}')
-        .get();
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      return OrderEntity.fromJson(data);
-    }).toList();
-  }
-
-  Future<List<OrderEntity>> fetchDataOptionYear(String option) async {
-    final orderSnapshot = await FirebaseFirestore.instance
-        .collection('order')
-        .where('orderStatus', isEqualTo: option)
-        .where('createAtYear', isEqualTo: '${DateTime.now().year}')
-        .get();
-    return orderSnapshot.docs.map<OrderEntity>((docSnapshot) {
-      final data = docSnapshot.data();
-      return OrderEntity.fromJson(data);
-    }).toList();
+  Future<void> fetchDataDay(String time) async {
+    setDate(time);
+    _pendingOrderList = await fetchDataOption(UIStrings.pending, startOfDay, endOfDay);
+    _confirmedOrderList = await fetchDataOption(UIStrings.confirmed, startOfDay, endOfDay);
+    _pendingDeliveryList = await fetchDataOption(UIStrings.delivery, startOfDay, endOfDay);
+    _cancelOrderList = await fetchDataOption(UIStrings.cancelOrder, startOfDay, endOfDay);
+    _finishOrderList = await fetchDataOption(UIStrings.finish, startOfDay, endOfDay);
   }
 
   Future<void> pieChartList(String dropdownValueOrder) async {
-    switch(dropdownValueOrder) {
-      case "Tuần": {
-        _pendingOrderList = await fetchDataOptionWeek(UIStrings.pending);
-        _confirmedOrderList = await fetchDataOptionWeek(UIStrings.confirmed);
-        _pendingDeliveryList = await fetchDataOptionWeek(UIStrings.delivery);
-        _cancelOrderList = await fetchDataOptionWeek(UIStrings.cancelOrder);
-        _finishOrderList = await fetchDataOptionWeek(UIStrings.finish);
-        final orderList = await fetchDataOrderListWeek();
-        addDataPieChart(orderList);
-      }
-      break;
-      case "Tháng": {
-          _pendingOrderList = await fetchDataOptionMonth(UIStrings.pending);
-          _confirmedOrderList = await fetchDataOptionMonth(UIStrings.confirmed);
-          _pendingDeliveryList = await fetchDataOptionMonth(UIStrings.delivery);
-          _cancelOrderList = await fetchDataOptionMonth(UIStrings.cancelOrder);
-          _finishOrderList = await fetchDataOptionMonth(UIStrings.finish);
-          final orderList = await fetchDataOrderMonth();
-          addDataPieChart(orderList);
-      }
-      break;
-      case "Năm": {
-        _pendingOrderList = await fetchDataOptionYear(UIStrings.pending);
-        _confirmedOrderList = await fetchDataOptionYear(UIStrings.confirmed);
-        _pendingDeliveryList = await fetchDataOptionYear(UIStrings.delivery);
-        _cancelOrderList = await fetchDataOptionYear(UIStrings.cancelOrder);
-        _finishOrderList = await fetchDataOptionYear(UIStrings.finish);
-        final orderList = await fetchDataOrderYear();
-        addDataPieChart(orderList);
-      }
-      break;
-      default: {
-        _pendingOrderList = await fetchDataOptionToday(UIStrings.pending);
-        _confirmedOrderList = await fetchDataOptionToday(UIStrings.confirmed);
-        _pendingDeliveryList = await fetchDataOptionToday(UIStrings.delivery);
-        _cancelOrderList = await fetchDataOptionToday(UIStrings.cancelOrder);
-        _finishOrderList = await fetchDataOptionToday(UIStrings.finish);
-        final orderList = await fetchDataOrderListToday();
-        addDataPieChart(orderList);
-      }
-      break;
+    if(dropdownValueOrder == TimeOption.day.nameTime) {
+      await fetchDataDay(TimeOption.day.nameTime);
     }
+    else if(dropdownValueOrder == TimeOption.week.nameTime) {
+      await fetchDataDay(TimeOption.week.nameTime);
+    } else if(dropdownValueOrder == TimeOption.month.nameTime) {
+      fetchDataDay(TimeOption.month.nameTime);
+    } else {
+      fetchDataDay(TimeOption.year.nameTime);
+    }
+    final orderList = await fetchDataOrderList(startOfDay, endOfDay);
+    addDataPieChart(orderList);
+
     notifyListeners();
   }
 
   void addDataPieChart(List<OrderEntity> orderList) {
+    dataPieChart = [];
     double pendingOrder = (pendingOrderList.length / orderList.length * 100).roundToDouble();
     double confirm = (confirmedOrderList.length / orderList.length * 100).roundToDouble();
     double pendingDelivery = (pendingDeliveryList.length / orderList.length * 100).roundToDouble();
@@ -229,9 +153,6 @@ class StatisticsViewModel extends ChangeNotifier {
     if(pendingOrder.isNaN && confirm.isNaN && pendingDelivery.isNaN && finish.isNaN && cancel.isNaN) {
       dataPieChart = [];
     }
-    // print(pendingOrder);
-    // print(confirm);
-    // print(dataPieChart.toString());
   }
 
   List<PieChartSectionData> getSections(int touchedIndex) {
@@ -263,7 +184,6 @@ class StatisticsViewModel extends ChangeNotifier {
       final data = docSnapshot.data();
       return OrderEntity.fromJson(data);
     }).toList();
-    // pieChartList();
     notifyListeners();
   }
 

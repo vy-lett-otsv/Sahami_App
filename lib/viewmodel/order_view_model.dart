@@ -32,7 +32,7 @@ class OrderViewModel extends ChangeNotifier {
 
   final docOrder = FirebaseFirestore.instance.collection('order');
 
-  String _date = "Hôm nay";
+  String _date = TimeOption.day.name;
   String get date => _date;
 
   ViewState _viewState = ViewState.idle;

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sahami_app/data/api/notification_api.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
@@ -38,16 +37,6 @@ class PaymentViewModel extends ChangeNotifier{
     updatedElement = Map.from(orderEntity.items[index]);
   }
 
-  // Map<String, dynamic> getNamedSyrup(bool isSize) => {
-  //   if(isSize) 'size': updatedElement['size'],
-  //   if (updatedElement.containsKey('ice')) 'ice': updatedElement['ice'],
-  //   if (updatedElement.containsKey('sugar')) 'sugar': updatedElement['sugar'],
-  //   if (updatedElement.containsKey('brown_sugar_syrup')) 'brown_sugar_syrup': 'Thêm ${updatedElement['brown_sugar_syrup']} pump si rô brown sugar',
-  //   if (updatedElement.containsKey('caramel_syrup')) 'caramelSyrup': 'Thêm ${updatedElement['caramel_syrup']} pump si rô caramel',
-  //   if (updatedElement.containsKey('vanilla_syrup')) 'vanillaSyrup': 'Thêm ${updatedElement['vanilla_syrup']} pump si rô vanilla',
-  //   if (updatedElement.containsKey('cookie_crumble_topping')) 'cookie_crumble_topping': updatedElement['cookie_crumble_topping'],
-  // };
-
   Map<String, dynamic> getNamedSyrup(bool isSize) {
     Map<String, dynamic> namedSyrup = {};
 
@@ -72,7 +61,6 @@ class PaymentViewModel extends ChangeNotifier{
     if (updatedElement.containsKey('cookie_crumble_topping')) {
       namedSyrup['cookie_crumble_topping'] = updatedElement['cookie_crumble_topping'];
     }
-    print(namedSyrup.toString());
     return namedSyrup;
   }
 
@@ -144,9 +132,6 @@ class PaymentViewModel extends ChangeNotifier{
         userEntity: AuthService().userEntity,
         items: CartService().orderList,
         createAt: Timestamp.now(),
-        // createAtTime: DateFormat.Hms().format(DateTime.now()),
-        // createAtMonth: DateFormat.M().format(DateTime.now()),
-        // createAtYear: DateFormat.y().format(DateTime.now()),
         deliveryCharge: deliverCharge,
         orderAmount: total,
         orderNote: noteController.text,

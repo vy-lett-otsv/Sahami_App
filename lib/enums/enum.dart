@@ -28,9 +28,10 @@ enum TimeOption {
   year
 }
 
-extension TimeOptionExt on OrderStatus {
+extension TimeOptionExt on TimeOption {
   String get nameTime {
     const names = ["Hôm nay", "Tuần", "Tháng", "Năm"];
+    final index = this.index;
     return names[index];
   }
 }
