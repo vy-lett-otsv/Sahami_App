@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/enums/enum.dart';
 import 'package:sahami_app/services/navigation_service.dart';
@@ -10,6 +11,7 @@ import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../../../data/data_local.dart';
 import '../../../../data/remote/entity/order_entity.dart';
 import '../../../../utils/constants.dart';
+import '../../../assets/asset_icons.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_color.dart';
 import '../../../constants/ui_strings.dart';
@@ -26,8 +28,6 @@ class _OrderViewState extends State<OrderView>
     with SingleTickerProviderStateMixin {
   final OrderViewModel _orderViewModel = OrderViewModel();
 
-
-
   @override
   void initState() {
     _orderViewModel.fetchOrderStatus();
@@ -41,7 +41,7 @@ class _OrderViewState extends State<OrderView>
       child: Consumer<OrderViewModel>(
         builder: (_, viewModel, __) {
           return Scaffold(
-            backgroundColor: UIColors.background,
+            backgroundColor: UIColors.white,
             appBar: AppBar(
               title: const Text(UIStrings.manageOrder),
               backgroundColor: UIColors.primary,
@@ -56,7 +56,7 @@ class _OrderViewState extends State<OrderView>
               children: [
                 _buildSearch(context),
                 SizedBox(
-                  height: DimensManager.dimens.setHeight(10),
+                  height: DimensManager.dimens.setHeight(20),
                 ),
                 Container(
                   height: DimensManager.dimens.setHeight(50),
@@ -99,6 +99,9 @@ class _OrderViewState extends State<OrderView>
             duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
       },
       child: Container(
+        margin: EdgeInsets.only(
+          right: DimensManager.dimens.setWidth(15),
+        ),
         padding: EdgeInsets.symmetric(
           horizontal: DimensManager.dimens.setWidth(15),
         ),
@@ -128,6 +131,10 @@ class _OrderViewState extends State<OrderView>
           border: InputBorder.none,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           contentPadding: EdgeInsets.zero,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+                width: 3, color: UIColors.background),
+          ),
         ),
       ),
     );
@@ -135,82 +142,91 @@ class _OrderViewState extends State<OrderView>
 
   Widget _buildListOrder(List<OrderEntity> list) {
     final formatter = intl.NumberFormat.decimalPattern();
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          return Slidable(
-            endActionPane: ActionPane(
-              extentRatio: DimensManager.dimens.setWidth(0.2),
-              motion: const BehindMotion(),
+    return list.isEmpty
+        ? Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(30)),
+            child: Column(
               children: [
-                SlidableAction(
-                    backgroundColor: UIColors.background,
-                    foregroundColor: UIColors.lightRed,
-                    icon: Icons.delete,
-                    onPressed: (context) {}),
-                const Spacer(),
+                Image.asset(
+                  AssetIcons.iconOrderEmpty,
+                  width: DimensManager.dimens.setWidth(100),
+                  height: DimensManager.dimens.setHeight(100),
+                  fit: BoxFit.cover,
+                ),
+                const UIText(
+                  UIStrings.myOrderEmptyAdmin,
+                  textAlign: TextAlign.center,
+                )
               ],
             ),
-            child: GestureDetector(
-              onTap: () {
-                NavigationServices.instance.navigationToOrderDetailScreen(
-                  context,
-                  arguments: {
-                    Constants.ENTITY: list.elementAt(index),
-                  },
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: DimensManager.dimens.setWidth(20),
-                    vertical: DimensManager.dimens.setWidth(10)),
-                margin: EdgeInsets.symmetric(
-                  vertical: DimensManager.dimens.setHeight(10),
-                  horizontal: DimensManager.dimens.setWidth(20),
-                ),
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(DimensManager.dimens.setSp(20)),
-                    color: UIColors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          )
+        : ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              return Slidable(
+                endActionPane: ActionPane(
+                  extentRatio: DimensManager.dimens.setWidth(0.2),
+                  motion: const BehindMotion(),
                   children: [
-                    UIText("Order ID ${list[index].orderId}",
-                        color: UIColors.black),
-                    SizedBox(height: DimensManager.dimens.setHeight(10)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // UIText(
-                        //     "${list[index].createAt}, ${list[index].createAtTime}",
-                        //     size: DimensManager.dimens.setSp(14)),
-                        UIText("${list[index].items.length} món")
-                      ],
-                    ),
-                    SizedBox(height: DimensManager.dimens.setHeight(10)),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                DimensManager.dimens.setSp(10)),
-                            border:
-                                Border.all(width: 1, color: UIColors.primary)),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: DimensManager.dimens.setWidth(10),
-                            vertical: DimensManager.dimens.setHeight(5)),
-                        child: UIText(list[index].orderStatus,
-                            color: UIColors.primary,
-                            size: DimensManager.dimens.setSp(14))),
-                    Align(
-                        alignment: Alignment.bottomRight,
-                        child: UIText(
-                            "${formatter.format(list[index].orderAmount)} VNĐ"))
+                    SlidableAction(
+                        backgroundColor: UIColors.background,
+                        foregroundColor: UIColors.lightRed,
+                        icon: Icons.delete,
+                        onPressed: (context) {}),
+                    const Spacer(),
                   ],
                 ),
-              ),
-            ),
-          );
-        });
+                child: GestureDetector(
+                  onTap: () {
+                    NavigationServices.instance.navigationToOrderDetailScreen(
+                      context,
+                      arguments: {
+                        Constants.ENTITY: list.elementAt(index),
+                      },
+                      status: UIStrings.pending
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: DimensManager.dimens.setWidth(20),
+                        vertical: DimensManager.dimens.setWidth(10)),
+                    margin: EdgeInsets.symmetric(
+                      vertical: DimensManager.dimens.setHeight(10),
+                      horizontal: DimensManager.dimens.setWidth(20),
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            DimensManager.dimens.setSp(20)),
+                        color: UIColors.primaryBackground),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        UIText("Order ID ${list[index].orderId}",
+                            color: UIColors.black),
+                        SizedBox(height: DimensManager.dimens.setHeight(10)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // UIText(
+                            //     "${list[index].createAt}, ${list[index].createAtTime}",
+                            //     size: DimensManager.dimens.setSp(14)),
+                            UIText("${list[index].items.length} món")
+                          ],
+                        ),
+                        SizedBox(height: DimensManager.dimens.setHeight(10)),
+                        UIText(DateFormat('hh:mm a dd/MM/yyy').format(list[index].createAt!.toDate()),),
+                        Align(
+                            alignment: Alignment.bottomRight,
+                            child: UIText(
+                                "${formatter.format(list[index].orderAmount)} VNĐ"))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
   }
 }

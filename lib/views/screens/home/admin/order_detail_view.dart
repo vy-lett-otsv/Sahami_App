@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:sahami_app/viewmodel/order_view_model.dart';
 import 'package:sahami_app/viewmodel/payment_view_model.dart';
+import 'package:sahami_app/views/widget/ui_button_order.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 import '../../../constants/dimens_manager.dart';
 import '../../../constants/ui_color.dart';
@@ -12,8 +13,9 @@ import 'package:intl/intl.dart' as intl;
 
 class OrderDetailView extends StatefulWidget {
   final OrderEntity orderEntity;
+  final String status;
 
-  const OrderDetailView({Key? key, required this.orderEntity})
+  const OrderDetailView({Key? key, required this.orderEntity, required this.status})
       : super(key: key);
 
   @override
@@ -51,10 +53,6 @@ class _OrderDetailViewState extends State<OrderDetailView> {
               margin: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
               child: Column(
                 children: [
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: UIText("${widget.orderEntity.createAt}, ${widget.orderEntity.createAtTime}"),
-                  // ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: widget.orderEntity.items.length,
@@ -189,31 +187,18 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ElevatedButton(
-                            onPressed: () {
+                        UIButtonOrder(
+                            callback: () {
                               viewModel.updateStatusOrder(UIStrings.cancelOrder, widget.orderEntity.orderId);
                             },
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(UIColors.white),
-                                padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                                  vertical: DimensManager.dimens.setHeight(10),
-                                  horizontal: DimensManager.dimens.setWidth(5),
-                                )),
-                            ),
-                            child: UITitle(UIStrings.cancelOrderButton, color: UIColors.primary,)
+                            text: UIStrings.cancelOrderButton, backgroundColor: UIColors.white, textColor: UIColors.text,
                         ),
-                        ElevatedButton(
-                            onPressed: () {
-                              viewModel.updateStatusOrder(UIStrings.confirmed, widget.orderEntity.orderId);
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(UIColors.primary),
-                              padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                                  vertical: DimensManager.dimens.setHeight(10),
-                                  horizontal: DimensManager.dimens.setWidth(5),
-                              )),
-                            ),
-                            child: const UITitle(UIStrings.confirmOrder, color: UIColors.white,)
+                        UIButtonOrder(
+                          callback: () {
+                            viewModel.updateStatusOrder(UIStrings.confirmed, widget.orderEntity.orderId);
+                            viewModel.notificationSuccess(context);
+                          },
+                          text: UIStrings.confirmOrder,
                         ),
                       ],
                     ),

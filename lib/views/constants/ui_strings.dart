@@ -146,13 +146,15 @@ class UIStrings {
   static const String note = "Ghi chú";
   static const String hintNote = "Vui lòng để lại ghi chú ...";
   static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
-  static const String createOrderSuccess = "Tạo đơn hành thành công";
+  static const String createOrderSuccess = "Tạo đơn hàng thành công";
+  static const String confirmOrderSuccess = "Xác nhận đơn hành thành công";
   static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";
 
 
   //order
  static const String myOrder = "Đơn hàng";
  static const String myOrderEmpty = "Hiện tại bạn không có đơn hàng nào";
+  static const String myOrderEmptyAdmin = "Không có đơn hàng nào";
  static const String myOrderFinishEmpty = "Chà, không tìm thấy đơn hàng phù hợp rồi. Bạn vui lòng kiểm tra và thử lại nhé";
  static const String rate = "Đánh giá";
  static const String orderListEmpty = "Quên chưa đặt món rồi nè bạn ơi?";
@@ -173,8 +175,8 @@ class UIStrings {
   static const String setAddress = "Bạn có muốn set đia chỉ này thành địa chỉ mặc định không?";
 
   //detail order
-  static const String cancelOrderButton = "Hủy đơn hàng";
-  static const String confirmOrder = "Xác nhận đơn hàng";
+  static const String cancelOrderButton = "Hủy";
+  static const String confirmOrder = "Xác nhận";
   static const String notNotice = "Không có ghi chú";
   static const String nameUser = "Tên khách hàng";
   static const String totalAmount = "Tổng thanh toán";

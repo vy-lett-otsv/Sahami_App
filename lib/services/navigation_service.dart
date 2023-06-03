@@ -39,8 +39,10 @@ class NavigationServices {
   static const String REGISTER_VIEW_ROUTE = "/REGISTER_VIEW_ROUTE";
 
   static const String CUSTOMER_VIEW_ROUTE = "/CUSTOMER_VIEW_ROUTE";
-  static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
-  static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
+  static const String CUSTOMER_CREATE_VIEW_ROUTE =
+      "/CUSTOMER_CREATE_VIEW_ROUTE";
+  static const String CUSTOMER_DETAIL_VIEW_ROUTE =
+      "/CUSTOMER_DETAIL_VIEW_ROUTE";
   static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
   static const String PRODUCT_DETAIL_VIEW_ROUTE = "/PRODUCT_DETAIL_VIEW_ROUTE";
   static const String ORDER_DETAIL_VIEW_ROUTE = "/ORDER_DETAIL_VIEW_ROUTE";
@@ -82,16 +84,18 @@ class NavigationServices {
                 ));
       case ORDER_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
+        final argsStatus = settings.arguments as String;
         return MaterialPageRoute(
             builder: (_) => OrderDetailView(
                   orderEntity: args[Constants.ENTITY],
+                  status: argsStatus,
                 ));
       case PRODUCT_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
             builder: (_) => ProductDetailView(
-              productEntity: args[Constants.ENTITY],
-            ));
+                  productEntity: args[Constants.ENTITY],
+                ));
       case PRODUCT_CREATE_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const ProductCreateView());
       case SETTING_VIEW_ROUTE:
@@ -99,7 +103,7 @@ class NavigationServices {
       case CATEGORY_VIEW_ROUTE:
         return MaterialPageRoute(builder: (_) => const CategoryView());
       default:
-        return MaterialPageRoute(builder: (_) =>  const SplashView());
+        return MaterialPageRoute(builder: (_) => const SplashView());
     }
   }
 
@@ -108,15 +112,18 @@ class NavigationServices {
   }
 
   void navigationToMainScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, MAIN_ADMIN_ROUTE, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+        context, MAIN_ADMIN_ROUTE, (route) => false);
   }
 
   void navigationToLoginScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, LOGIN_VIEW_ROUTE, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+        context, LOGIN_VIEW_ROUTE, (route) => false);
   }
 
   void navigationToRegisterScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, REGISTER_VIEW_ROUTE, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+        context, REGISTER_VIEW_ROUTE, (route) => false);
   }
 
   void navigationToCustomerScreen(BuildContext context) {
@@ -153,6 +160,7 @@ class NavigationServices {
   void navigationToOrderDetailScreen(
     BuildContext context, {
     Object? arguments,
+    String? status,
   }) {
     Navigator.pushNamed(context, ORDER_DETAIL_VIEW_ROUTE, arguments: arguments);
   }

@@ -6,7 +6,11 @@ import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import '../enums/enum.dart';
+import '../services/navigation_service.dart';
+import '../views/assets/asset_images.dart';
+import '../views/constants/dimens_manager.dart';
 import '../views/constants/ui_strings.dart';
+import '../views/widget/ui_title.dart';
 
 class OrderViewModel extends ChangeNotifier {
   int _currentProductTab = 0;
@@ -44,6 +48,35 @@ class OrderViewModel extends ChangeNotifier {
   final PageController pageController = PageController(initialPage: 0);
   int activePage = 0;
 
+  void notificationSuccess(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.of(context).pop(true);
+      }).whenComplete(() {
+        NavigationServices.instance.navigationToMainViewScreen(context, arguments: 3);
+      });
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(30)))
+        ),
+        content: SizedBox(
+          height: DimensManager.dimens.setHeight(150),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                AssetImages.success,
+                width: DimensManager.dimens.setWidth(100),
+                height: DimensManager.dimens.setHeight(100),
+              ),
+              UITitle(UIStrings.confirmOrderSuccess, size: DimensManager.dimens.setSp(16), color: UIColors.text,)
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
   void onChangePage(int page) {
     activePage = page;
     notifyListeners();
@@ -51,10 +84,6 @@ class OrderViewModel extends ChangeNotifier {
 
   void updateSelected(int index) {
     selectedIndex = index;
-    // if(_pageController.hasClients) {
-    //   _pageController.jumpToPage(index);
-    // }
-    // print('Page ${pageController.toString()}');
     notifyListeners();
   }
 
