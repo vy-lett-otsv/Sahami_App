@@ -41,8 +41,13 @@ class OrderViewModel extends ChangeNotifier {
 
   int selectedIndex = 0;
 
-  PageController _pageController = PageController();
-  PageController get pageController => PageController();
+  final PageController pageController = PageController(initialPage: 0);
+  int activePage = 0;
+
+  void onChangePage(int page) {
+    activePage = page;
+    notifyListeners();
+  }
 
   void updateSelected(int index) {
     selectedIndex = index;
@@ -64,6 +69,7 @@ class OrderViewModel extends ChangeNotifier {
   
   Future<void> updateStatusOrder(String status, String id) async {
     FirebaseFirestore.instance.collection('order').doc(id).update({'orderStatus' : status});
+    fetchOrderStatus();
     notifyListeners();
   }
 
@@ -71,6 +77,7 @@ class OrderViewModel extends ChangeNotifier {
     _orderPendingList = await fetchOrderStatusOption(UIStrings.pending);
     _confirmList = await fetchOrderStatusOption(UIStrings.confirmed);
     _pendingDelivery = await fetchOrderStatusOption(UIStrings.delivery);
+    _orderListFinish = await fetchOrderStatusOption(UIStrings.finish);
     notifyListeners();
   }
 

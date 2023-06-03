@@ -25,17 +25,12 @@ class OrderView extends StatefulWidget {
 class _OrderViewState extends State<OrderView>
     with SingleTickerProviderStateMixin {
   final OrderViewModel _orderViewModel = OrderViewModel();
-  // late TabController _tabController;
-  final PageController _pageController = PageController(initialPage: 0);
-  int _activePage = 0;
+
+
 
   @override
   void initState() {
     _orderViewModel.fetchOrderStatus();
-    // _tabController = TabController(vsync: this, length: DataLocal.orderStatus.length);
-    // _tabController.addListener(() {
-    //   _orderViewModel.changeStaffTab(_tabController.index);
-    // });
     super.initState();
   }
 
@@ -60,30 +55,33 @@ class _OrderViewState extends State<OrderView>
             body: Column(
               children: [
                 _buildSearch(context),
-                SizedBox(height: DimensManager.dimens.setHeight(10),),
                 SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: OrderStatus.values.length,
-                    itemBuilder: (context, index) => _buildTabStatus(
-                        index, viewModel.selectedIndex, viewModel)
+                  height: DimensManager.dimens.setHeight(10),
+                ),
+                Container(
+                  height: DimensManager.dimens.setHeight(50),
+                  margin: EdgeInsets.only(
+                    left: DimensManager.dimens.setWidth(20),
                   ),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: OrderStatus.values.length,
+                      itemBuilder: (context, index) => _buildTabStatus(
+                          index, viewModel.selectedIndex, viewModel)),
                 ),
                 Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      onPageChanged: (int page) {
-                        setState(() {
-                          _activePage = page;
-                        });
-                      },
-                      children: [
-                        _buildListOrder(viewModel.orderPendingList),
-                        _buildListOrder(viewModel.confirmList),
-                        _buildListOrder(viewModel.pendingDelivery),
-                      ],
-                    )
+                  child: PageView(
+                    controller: viewModel.pageController,
+                    onPageChanged: (int page) {
+                      viewModel.onChangePage(page);
+                    },
+                    children: [
+                      _buildListOrder(viewModel.orderPendingList),
+                      _buildListOrder(viewModel.confirmList),
+                      _buildListOrder(viewModel.pendingDelivery),
+                      _buildListOrder(viewModel.orderListFinish),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -97,22 +95,24 @@ class _OrderViewState extends State<OrderView>
     return GestureDetector(
       onTap: () {
         viewModel.updateSelected(index);
-        _pageController.animateToPage(
-            index, duration: const Duration(milliseconds: 300),
-            curve: Curves.easeIn);
+        viewModel.pageController.animateToPage(index,
+            duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
       },
-      child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(10)),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: DimensManager.dimens.setWidth(10),
-            vertical: DimensManager.dimens.setHeight(5)
-          ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-              color: selected == index ? UIColors.primary : UIColors.background
-            ),
-            child: UIText(OrderStatus.values[index].name, size: DimensManager.dimens.setSp(14), color: selected == index ? UIColors.textDart : UIColors.text,),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: DimensManager.dimens.setWidth(15),
+        ),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius:
+                BorderRadius.circular(DimensManager.dimens.setRadius(30)),
+            color: selected == index
+                ? UIColors.primarySecond
+                : UIColors.background),
+        child: UIText(
+          OrderStatus.values[index].nameOrder,
+          size: DimensManager.dimens.setSp(14),
+          color: selected == index ? UIColors.white : UIColors.text,
         ),
       ),
     );
@@ -158,8 +158,7 @@ class _OrderViewState extends State<OrderView>
                 NavigationServices.instance.navigationToOrderDetailScreen(
                   context,
                   arguments: {
-                    Constants.ENTITY:
-                    list.elementAt(index),
+                    Constants.ENTITY: list.elementAt(index),
                   },
                 );
               },
@@ -172,14 +171,13 @@ class _OrderViewState extends State<OrderView>
                   horizontal: DimensManager.dimens.setWidth(20),
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        DimensManager.dimens.setSp(20)),
+                    borderRadius:
+                        BorderRadius.circular(DimensManager.dimens.setSp(20)),
                     color: UIColors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    UIText(
-                        "Order ID ${list[index].orderId}",
+                    UIText("Order ID ${list[index].orderId}",
                         color: UIColors.black),
                     SizedBox(height: DimensManager.dimens.setHeight(10)),
                     Row(
@@ -196,13 +194,12 @@ class _OrderViewState extends State<OrderView>
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 DimensManager.dimens.setSp(10)),
-                            border: Border.all(
-                                width: 1, color: UIColors.primary)),
+                            border:
+                                Border.all(width: 1, color: UIColors.primary)),
                         padding: EdgeInsets.symmetric(
                             horizontal: DimensManager.dimens.setWidth(10),
                             vertical: DimensManager.dimens.setHeight(5)),
-                        child: UIText(
-                            list[index].orderStatus,
+                        child: UIText(list[index].orderStatus,
                             color: UIColors.primary,
                             size: DimensManager.dimens.setSp(14))),
                     Align(
