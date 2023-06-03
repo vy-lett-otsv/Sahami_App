@@ -162,7 +162,7 @@ class UIStrings {
  //status order
   static const String pending = "Đang xử lý";
   static const String confirmed = "Đã xác nhận";
-  static const String delivery = "Đang vận chuyển";
+  static const String delivering = "Đang vận chuyển";
   static const String finish = "Hoàn thành";
   static const String cancelOrder = "Hủy bỏ";
 
@@ -180,5 +180,5 @@ class UIStrings {
   static const String notNotice = "Không có ghi chú";
   static const String nameUser = "Tên khách hàng";
   static const String totalAmount = "Tổng thanh toán";
-
+  static const String delivery = "Giao hàng";
 }

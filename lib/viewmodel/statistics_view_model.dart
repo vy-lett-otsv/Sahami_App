@@ -114,7 +114,7 @@ class StatisticsViewModel extends ChangeNotifier {
     setDate(time);
     _pendingOrderList = await fetchDataOption(UIStrings.pending, startOfDay, endOfDay);
     _confirmedOrderList = await fetchDataOption(UIStrings.confirmed, startOfDay, endOfDay);
-    _pendingDeliveryList = await fetchDataOption(UIStrings.delivery, startOfDay, endOfDay);
+    _pendingDeliveryList = await fetchDataOption(UIStrings.delivering, startOfDay, endOfDay);
     _cancelOrderList = await fetchDataOption(UIStrings.cancelOrder, startOfDay, endOfDay);
     _finishOrderList = await fetchDataOption(UIStrings.finish, startOfDay, endOfDay);
   }
@@ -146,7 +146,7 @@ class StatisticsViewModel extends ChangeNotifier {
 
     dataPieChart.add(OrderData(name: UIStrings.pending, percent: pendingOrder, color: UIColors.star));
     dataPieChart.add(OrderData(name: UIStrings.confirmed, percent: confirm, color: UIColors.orange));
-    dataPieChart.add(OrderData(name: UIStrings.delivery, percent: pendingDelivery, color: UIColors.delivery));
+    dataPieChart.add(OrderData(name: UIStrings.delivering, percent: pendingDelivery, color: UIColors.delivery));
     dataPieChart.add(OrderData(name: UIStrings.finish, percent: finish, color: UIColors.primary));
     dataPieChart.add(OrderData(name: UIStrings.cancelOrder, percent: cancel, color: UIColors.lightRed));
 

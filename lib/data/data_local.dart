@@ -9,7 +9,7 @@ class DataLocal {
     IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size XL", price: 20000, isSelected: false)
   ];
 
-  static List<String> orderStatus = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivery, UIStrings.finish, UIStrings.cancelOrder];
+  static List<String> orderStatus = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivering, UIStrings.finish, UIStrings.cancelOrder];
 
   static const List<Tab> productTabs = <Tab>[
     Tab(text: 'Mô tả'),

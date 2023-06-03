@@ -15,7 +15,8 @@ class OrderDetailView extends StatefulWidget {
   final OrderEntity orderEntity;
   final String status;
 
-  const OrderDetailView({Key? key, required this.orderEntity, required this.status})
+  const OrderDetailView(
+      {Key? key, required this.orderEntity, required this.status})
       : super(key: key);
 
   @override
@@ -36,6 +37,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
       child: Consumer<OrderViewModel>(
         builder: (_, viewModel, __) {
           final formatter = intl.NumberFormat.decimalPattern();
+          print(widget.status);
           return Scaffold(
             appBar: AppBar(
               title: const Text(UIStrings.detailOrder),
@@ -49,7 +51,8 @@ class _OrderDetailViewState extends State<OrderDetailView> {
               ),
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: DimensManager.dimens.setWidth(20)),
               margin: EdgeInsets.only(top: DimensManager.dimens.setHeight(10)),
               child: Column(
                 children: [
@@ -68,7 +71,8 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                             minHeight: DimensManager.dimens.setHeight(100),
                           ),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+                              borderRadius: BorderRadius.circular(
+                                  DimensManager.dimens.setRadius(20)),
                               color: UIColors.white),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,11 +80,13 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                               Row(
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(10)),
+                                    borderRadius: BorderRadius.circular(
+                                        DimensManager.dimens.setRadius(10)),
                                     child: Image.network(
                                       widget.orderEntity.items[index]['image'],
                                       width: DimensManager.dimens.setWidth(80),
-                                      height: DimensManager.dimens.setHeight(80),
+                                      height:
+                                          DimensManager.dimens.setHeight(80),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -92,7 +98,8 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       UIText(
-                                        widget.orderEntity.items[index]['name_product'],
+                                        widget.orderEntity.items[index]
+                                            ['name_product'],
                                         fontWeight: FontWeight.bold,
                                         size: DimensManager.dimens.setSp(18),
                                       ),
@@ -121,22 +128,36 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                               ),
                               Consumer<PaymentViewModel>(
                                 builder: (_, viewModel, __) {
-                                  viewModel.displayTextOrder(index, widget.orderEntity);
-                                  Map<String, dynamic> map = viewModel.getNamedSyrup(true);
-                                  return map.length == 1 && map.keys.first == 'size'
+                                  viewModel.displayTextOrder(
+                                      index, widget.orderEntity);
+                                  Map<String, dynamic> map =
+                                      viewModel.getNamedSyrup(true);
+                                  return map.length == 1 &&
+                                          map.keys.first == 'size'
                                       ? Container()
                                       : Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(DimensManager.dimens.setRadius(10)),
-                                              border: Border.all(width: 1, color: UIColors.primary)),
-                                          padding: EdgeInsets.all(DimensManager.dimens.setHeight(10)),
+                                                  BorderRadius.circular(
+                                                      DimensManager.dimens
+                                                          .setRadius(10)),
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: UIColors.primary)),
+                                          padding: EdgeInsets.all(DimensManager
+                                              .dimens
+                                              .setHeight(10)),
                                           alignment: Alignment.center,
-                                          child: UIText(viewModel.getNamedSyrup(false).values.join('\n'),
+                                          child: UIText(
+                                            viewModel
+                                                .getNamedSyrup(false)
+                                                .values
+                                                .join('\n'),
                                             fontWeight: FontWeight.w100,
-                                            size: DimensManager.dimens.setSp(16),
+                                            size:
+                                                DimensManager.dimens.setSp(16),
                                           ),
-                                  );
+                                        );
                                 },
                               )
                             ],
@@ -147,22 +168,28 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+                        borderRadius: BorderRadius.circular(
+                            DimensManager.dimens.setRadius(20)),
                         color: UIColors.primaryBackground),
                     padding: EdgeInsets.symmetric(
                         horizontal: DimensManager.dimens.setWidth(15),
-                        vertical: DimensManager.dimens.setHeight(10)
-                    ),
+                        vertical: DimensManager.dimens.setHeight(10)),
                     child: Column(
                       children: [
-                        _buildInformation(UIStrings.nameUser, widget.orderEntity.userEntity.userName),
-                        _buildInformation(UIStrings.phone, widget.orderEntity.userEntity.contact),
-                        _buildInformation(UIStrings.address, widget.orderEntity.userEntity.address),
-                        _buildInformation(UIStrings.note,
+                        _buildInformation(UIStrings.nameUser,
+                            widget.orderEntity.userEntity.userName),
+                        _buildInformation(UIStrings.phone,
+                            widget.orderEntity.userEntity.contact),
+                        _buildInformation(UIStrings.address,
+                            widget.orderEntity.userEntity.address),
+                        _buildInformation(
+                            UIStrings.note,
                             widget.orderEntity.orderNote == ''
                                 ? UIStrings.notNotice
                                 : widget.orderEntity.orderNote),
-                        Divider(color: UIColors.backgroundInput,),
+                        Divider(
+                          color: UIColors.backgroundInput,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -171,7 +198,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                               width: DimensManager.dimens.setWidth(10),
                             ),
                             UITitle(
-                                '${formatter.format(widget.orderEntity.orderAmount)} VNĐ',
+                              '${formatter.format(widget.orderEntity.orderAmount)} VNĐ',
                               fontWeight: FontWeight.bold,
                             )
                           ],
@@ -181,27 +208,55 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(
-                      vertical: DimensManager.dimens.setHeight(20),
-                      horizontal: DimensManager.dimens.setWidth(10)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        UIButtonOrder(
-                            callback: () {
-                              viewModel.updateStatusOrder(UIStrings.cancelOrder, widget.orderEntity.orderId);
-                            },
-                            text: UIStrings.cancelOrderButton, backgroundColor: UIColors.white, textColor: UIColors.text,
-                        ),
-                        UIButtonOrder(
-                          callback: () {
-                            viewModel.updateStatusOrder(UIStrings.confirmed, widget.orderEntity.orderId);
-                            viewModel.notificationSuccess(context);
-                          },
-                          text: UIStrings.confirmOrder,
-                        ),
-                      ],
-                    ),
+                        vertical: DimensManager.dimens.setHeight(20),
+                        horizontal: DimensManager.dimens.setWidth(10)),
+                    child: widget.status == UIStrings.pending
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              UIButtonOrder(
+                                callback: () {
+                                  viewModel.updateStatusOrder(
+                                      UIStrings.cancelOrder,
+                                      widget.orderEntity.orderId);
+                                },
+                                text: UIStrings.cancelOrderButton,
+                                backgroundColor: UIColors.white,
+                                textColor: UIColors.text,
+                              ),
+                              UIButtonOrder(
+                                callback: () {
+                                  viewModel.updateStatusOrder(
+                                      UIStrings.confirmed,
+                                      widget.orderEntity.orderId);
+                                  viewModel.notificationSuccess(context);
+                                },
+                                text: UIStrings.confirmOrder,
+                              ),
+                            ],
+                          )
+                        : Align(
+                            alignment: Alignment.centerRight,
+                            child: widget.status == UIStrings.confirmed
+                                ? UIButtonOrder(
+                                    callback: () {
+                                      viewModel.updateStatusOrder(
+                                          UIStrings.delivery,
+                                          widget.orderEntity.orderId);
+                                      viewModel.notificationSuccess(context);
+                                    },
+                                    text: UIStrings.delivery,
+                                  )
+                                : UIButtonOrder(
+                                    callback: () {
+                                      viewModel.updateStatusOrder(
+                                          UIStrings.finish,
+                                          widget.orderEntity.orderId);
+                                      viewModel.notificationSuccess(context);
+                                    },
+                                    text: UIStrings.finish,
+                                  ),
+                          ),
                   )
                 ],
               ),
@@ -218,8 +273,15 @@ class _OrderDetailViewState extends State<OrderDetailView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          UIText(title, size: DimensManager.dimens.setSp(16),),
-          UIText(text!, size: DimensManager.dimens.setSp(18), color: UIColors.textDart,)
+          UIText(
+            title,
+            size: DimensManager.dimens.setSp(16),
+          ),
+          UIText(
+            text!,
+            size: DimensManager.dimens.setSp(18),
+            color: UIColors.textDart,
+          )
         ],
       ),
     );

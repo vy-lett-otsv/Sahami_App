@@ -76,10 +76,10 @@ class _OrderViewState extends State<OrderView>
                       viewModel.onChangePage(page);
                     },
                     children: [
-                      _buildListOrder(viewModel.orderPendingList),
-                      _buildListOrder(viewModel.confirmList),
-                      _buildListOrder(viewModel.pendingDelivery),
-                      _buildListOrder(viewModel.orderListFinish),
+                      _buildListOrder(viewModel.orderPendingList, UIStrings.pending),
+                      _buildListOrder(viewModel.confirmList, UIStrings.confirmed),
+                      // _buildListOrder(viewModel.pendingDelivery),
+                      // _buildListOrder(viewModel.orderListFinish),
                     ],
                   ),
                 )
@@ -140,7 +140,7 @@ class _OrderViewState extends State<OrderView>
     );
   }
 
-  Widget _buildListOrder(List<OrderEntity> list) {
+  Widget _buildListOrder(List<OrderEntity> list, String orderStatus) {
     final formatter = intl.NumberFormat.decimalPattern();
     return list.isEmpty
         ? Container(
@@ -185,8 +185,8 @@ class _OrderViewState extends State<OrderView>
                       context,
                       arguments: {
                         Constants.ENTITY: list.elementAt(index),
+                        Constants.STATUS: orderStatus
                       },
-                      status: UIStrings.pending
                     );
                   },
                   child: Container(

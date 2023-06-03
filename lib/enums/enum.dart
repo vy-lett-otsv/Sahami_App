@@ -16,7 +16,7 @@ enum OrderStatus {
 
 extension OrderStatusExt on OrderStatus {
   String get nameOrder {
-    const names = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivery, UIStrings.finish, UIStrings.cancelOrder];
+    const names = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivering, UIStrings.finish, UIStrings.cancelOrder];
     return names[index];
   }
 }

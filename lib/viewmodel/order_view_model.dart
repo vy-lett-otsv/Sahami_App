@@ -105,7 +105,7 @@ class OrderViewModel extends ChangeNotifier {
   Future<void> fetchOrderStatus() async {
     _orderPendingList = await fetchOrderStatusOption(UIStrings.pending);
     _confirmList = await fetchOrderStatusOption(UIStrings.confirmed);
-    _pendingDelivery = await fetchOrderStatusOption(UIStrings.delivery);
+    _pendingDelivery = await fetchOrderStatusOption(UIStrings.delivering);
     _orderListFinish = await fetchOrderStatusOption(UIStrings.finish);
     notifyListeners();
   }

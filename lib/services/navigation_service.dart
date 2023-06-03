@@ -84,11 +84,10 @@ class NavigationServices {
                 ));
       case ORDER_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
-        final argsStatus = settings.arguments as String;
         return MaterialPageRoute(
             builder: (_) => OrderDetailView(
                   orderEntity: args[Constants.ENTITY],
-                  status: argsStatus,
+                  status: args[Constants.STATUS],
                 ));
       case PRODUCT_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
@@ -160,7 +159,6 @@ class NavigationServices {
   void navigationToOrderDetailScreen(
     BuildContext context, {
     Object? arguments,
-    String? status,
   }) {
     Navigator.pushNamed(context, ORDER_DETAIL_VIEW_ROUTE, arguments: arguments);
   }
