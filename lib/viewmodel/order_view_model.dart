@@ -87,11 +87,6 @@ class OrderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> page(int index) async {
-
-    notifyListeners();
-  }
-
   void changeStaffTab(productTab) {
     _currentProductTab = productTab;
   }

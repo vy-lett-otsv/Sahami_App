@@ -37,7 +37,6 @@ class _OrderDetailViewState extends State<OrderDetailView> {
       child: Consumer<OrderViewModel>(
         builder: (_, viewModel, __) {
           final formatter = intl.NumberFormat.decimalPattern();
-          print(widget.status);
           return Scaffold(
             appBar: AppBar(
               title: const Text(UIStrings.detailOrder),
@@ -240,22 +239,20 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                             child: widget.status == UIStrings.confirmed
                                 ? UIButtonOrder(
                                     callback: () {
-                                      viewModel.updateStatusOrder(
-                                          UIStrings.delivery,
-                                          widget.orderEntity.orderId);
+                                      viewModel.updateStatusOrder(UIStrings.delivering, widget.orderEntity.orderId);
                                       viewModel.notificationSuccess(context);
                                     },
                                     text: UIStrings.delivery,
                                   )
-                                : UIButtonOrder(
-                                    callback: () {
-                                      viewModel.updateStatusOrder(
-                                          UIStrings.finish,
-                                          widget.orderEntity.orderId);
-                                      viewModel.notificationSuccess(context);
-                                    },
-                                    text: UIStrings.finish,
-                                  ),
+                                : widget.status == UIStrings.delivering
+                                    ? UIButtonOrder(
+                                        callback: () {
+                                          viewModel.updateStatusOrder(UIStrings.finish, widget.orderEntity.orderId);
+                                          viewModel.notificationSuccess(context);
+                                        },
+                                        text: UIStrings.finish,
+                                      )
+                                    : Container()
                           ),
                   )
                 ],

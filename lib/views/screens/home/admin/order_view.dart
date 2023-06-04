@@ -78,8 +78,8 @@ class _OrderViewState extends State<OrderView>
                     children: [
                       _buildListOrder(viewModel.orderPendingList, UIStrings.pending),
                       _buildListOrder(viewModel.confirmList, UIStrings.confirmed),
-                      // _buildListOrder(viewModel.pendingDelivery),
-                      // _buildListOrder(viewModel.orderListFinish),
+                      _buildListOrder(viewModel.pendingDelivery, UIStrings.delivering),
+                      _buildListOrder(viewModel.orderListFinish, UIStrings.finish),
                     ],
                   ),
                 )
@@ -166,64 +166,42 @@ class _OrderViewState extends State<OrderView>
             shrinkWrap: true,
             itemCount: list.length,
             itemBuilder: (context, index) {
-              return Slidable(
-                endActionPane: ActionPane(
-                  extentRatio: DimensManager.dimens.setWidth(0.2),
-                  motion: const BehindMotion(),
-                  children: [
-                    SlidableAction(
-                        backgroundColor: UIColors.background,
-                        foregroundColor: UIColors.lightRed,
-                        icon: Icons.delete,
-                        onPressed: (context) {}),
-                    const Spacer(),
-                  ],
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    NavigationServices.instance.navigationToOrderDetailScreen(
-                      context,
-                      arguments: {
-                        Constants.ENTITY: list.elementAt(index),
-                        Constants.STATUS: orderStatus
-                      },
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: DimensManager.dimens.setWidth(20),
-                        vertical: DimensManager.dimens.setWidth(10)),
-                    margin: EdgeInsets.symmetric(
-                      vertical: DimensManager.dimens.setHeight(10),
+              return GestureDetector(
+                onTap: () {
+                  NavigationServices.instance.navigationToOrderDetailScreen(
+                    context,
+                    arguments: {
+                      Constants.ENTITY: list.elementAt(index),
+                      Constants.STATUS: orderStatus
+                    },
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
                       horizontal: DimensManager.dimens.setWidth(20),
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            DimensManager.dimens.setSp(20)),
-                        color: UIColors.primaryBackground),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        UIText("Order ID ${list[index].orderId}",
-                            color: UIColors.black),
-                        SizedBox(height: DimensManager.dimens.setHeight(10)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // UIText(
-                            //     "${list[index].createAt}, ${list[index].createAtTime}",
-                            //     size: DimensManager.dimens.setSp(14)),
-                            UIText("${list[index].items.length} món")
-                          ],
-                        ),
-                        SizedBox(height: DimensManager.dimens.setHeight(10)),
-                        UIText(DateFormat('hh:mm a dd/MM/yyy').format(list[index].createAt!.toDate()),),
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: UIText(
-                                "${formatter.format(list[index].orderAmount)} VNĐ"))
-                      ],
-                    ),
+                      vertical: DimensManager.dimens.setWidth(10)),
+                  margin: EdgeInsets.symmetric(
+                    vertical: DimensManager.dimens.setHeight(10),
+                    horizontal: DimensManager.dimens.setWidth(20),
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          DimensManager.dimens.setSp(20)),
+                      color: UIColors.primaryBackground),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      UIText("Order ID ${list[index].orderId}",
+                          color: UIColors.black),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      UIText("${list[index].items.length} món"),
+                      SizedBox(height: DimensManager.dimens.setHeight(10)),
+                      UIText(DateFormat('hh:mm a dd/MM/yyy').format(list[index].createAt!.toDate()),),
+                      Align(
+                          alignment: Alignment.bottomRight,
+                          child: UIText(
+                              "${formatter.format(list[index].orderAmount)} VNĐ"))
+                    ],
                   ),
                 ),
               );

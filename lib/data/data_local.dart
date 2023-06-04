@@ -5,8 +5,8 @@ import '../views/assets/asset_icons.dart';
 class DataLocal {
   static List<IconCupSize> cupSize = [
     IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size M", price: 0, isSelected: true),
-    IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size L", price: 10000, isSelected: false),
-    IconCupSize(image: AssetIcons.iconCupSizeM, name: "Size XL", price: 20000, isSelected: false)
+    IconCupSize(image: AssetIcons.iconCupSizeL, name: "Size L", price: 10000, isSelected: false),
+    IconCupSize(image: AssetIcons.iconCupSizeXL, name: "Size XL", price: 20000, isSelected: false)
   ];
 
   static List<String> orderStatus = [UIStrings.pending, UIStrings.confirmed, UIStrings.delivering, UIStrings.finish, UIStrings.cancelOrder];
