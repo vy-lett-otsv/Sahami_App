@@ -27,13 +27,13 @@ class UIStrings {
   static const String titleConfirm = "Are you sure?";
   static const String confirmDelete = "Do you really want to delete these records? This process cannot be undone.";
 
-  static const String addNewProduct = "Add New Product";
+  static const String addNewProduct = "Thêm mới sản phẩm";
   static const String addNewImage = "Add new image";
   static const String addNewCustomer = "Add New Customer";
 
   static const String add = "Add";
   static const String create = "Create";
-  static const String search = "Search";
+  static const String search = "Tìm kiếm";
   static const String ok = "OK";
   static const String cancel = "Cancel";
   static const String edit = "Edit";
@@ -181,4 +181,5 @@ class UIStrings {
   static const String nameUser = "Tên khách hàng";
   static const String totalAmount = "Tổng thanh toán";
   static const String delivery = "Giao hàng";
+
 }
