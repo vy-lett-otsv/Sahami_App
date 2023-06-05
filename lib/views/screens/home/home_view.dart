@@ -11,7 +11,6 @@ import '../../../utils/constants.dart';
 import '../../constants/dimens_manager.dart';
 import '../../constants/ui_color.dart';
 import '../../widget/ui_text_price.dart';
-import '../../widget/ui_textinput_icon.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
 class HomeView extends StatefulWidget {
@@ -48,16 +47,16 @@ class _HomeViewState extends State<HomeView> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
+                  Consumer<HomeViewModel>(builder: (_, viewModel, __) {
+                    return _buildHeader(viewModel, context);
+                  },),
                   SizedBox(height: DimensManager.dimens.setHeight(20)),
                   Consumer<ProductViewModel>(
                     builder: (_, productViewModel, __) {
                       return productViewModel.featureProductList.isEmpty
                           ? Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: DimensManager.dimens.setHeight(50)),
-                              child: const Center(
-                                  child: CircularProgressIndicator()),
+                              padding: EdgeInsets.symmetric(vertical: DimensManager.dimens.setHeight(50)),
+                              child: const Center(child: CircularProgressIndicator()),
                             )
                           : Column(
                               children: [
@@ -65,27 +64,22 @@ class _HomeViewState extends State<HomeView> {
                                   height: DimensManager.dimens.setHeight(350),
                                   child: PageView.builder(
                                       controller: homeViewModel.pageController,
-                                      itemCount: productViewModel
-                                          .featureProductList.length,
+                                      itemCount: productViewModel.featureProductList.length,
                                       itemBuilder: (context, index) {
                                         homeViewModel.matrixSlide(index);
-                                        return _buildPageItem(homeViewModel,
-                                            productViewModel, index);
+                                        return _buildPageItem(homeViewModel, productViewModel, index);
                                       }),
                                 ),
-                                SizedBox(
-                                    height: DimensManager.dimens.setHeight(10)),
+                                SizedBox(height: DimensManager.dimens.setHeight(10)),
                                 DotsIndicator(
-                                  dotsCount: productViewModel
-                                      .featureProductList.length,
+                                  dotsCount: productViewModel.featureProductList.length,
                                   position: homeViewModel.currPageValue,
                                   decorator: DotsDecorator(
                                     activeColor: UIColors.primary,
                                     size: const Size.square(9.0),
                                     activeSize: const Size(18.0, 9.0),
                                     activeShape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
+                                        borderRadius: BorderRadius.circular(5.0)),
                                   ),
                                 )
                               ],
@@ -201,20 +195,42 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-Widget _buildHeader() {
+Widget _buildHeader(HomeViewModel viewModel, BuildContext context) {
   return Container(
-    padding:
-        EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
+    padding: EdgeInsets.symmetric(horizontal: DimensManager.dimens.setWidth(20)),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: DimensManager.dimens.setHeight(20)),
         UITitle(UIStrings.appName, size: 40, color: UIColors.primary),
         SizedBox(height: DimensManager.dimens.setHeight(20)),
-        const UITextInputIcon(
-          text: UIStrings.search,
-          icon: Icons.search,
-        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(DimensManager.dimens.setRadius(20)),
+              color: UIColors.white,
+              border: Border.all(color: UIColors.backgroundInput),
+              boxShadow: [
+                BoxShadow(
+                    color: UIColors.border,
+                    blurRadius: 7,
+                    offset: const Offset(2, 2))
+              ],
+          ),
+          padding: const EdgeInsets.only(left: 16, right: 4),
+          child: TextFormField(
+            controller: viewModel.controller,
+            focusNode: viewModel.focusNode,
+            decoration: InputDecoration(
+                labelText: UIStrings.search,
+                prefixIcon: Icon(Icons.search, color: UIColors.primary),
+                border: InputBorder.none,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: EdgeInsets.zero,),
+            onFieldSubmitted: (value) {
+              viewModel.navigateSearchView(context);
+            },
+          ),
+        )
       ],
     ),
   );

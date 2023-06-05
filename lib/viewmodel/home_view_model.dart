@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sahami_app/views/screens/home/user/search_view.dart';
 import '../views/constants/dimens_manager.dart';
 
 class HomeViewModel extends ChangeNotifier {
@@ -12,6 +13,14 @@ class HomeViewModel extends ChangeNotifier {
   Matrix4 get matrix => _matrix;
 
   PageController pageController = PageController(viewportFraction: 0.9); //Phần nhỏ của khung nhìn mà mỗi trang sẽ chiếm.
+
+  TextEditingController controller= TextEditingController();
+
+  FocusNode focusNode = FocusNode();
+
+  void navigateSearchView(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SearchView()));
+  }
 
   void matrixSlide(int index) {
     double currentScale, currentTrans;
