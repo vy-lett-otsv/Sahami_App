@@ -76,11 +76,11 @@ Widget _buildHeader() {
           )),
       SizedBox(height: DimensManager.dimens.setHeight(30)),
       UIText(UIStrings.welcome,
-          size: DimensManager.dimens.setSp(40),
+          size: DimensManager.dimens.setSp(38),
           color: UIColors.black,
           fontWeight: FontWeight.w400),
-      UIText(UIStrings.desSignIn,
-          size: 18, color: UIColors.text, fontWeight: FontWeight.w300),
+      SizedBox(height: DimensManager.dimens.setHeight(10)),
+      UIText(UIStrings.desSignIn, size: DimensManager.dimens.setSp(18), color: UIColors.text, fontWeight: FontWeight.w300),
       SizedBox(height: DimensManager.dimens.setHeight(30)),
     ],
   );
@@ -144,11 +144,11 @@ Widget _buildButtonLogin(
                 color: UIColors.text),
             children: <InlineSpan>[
               TextSpan(
-                text: UIStrings.create,
+                text: UIStrings.createNew,
                 style: TextStyle(
                     fontSize: DimensManager.dimens.setSp(18),
                     fontWeight: FontWeight.bold,
-                    fontFamily: Fonts.Outfit,
+                    fontFamily: Fonts.Inter,
                     color: UIColors.text),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {

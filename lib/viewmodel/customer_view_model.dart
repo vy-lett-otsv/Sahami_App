@@ -67,7 +67,6 @@ class CustomerViewModel extends ChangeNotifier {
     userEntity.image = _imageUrl;
     final json = userEntity.toJson();
     await docUser.set(json);
-
     fetchCustomer();
     ToastWidget.showToastSuccess(message: UIStrings.success);
   }
@@ -104,8 +103,7 @@ class CustomerViewModel extends ChangeNotifier {
         email: emailController.text,
         address: addressController.text,
         tokenDevice: []);
-    createCustomer(customerEntity, context).then((value) =>
-        NavigationServices().navigationToMainViewScreen(context, arguments: 1));
+    createCustomer(customerEntity, context).then((value) => NavigationServices.instance.navigationToMainViewScreen(context, arguments: 1));
   }
 
   Future<void> fetchCustomer() async {
@@ -131,9 +129,9 @@ class CustomerViewModel extends ChangeNotifier {
           if (user != null && user.uid == documentId) {
             try {
               await user.delete();
-              // print("User deleted successfully.");
+              print("User deleted successfully.");
             } catch (error) {
-              // print("Failed to delete user: $error");
+              print("Failed to delete user: $error");
             }
           }
         });

@@ -15,6 +15,7 @@ class CategoryViewModel extends ChangeNotifier {
   final TextEditingController controllerNameUpdate = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
+
   void getAllCategory() async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('category')

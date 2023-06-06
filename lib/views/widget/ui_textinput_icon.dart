@@ -46,7 +46,7 @@ class UITextInputIcon extends StatelessWidget {
             enableSuggestions: isPassWordType!,
             autocorrect: isPassWordType!,
             style: const TextStyle(
-              fontFamily: Fonts.Outfit,
+              fontFamily: Fonts.Inter,
             ),
             validator: validation,
             decoration: InputDecoration(

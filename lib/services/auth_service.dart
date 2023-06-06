@@ -18,7 +18,6 @@ class AuthService {
   UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '', tokenDevice: []);
   UserEntity get userEntity => _userEntity;
 
-  var isLogin = false;
 
   Future<void> loginUser(
       BuildContext context, String email, String pass) async {

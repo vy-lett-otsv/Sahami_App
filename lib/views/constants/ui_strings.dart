@@ -2,53 +2,53 @@ class UIStrings {
   UIStrings._();
   static const String appName = "Sahami";
   static const String admin = "Admin";
-  static const String welcome = "Hello";
-  static const String userName = "User name";
-  static const String password = "Password";
-  static const String signUp = "Sign up";
-  static const String signIn = "Sign in";
+  static const String welcome = "Chào bạn";
+  static const String userName = "Họ tên";
+  static const String password = "Mật khẩu";
+  static const String signUp = "Đăng ký";
+  static const String signIn = "Đăng nhập";
   static const String email = "Email";
   static const String phone = "Số điện thoại";
   static const String logout = "Đăng xuất";
-  static const String phoneEn = "Contact";
 
 
-  static const String product = "Product";
+  static const String product = "Nước uống";
   static const String order = "Đơn hàng";
   static const String revenue = "Revenue";
   static const String statistics = "Statistic";
   static const String customer = "Customer";
   static const String camera = "Camera";
-  static const String gallery = "Gallery";
+  static const String gallery = "Thư viện";
 
-  static const String desSignIn = "Sign in to account";
+  static const String desSignIn = "Vui lòng cung cấp thông tin đăng nhập của bạn để tiếp tục.";
   static const String isAccount = "Have an account?  ";
-  static const String noAccount = "Don’t have an account? ";
-  static const String titleConfirm = "Are you sure?";
-  static const String confirmDelete = "Do you really want to delete these records? This process cannot be undone.";
+  static const String noAccount = "Bạn chưa có tài khoản? ";
+  static const String titleConfirm = "Bạn chắc chứ?";
+  static const String confirmDelete = "Bạn có thực sự muốn xóa bản ghi này không? Quá trình này không thể hoàn tác.";
 
   static const String addNewProduct = "Thêm mới sản phẩm";
-  static const String addNewImage = "Add new image";
-  static const String addNewCustomer = "Add New Customer";
+  static const String addNewImage = "Thêm hình ảnh";
+  static const String addNewCustomer = "Thêm mới khách hàng";
 
   static const String add = "Add";
-  static const String create = "Create";
+  static const String create = "Thêm";
+  static const String createNew = "Tạo mới";
   static const String search = "Tìm kiếm";
   static const String ok = "OK";
   static const String cancel = "Cancel";
-  static const String edit = "Edit";
-  static const String delete = "Delete";
+  static const String edit = "Sửa";
+  static const String delete = "Xóa";
   static const String filter = "Filter";
   static const String success = "Success";
   static const String showMore = "Xem thêm";
   static const String showLess = "Rút gọn";
   static const String addNewItem = "Thêm món mới";
-  static const String size = "Size";
+  static const String size = "Kích cỡ";
   static const String ice = "Lượng đá";
   static const String quantitySugar = "Lượng đường";
 
 
-  static const String manageCategory = "Manage Category";
+  static const String manageCategory = "Quản lý danh mục";
   static const String manageProduct = "Quản lý sản phẩm";
   static const String manageCustomer = "Quản lý khách hàng";
   static const String manageOrder = "Quản lý đơn hàng";
@@ -78,20 +78,20 @@ class UIStrings {
   static const String saveAddress = "Save address";
 
 
-  static const String fullName = "Full Name";
-  static const String contact = "Contact";
+  static const String fullName = "Họ tên";
+  static const String contact = "Số điện thoại";
   static const String address = "Địa chỉ";
   static const String notYetAddress = "Chưa có địa chỉ";
   static const String addressDelivery = "Địa chỉ giao hàng";
   static const String addAddress = "Add address";
 
-  static const String createCustomer = "Create Customer";
-  static const String createProduct = "Create Product";
+  static const String createCustomer = "Thêm khách hàng";
+  static const String createProduct = "Thêm nước uống";
 
-  static const String name = "Name";
-  static const String price = "Price";
-  static const String des = "Description";
-  static const String category = "Category";
+  static const String name = "Tên";
+  static const String price = "Giá";
+  static const String des = "Mô tả";
+  static const String category = "Loại nước uống";
   static const String servingSize = "Serving Size";
   static const String saturatedFat = "Saturated Fat";
   static const String protein = "Protein";
@@ -100,8 +100,8 @@ class UIStrings {
   static const String caffeine = "Caffeine";
 
   //empty
-  static const String isEmptyCustomer = "You don't have any customer";
-  static const String isEmptyProduct = "You don't have any product";
+  static const String isEmptyCustomer = "Bạn chưa có khách hàng nào";
+  static const String isEmptyProduct = "Bạn chưa có sản phẩm nào";
 
   //unit
   static const String kcal = "kcal";
@@ -181,5 +181,7 @@ class UIStrings {
   static const String nameUser = "Tên khách hàng";
   static const String totalAmount = "Tổng thanh toán";
   static const String delivery = "Giao hàng";
+
+  static const String haveANewOrder = "Bạn có đơn hàng mới";
 
 }

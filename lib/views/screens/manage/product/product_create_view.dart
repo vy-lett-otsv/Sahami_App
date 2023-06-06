@@ -13,6 +13,7 @@ import 'package:sahami_app/views/widget/ui_label_text_input.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
 import '../../../../data/remote/entity/product_entity.dart';
 import '../../../../viewmodel/category_view_model.dart';
+import '../../../containers/toast_widget.dart';
 import '../../../widget/bottomsheet_model.dart';
 import '../../../widget/ui_button_small.dart';
 import '../../home/main_view.dart';
@@ -166,9 +167,9 @@ class _ProductCreateViewState extends State<ProductCreateView> {
     );
   }
 
-  Widget _buildCategory(
-      {required TextEditingController controller,
-      required CategoryViewModel categoryViewModel}) {
+  Widget _buildCategory({
+    required TextEditingController controller,
+    required CategoryViewModel categoryViewModel}) {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: DimensManager.dimens.setWidth(20),
@@ -197,11 +198,7 @@ class _ProductCreateViewState extends State<ProductCreateView> {
               );
               if (result != null) {
                 final itemCategory = categoryViewModel.categories[result];
-                setState(() {
-                  _productViewModel.categoryController.text =
-                      itemCategory.categoryName;
-                  _productViewModel.categoryName = itemCategory.categoryName;
-                });
+                _productViewModel.updateCategory(itemCategory);
               }
             },
           )

@@ -105,7 +105,7 @@ Widget _buildTextField(TextEditingController user, TextEditingController email,
       ),
       SizedBox(height: DimensManager.dimens.setHeight(15)),
       UITextInputIcon(
-        text: UIStrings.phoneEn,
+        text: UIStrings.phone,
         icon: Icons.phone,
         controller: phone,
         isNumber: true,
@@ -138,7 +138,7 @@ Widget _buildSignUp(BuildContext context, AuthViewModel authViewModel) {
                   style: TextStyle(
                       fontSize: DimensManager.dimens.setSp(18),
                       fontWeight: FontWeight.bold,
-                      fontFamily: Fonts.Outfit,
+                      fontFamily: Fonts.Inter,
                       color: UIColors.text),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {

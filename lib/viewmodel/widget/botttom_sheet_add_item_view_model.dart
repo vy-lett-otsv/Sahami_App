@@ -43,6 +43,7 @@ class BottomSheetAddItemViewModel extends ChangeNotifier {
 
   int checkQuantity(int quantity) {
     if(quantity<1) {
+      isSelected = false;
       return 1;
     } else if (quantity >10) {
       return 10;

@@ -59,7 +59,8 @@ class _CustomerCreateViewState extends State<CustomerCreateView> {
                         text: UIStrings.createCustomer,
                         onPress: () {
                             customerViewModel.addCustomer(context);
-                        })
+                        },
+                    )
                   ],
                 ),
               ),

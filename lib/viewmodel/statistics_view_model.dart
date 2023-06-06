@@ -47,6 +47,10 @@ class StatisticsViewModel extends ChangeNotifier {
 
   String dropdownValueOrder = TimeOption.day.nameTime;
 
+  ViewState _viewState = ViewState.idle;
+
+  ViewState get viewState => _viewState;
+
 
   Future<void> updateDropDownPieChart(String value) async {
     dropdownValueOrder = value;
@@ -120,6 +124,7 @@ class StatisticsViewModel extends ChangeNotifier {
   }
 
   Future<void> pieChartList(String dropdownValueOrder) async {
+    _viewState = ViewState.busy;
     if(dropdownValueOrder == TimeOption.day.nameTime) {
       await fetchDataDay(TimeOption.day.nameTime);
     }
@@ -131,9 +136,9 @@ class StatisticsViewModel extends ChangeNotifier {
       fetchDataDay(TimeOption.year.nameTime);
     }
     final orderList = await fetchDataOrderList(startOfDay, endOfDay);
-    addDataPieChart(orderList);
-
     notifyListeners();
+    addDataPieChart(orderList);
+    _viewState = ViewState.success;
   }
 
   void addDataPieChart(List<OrderEntity> orderList) {

@@ -76,10 +76,10 @@ class _OrderViewState extends State<OrderView>
                       viewModel.onChangePage(page);
                     },
                     children: [
-                      _buildListOrder(viewModel.orderPendingList, UIStrings.pending),
-                      _buildListOrder(viewModel.confirmList, UIStrings.confirmed),
-                      _buildListOrder(viewModel.pendingDelivery, UIStrings.delivering),
-                      _buildListOrder(viewModel.orderListFinish, UIStrings.finish),
+                      _buildListOrder(viewModel.orderPendingList, UIStrings.pending, viewModel),
+                      _buildListOrder(viewModel.confirmList, UIStrings.confirmed, viewModel),
+                      _buildListOrder(viewModel.pendingDelivery, UIStrings.delivering, viewModel),
+                      _buildListOrder(viewModel.orderListFinish, UIStrings.finish, viewModel),
                     ],
                   ),
                 )
@@ -140,71 +140,73 @@ class _OrderViewState extends State<OrderView>
     );
   }
 
-  Widget _buildListOrder(List<OrderEntity> list, String orderStatus) {
+  Widget _buildListOrder(List<OrderEntity> list, String orderStatus, OrderViewModel viewModel) {
     final formatter = intl.NumberFormat.decimalPattern();
-    return list.isEmpty
+    return viewModel.viewState == ViewState.busy ?
+        const Center(child: CircularProgressIndicator(),)
+        : list.isEmpty
         ? Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(30)),
-            child: Column(
-              children: [
-                Image.asset(
-                  AssetIcons.iconOrderEmpty,
-                  width: DimensManager.dimens.setWidth(100),
-                  height: DimensManager.dimens.setHeight(100),
-                  fit: BoxFit.cover,
-                ),
-                const UIText(
-                  UIStrings.myOrderEmptyAdmin,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: DimensManager.dimens.setHeight(30)),
+      child: Column(
+        children: [
+          Image.asset(
+            AssetIcons.iconOrderEmpty,
+            width: DimensManager.dimens.setWidth(100),
+            height: DimensManager.dimens.setHeight(100),
+            fit: BoxFit.cover,
+          ),
+          const UIText(
+            UIStrings.myOrderEmptyAdmin,
+            textAlign: TextAlign.center,
           )
+        ],
+      ),
+    )
         : ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  NavigationServices.instance.navigationToOrderDetailScreen(
-                    context,
-                    arguments: {
-                      Constants.ENTITY: list.elementAt(index),
-                      Constants.STATUS: orderStatus
-                    },
-                  );
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              NavigationServices.instance.navigationToOrderDetailScreen(
+                context,
+                arguments: {
+                  Constants.ENTITY: list.elementAt(index),
+                  Constants.STATUS: orderStatus
                 },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: DimensManager.dimens.setWidth(20),
-                      vertical: DimensManager.dimens.setWidth(10)),
-                  margin: EdgeInsets.symmetric(
-                    vertical: DimensManager.dimens.setHeight(10),
-                    horizontal: DimensManager.dimens.setWidth(20),
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          DimensManager.dimens.setSp(20)),
-                      color: UIColors.primaryBackground),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      UIText("Order ID ${list[index].orderId}",
-                          color: UIColors.black),
-                      SizedBox(height: DimensManager.dimens.setHeight(10)),
-                      UIText("${list[index].items.length} món"),
-                      SizedBox(height: DimensManager.dimens.setHeight(10)),
-                      UIText(DateFormat('hh:mm a dd/MM/yyy').format(list[index].createAt!.toDate()),),
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: UIText(
-                              "${formatter.format(list[index].orderAmount)} VNĐ"))
-                    ],
-                  ),
-                ),
               );
-            });
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: DimensManager.dimens.setWidth(20),
+                  vertical: DimensManager.dimens.setWidth(10)),
+              margin: EdgeInsets.symmetric(
+                vertical: DimensManager.dimens.setHeight(10),
+                horizontal: DimensManager.dimens.setWidth(20),
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      DimensManager.dimens.setSp(20)),
+                  color: UIColors.primaryBackground),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UIText("Order ID ${list[index].orderId}",
+                      color: UIColors.black),
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  UIText("${list[index].items.length} món"),
+                  SizedBox(height: DimensManager.dimens.setHeight(10)),
+                  UIText(DateFormat('hh:mm a dd/MM/yyy').format(list[index].createAt!.toDate()),),
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: UIText(
+                          "${formatter.format(list[index].orderAmount)} VNĐ"))
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

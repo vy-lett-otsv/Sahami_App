@@ -45,7 +45,7 @@ class OrderEntity {
 
   factory OrderEntity.fromJson(Map<String, dynamic> json) {
     return OrderEntity(
-        orderId: json['orderId'],
+        orderId: json['orderId'] ?? "",
         userEntity: UserEntity.fromJson(json['userEntity']),
         orderAmount: json['orderAmount'].toDouble(),
         orderStatus: json['orderStatus'],

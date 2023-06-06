@@ -13,6 +13,7 @@ import '../views/screens/home/main_view.dart';
 import '../views/screens/home/admin/setting_admin_view.dart';
 import '../views/screens/home/admin/statistics_view.dart';
 import '../views/screens/home/home_view.dart';
+import '../views/screens/home/user/search_view.dart';
 import '../views/screens/manage/customer/customer_create_view.dart';
 
 class NavigationServices {
@@ -39,14 +40,13 @@ class NavigationServices {
   static const String REGISTER_VIEW_ROUTE = "/REGISTER_VIEW_ROUTE";
 
   static const String CUSTOMER_VIEW_ROUTE = "/CUSTOMER_VIEW_ROUTE";
-  static const String CUSTOMER_CREATE_VIEW_ROUTE =
-      "/CUSTOMER_CREATE_VIEW_ROUTE";
-  static const String CUSTOMER_DETAIL_VIEW_ROUTE =
-      "/CUSTOMER_DETAIL_VIEW_ROUTE";
+  static const String CUSTOMER_CREATE_VIEW_ROUTE = "/CUSTOMER_CREATE_VIEW_ROUTE";
+  static const String CUSTOMER_DETAIL_VIEW_ROUTE = "/CUSTOMER_DETAIL_VIEW_ROUTE";
   static const String PRODUCT_CREATE_VIEW_ROUTE = "/PRODUCT_CREATE_VIEW_ROUTE";
   static const String PRODUCT_DETAIL_VIEW_ROUTE = "/PRODUCT_DETAIL_VIEW_ROUTE";
   static const String ORDER_DETAIL_VIEW_ROUTE = "/ORDER_DETAIL_VIEW_ROUTE";
   static const String CATEGORY_VIEW_ROUTE = "/CATEGORY_VIEW_ROUTE";
+  static const String SEARCH_VIEW_ROUTE = "/SEARCH_VIEW_ROUTE";
 
   static const String MAIN_VIEW_ROUTE = "/MAIN_VIEW_ROUTE";
 
@@ -82,6 +82,10 @@ class NavigationServices {
             builder: (_) => MainView(
                   index: args,
                 ));
+      case SEARCH_VIEW_ROUTE:
+        final args = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => SearchView(name: args));
       case ORDER_DETAIL_VIEW_ROUTE:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
@@ -146,6 +150,13 @@ class NavigationServices {
     Object? arguments,
   }) {
     Navigator.pushNamed(context, MAIN_VIEW_ROUTE, arguments: arguments);
+  }
+
+  void navigationToSearchViewScreen(
+      BuildContext context, {
+        Object? arguments,
+      }) {
+    Navigator.pushNamed(context, SEARCH_VIEW_ROUTE, arguments: arguments);
   }
 
   void navigationToProductDetailScreen(

@@ -180,7 +180,7 @@ class PaymentViewModel extends ChangeNotifier{
       setAddressDefault(context);
     } else {
       addOrder(CartService().orderEntity);
-      _notificationApi.createNotification("Bạn có đơn hàng mới");
+      _notificationApi.createNotification(UIStrings.haveANewOrder);
       notificationSuccess(context);
       CartService().total();
       notifyListeners();

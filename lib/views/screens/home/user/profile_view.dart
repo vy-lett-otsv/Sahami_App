@@ -76,7 +76,6 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // NavigationServices.instance.navigationToLoginScreen(context);
                             AuthService().signOut(context);
                           },
                           child: _buildItem(AssetIcons.iconLogout, UIStrings.logout, false),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sahami_app/views/screens/home/user/search_view.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import '../views/constants/dimens_manager.dart';
 
 class HomeViewModel extends ChangeNotifier {
@@ -19,7 +19,7 @@ class HomeViewModel extends ChangeNotifier {
   FocusNode focusNode = FocusNode();
 
   void navigateSearchView(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SearchView()));
+    NavigationServices.instance.navigationToSearchViewScreen(context, arguments: controller.text);
   }
 
   void matrixSlide(int index) {

@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sahami_app/data/remote/entity/category_entity.dart';
 import 'package:sahami_app/data/remote/entity/product_entity.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import '../enums/enum.dart';
+import '../views/constants/ui_strings.dart';
+import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
   late TextEditingController categoryController;
@@ -27,7 +30,6 @@ class ProductViewModel extends ChangeNotifier {
   String _category = "";
 
   String get category => _category;
-
 
   ViewState _viewState = ViewState.idle;
 
@@ -51,34 +53,28 @@ class ProductViewModel extends ChangeNotifier {
   TextEditingController controllerSugar = TextEditingController();
   TextEditingController controllerCaffeine = TextEditingController();
 
+  void updateCategory(CategoryEntity categoryEntity) {
+    categoryController.text = categoryEntity.categoryName;
+    categoryName = categoryEntity.categoryName;
+    notifyListeners();
+  }
+
 
   void addProduct(BuildContext context) {
     final productEntity = ProductEntity(
-      productName: controllerName.text,
-      description: controllerDes.text,
-      price: double.parse(controllerPrice.text),
-      categoryName: categoryName,
-      servingSize: int.parse(controllerServingSize.text.isEmpty
-          ? "0"
-          : controllerServingSize.text.trim()),
-      saturatedFat: int.parse(controllerSaturatedFat.text.isEmpty
-          ? "0"
-          : controllerSaturatedFat.text..trim()),
-      protein: int.parse(
-          controllerProtein.text.isEmpty ? "0" : controllerProtein.text.trim()),
-      sodium: int.parse(
-          controllerSodium.text.isEmpty ? "0" : controllerSodium.text.trim()),
-      sugars: int.parse(
-          controllerSugar.text.isEmpty ? "0" : controllerSugar.text.trim()),
-      caffeine: int.parse(
-          controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text.trim()),
+        productName: controllerName.text,
+        description: controllerDes.text,
+        price: double.parse(controllerPrice.text),
+        categoryName: categoryName
     );
     createProduct(
       productEntity,
       context,
       categoryName,
-    ).then(
-      (value) => NavigationServices().navigationToMainViewScreen(context, arguments: 2)
+    ).then((value) {
+      ToastWidget.showToastSuccess(message: UIStrings.success);
+      NavigationServices().navigationToMainViewScreen(context, arguments: 2);
+    }
     );
   }
 
@@ -86,28 +82,19 @@ class ProductViewModel extends ChangeNotifier {
     _viewState = ViewState.busy;
     QuerySnapshot querySnapshot;
     if (status == "feature") {
-      querySnapshot = await FirebaseFirestore.instance.collection('product').where('status', isEqualTo: "feature").get();
+      querySnapshot = await FirebaseFirestore.instance
+          .collection('product')
+          .where('status', isEqualTo: "feature")
+          .get();
     } else {
-      querySnapshot = await FirebaseFirestore.instance.collection("product").get();
+      querySnapshot =
+      await FirebaseFirestore.instance.collection("product").get();
     }
     List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
       final data = docSnapshot.data() as Map<String, dynamic>;
-      return ProductEntity(
-        productName: data['name'],
-        description: data['description'],
-        price: data['price'],
-        categoryName: data['category_name'],
-        productId: data['id'],
-        image: data['image'],
-        priceSale: data['priceSale'].toDouble(),
-        servingSize: data['serving_size'].toInt(),
-        saturatedFat: data['saturated_fat'].toInt(),
-        protein: data['protein'].toInt(),
-        sodium: data['sodium'].toInt(),
-        sugars: data['sugars'].toInt(),
-        caffeine: data['caffeine'].toInt(),
-      );
+      return ProductEntity.fromJson(data);
     }).toList();
+
     if (status == "feature") {
       _featureProductList = product;
     } else {
@@ -126,22 +113,34 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> createProduct(ProductEntity product, BuildContext context, String categoryName) async {
+  Future<void> createProduct(ProductEntity product, BuildContext context,
+      String categoryName) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child('product').child('/${file!.name}');
     UploadTask uploadTask = ref.putFile(File(file!.path));
     await uploadTask.whenComplete(() => null);
     _imageUrl = await ref.getDownloadURL();
-    final docProduct = FirebaseFirestore.instance.collection('product').doc();
-    product.productId = docProduct.id;
-    product.image = _imageUrl;
-    product.categoryName = categoryName;
-    _category = categoryName;
-    final json = product.toJson();
-    await docProduct.set(json);
+    var collectionRef = FirebaseFirestore.instance.collection('product');
+    var querySnapshot =
+    await collectionRef.orderBy('id', descending: true).limit(1).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var doc = querySnapshot.docs[0];
+      var docId = doc.id;
+      var id = int.parse(docId.substring(docId.lastIndexOf('#') + 1));
+      final docOrder = collectionRef.doc("#${id + 1}");
+      product.productId = docOrder.id;
+      product.image = _imageUrl;
+      product.categoryName = categoryName;
+      await docOrder.set(product.toJson());
+    } else {
+      final docOrder = collectionRef.doc('#1000001');
+      product.productId = docOrder.id;
+      product.image = _imageUrl;
+      product.categoryName = categoryName;
+      await docOrder.set(product.toJson());
+    }
     await fetchProducts("product");
   }
-
 
   Future<void> deleteProduct(BuildContext context, String documentId) async {
     await FirebaseFirestore.instance
@@ -149,6 +148,6 @@ class ProductViewModel extends ChangeNotifier {
         .doc(documentId)
         .delete();
     fetchProducts("product");
-    if(context.mounted) Navigator.pop(context);
+    if (context.mounted) Navigator.pop(context);
   }
 }

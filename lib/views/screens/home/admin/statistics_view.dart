@@ -117,7 +117,7 @@ class _StatisticsViewState extends State<StatisticsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UIText(AuthService().userEntity.userName,
-                  color: UIColors.white, fontWeight: FontWeight.bold, size: 20),
+                  color: UIColors.white, fontWeight: FontWeight.bold, size: 18),
               const SizedBox(height: 5),
               const UIText(UIStrings.admin, color: UIColors.white, size: 16)
             ],
@@ -228,47 +228,51 @@ class _StatisticsViewState extends State<StatisticsView> {
             SizedBox(height: DimensManager.dimens.setHeight(10)),
             Flexible(
               flex: 6,
-              child: viewModel.dataPieChart.isEmpty
-                  ? Column(
-                      children: [
-                        Image.asset(
-                          AssetIcons.iconOrderEmpty,
-                          width: DimensManager.dimens.setWidth(100),
-                          height: DimensManager.dimens.setHeight(100),
-                          fit: BoxFit.cover,
-                        ),
-                        const UIText(
-                          UIStrings.myOrderEmpty,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+              child: viewModel.viewState == ViewState.busy
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
-                  : Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: PieChart(PieChartData(
-                              sections: viewModel.getSections(touchedIndex),
-                              sectionsSpace: 0)),
+                  : viewModel.dataPieChart.isEmpty
+                      ? Column(
+                          children: [
+                            Image.asset(
+                              AssetIcons.iconOrderEmpty,
+                              width: DimensManager.dimens.setWidth(100),
+                              height: DimensManager.dimens.setHeight(100),
+                              fit: BoxFit.cover,
+                            ),
+                            const UIText(
+                              UIStrings.myOrderEmpty,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: PieChart(PieChartData(
+                                  sections: viewModel.getSections(touchedIndex),
+                                  sectionsSpace: 0)),
+                            ),
+                            SizedBox(width: DimensManager.dimens.setHeight(15)),
+                            Flexible(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: viewModel.dataPieChart
+                                    .map((data) => Container(
+                                          child: _buildIndicatorItem(
+                                            color: data.color,
+                                            text: data.name,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: DimensManager.dimens.setHeight(15)),
-                        Flexible(
-                          flex: 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: viewModel.dataPieChart
-                                .map((data) => Container(
-                                      child: _buildIndicatorItem(
-                                        color: data.color,
-                                        text: data.name,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ),
             ),
           ],
         ),
