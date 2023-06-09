@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
+import 'package:sahami_app/services/auth_service.dart';
+import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/viewmodel/order_view_model.dart';
 import 'package:sahami_app/viewmodel/payment_view_model.dart';
 import 'package:sahami_app/views/widget/ui_button_order.dart';
@@ -215,9 +217,8 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                             children: [
                               UIButtonOrder(
                                 callback: () {
-                                  viewModel.updateStatusOrder(
-                                      UIStrings.cancelOrder,
-                                      widget.orderEntity.orderId);
+                                  viewModel.updateStatusOrder(UIStrings.cancelOrder, widget.orderEntity.orderId);
+                                  viewModel.pushNotification(widget.orderEntity.userEntity.tokenDevice, context);
                                 },
                                 text: UIStrings.cancelOrderButton,
                                 backgroundColor: UIColors.white,
@@ -227,8 +228,9 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                 callback: () {
                                   viewModel.updateStatusOrder(
                                       UIStrings.confirmed,
-                                      widget.orderEntity.orderId);
-                                  viewModel.notificationSuccess(context);
+                                      widget.orderEntity.orderId
+                                  );
+
                                 },
                                 text: UIStrings.confirmOrder,
                               ),
@@ -240,7 +242,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                 ? UIButtonOrder(
                                     callback: () {
                                       viewModel.updateStatusOrder(UIStrings.delivering, widget.orderEntity.orderId);
-                                      viewModel.notificationSuccess(context);
+                                      viewModel.notificationSuccess(context, UIStrings.confirmOrderSuccess);
                                     },
                                     text: UIStrings.delivery,
                                   )
@@ -248,7 +250,6 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                     ? UIButtonOrder(
                                         callback: () {
                                           viewModel.updateStatusOrder(UIStrings.finish, widget.orderEntity.orderId);
-                                          viewModel.notificationSuccess(context);
                                         },
                                         text: UIStrings.finish,
                                       )

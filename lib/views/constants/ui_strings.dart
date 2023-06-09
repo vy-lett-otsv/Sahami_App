@@ -1,5 +1,10 @@
 class UIStrings {
   UIStrings._();
+  //auth service
+  static const String role = "role";
+  static const String adminRole = "admin";
+  static const String user = "user";
+
   static const String appName = "Sahami";
   static const String admin = "Admin";
   static const String welcome = "Chào bạn";
@@ -148,6 +153,8 @@ class UIStrings {
   static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
   static const String createOrderSuccess = "Tạo đơn hàng thành công";
   static const String confirmOrderSuccess = "Xác nhận đơn hành thành công";
+  static const String cancelOrderSuccess = "Đơn hàng của bạn đã bị hủy";
+  static const String canceledOrder = "Hủy đơn hàng thành công";
   static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";
 
 
@@ -183,5 +190,6 @@ class UIStrings {
   static const String delivery = "Giao hàng";
 
   static const String haveANewOrder = "Bạn có đơn hàng mới";
+  static const String notificationCancelOrder = "Đơn hàng của bạn đã bị hủy";
 
 }

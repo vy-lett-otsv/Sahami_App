@@ -183,7 +183,7 @@ class _ProductCreateViewState extends State<ProductCreateView> {
         children: [
           const UILabel(title: UIStrings.category),
           const Spacer(),
-          UIText(controller.text.isEmpty ? UIStrings.notYet : controller.text),
+          UIText(controller.text.isEmpty ? UIStrings.notYet : controller.text, size: DimensManager.dimens.setSp(16),),
           GestureDetector(
             child: Icon(
               Icons.keyboard_arrow_right_rounded,

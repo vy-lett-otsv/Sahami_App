@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sahami_app/services/navigation_service.dart';
 import 'package:sahami_app/views/assets/asset_images.dart';
 import '../data/remote/entity/user_entity.dart';
+import '../views/constants/ui_strings.dart';
 
 class AuthService {
   static final AuthService _singleton = AuthService._internal();
@@ -14,6 +15,8 @@ class AuthService {
   }
 
   String keyFCM = " ";
+
+  var isLogin = false;
 
   UserEntity _userEntity = UserEntity(userName: '', contact: '', email: '', tokenDevice: []);
   UserEntity get userEntity => _userEntity;
@@ -40,15 +43,15 @@ class AuthService {
   }
 
   Future<void> roleUser(BuildContext context, String idUser) async {
-    await FirebaseFirestore.instance.collection("user").doc(idUser).get().then(
+    await FirebaseFirestore.instance.collection(UIStrings.user).doc(idUser).get().then(
           (DocumentSnapshot doc) {
         final data = doc.data() as Map<String, dynamic>;
         _userEntity = UserEntity.fromJson(data);
-        String role = data['role'];
-        if (role == "admin") {
-          _userEntity.role = "admin";
+        String role = data[UIStrings.role];
+        if (role == UIStrings.adminRole) {
+          _userEntity.role = UIStrings.adminRole;
         } else {
-          _userEntity.role = "user";
+          _userEntity.role = UIStrings.user;
         }
         checkExistToken(context);
       },

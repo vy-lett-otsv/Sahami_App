@@ -24,6 +24,21 @@ class MainViewModel extends ChangeNotifier{
   Animation<double>? animation;
   AnimationController? controller;
 
+  checkIfLogin(bool mounted, BuildContext context) async {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null && mounted) {
+        AuthService().isLogin = true;
+        AuthService().roleUser(context, user.uid);
+        notifyListeners();
+      }
+      print(AuthService().isLogin);
+    });
+  }
+
+  Future<void> awaitLogin (bool mounted, BuildContext context) async {
+    await checkIfLogin(mounted, context);
+  }
+
 
   void bottomBarItem() {
     if (AuthService().userEntity.role == "admin") {

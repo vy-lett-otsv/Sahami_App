@@ -6,34 +6,7 @@ import '../remote/entity/user_entity.dart';
 class NotificationApi {
   String key = 'key=AAAAg4lulGk:APA91bE5yXKokZ4Jh6h5DSRdfbc7XJUZrhFeOYycPwnOErPtuV2BNtiQDs-SDKgw49rw7yaCJKR1nSamZK8Yex9GaQ7qrNXtAWJQPlDP9PNpq1fxufhkvJGKH3WaRUH0HJ-PhvbOaxYA';
 
-  List<dynamic> _userListKey = [];
-
-  List<dynamic> get userListKey => _userListKey;
-
-  List<UserEntity> _userList = [];
-
-  List<UserEntity> get userList => _userList;
-
-  Future<void> filterKeyAdmin() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("user")
-        .where('role', isEqualTo: 'admin')
-        .get();
-    List<UserEntity> users = querySnapshot.docs.map((docSnapshot) {
-      final data = docSnapshot.data() as Map<String, dynamic>;
-      return UserEntity.fromJson(data);
-    }).toList();
-    _userList = users;
-    _userListKey = userList
-        .map((user) => user.tokenDevice)
-        .toList()
-        .expand((tokens) => tokens)
-        .toList();
-  }
-
-  Future<void> createNotification(String title) async{
-    await filterKeyAdmin();
-    print(userListKey);
+  Future<void> createNotification(String title, List<dynamic> token) async{
     final response =  await http.post(
       Uri.parse('https://fcm.googleapis.com/fcm/send'),
       headers: <String, String>{
@@ -41,7 +14,7 @@ class NotificationApi {
         'Authorization': key,
       },
       body: jsonEncode({
-        "registration_ids": userListKey,
+        "registration_ids": token,
         "notification": {
           // "body": "Bạn có đơn hàng mới",
           "title": title,

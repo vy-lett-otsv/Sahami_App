@@ -115,8 +115,8 @@ class NavigationServices {
   }
 
   void navigationToMainScreen(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-        context, MAIN_ADMIN_ROUTE, (route) => false);
+    Navigator.pushNamed(
+        context, MAIN_ADMIN_ROUTE);
   }
 
   void navigationToLoginScreen(BuildContext context) {

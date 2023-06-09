@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sahami_app/data/remote/entity/order_entity.dart';
 import 'package:sahami_app/services/auth_service.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
+import '../data/api/notification_api.dart';
 import '../enums/enum.dart';
 import '../services/navigation_service.dart';
 import '../views/assets/asset_images.dart';
@@ -48,7 +49,7 @@ class OrderViewModel extends ChangeNotifier {
   final PageController pageController = PageController(initialPage: 0);
   int activePage = 0;
 
-  void notificationSuccess(BuildContext context) {
+  void notificationSuccess(BuildContext context, String content) {
     showDialog(context: context, builder: (context) {
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context).pop(true);
@@ -69,7 +70,7 @@ class OrderViewModel extends ChangeNotifier {
                 width: DimensManager.dimens.setWidth(100),
                 height: DimensManager.dimens.setHeight(100),
               ),
-              UITitle(UIStrings.confirmOrderSuccess, size: DimensManager.dimens.setSp(16), color: UIColors.text,)
+              UITitle(content, size: DimensManager.dimens.setSp(16), color: UIColors.text,)
             ],
           ),
         ),
@@ -90,9 +91,16 @@ class OrderViewModel extends ChangeNotifier {
   void changeStaffTab(productTab) {
     _currentProductTab = productTab;
   }
+
+  final NotificationApi _notificationApi = NotificationApi();
+
+  void pushNotification(List<dynamic> token, BuildContext context) async {
+    await _notificationApi.createNotification(UIStrings.cancelOrderSuccess, token);
+    if(context.mounted) notificationSuccess(context, UIStrings.canceledOrder);
+  }
   
   Future<void> updateStatusOrder(String status, String id) async {
-    FirebaseFirestore.instance.collection('order').doc(id).update({'orderStatus' : status});
+    await FirebaseFirestore.instance.collection('order').doc(id).update({'orderStatus' : status});
     fetchOrderStatus();
     notifyListeners();
   }
@@ -186,8 +194,6 @@ class OrderViewModel extends ChangeNotifier {
         .where("createAt", isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
         .get();
     _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
-    print(_orderListFinish.toString());
-    notifyListeners();
   }
 
   Future<void> fetchOrder() async {

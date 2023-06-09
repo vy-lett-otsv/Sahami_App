@@ -10,6 +10,7 @@ import 'package:sahami_app/views/widget/ui_text.dart';
 import 'package:sahami_app/views/widget/ui_title.dart';
 import '../data/data_local.dart';
 import '../data/remote/entity/order_entity.dart';
+import '../data/remote/entity/user_entity.dart';
 import '../services/auth_service.dart';
 import '../services/cart_service.dart';
 
@@ -171,7 +172,32 @@ class PaymentViewModel extends ChangeNotifier{
 
   bool isAddress = true;
 
-  void checkAddress(BuildContext context) {
+  List<dynamic> _userListKey = [];
+
+  List<dynamic> get userListKey => _userListKey;
+
+  List<UserEntity> _userList = [];
+
+  List<UserEntity> get userList => _userList;
+
+  Future<void> filterKeyAdmin() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .where('role', isEqualTo: 'admin')
+        .get();
+    List<UserEntity> users = querySnapshot.docs.map((docSnapshot) {
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      return UserEntity.fromJson(data);
+    }).toList();
+    _userList = users;
+    _userListKey = userList
+        .map((user) => user.tokenDevice)
+        .toList()
+        .expand((tokens) => tokens)
+        .toList();
+  }
+
+  void checkAddress(BuildContext context) async {
     createOrder();
     if(CartService().orderEntity.address.isEmpty && DataLocal.deliveryOption[0].isSelected) {
       isAddress = false;
@@ -180,7 +206,8 @@ class PaymentViewModel extends ChangeNotifier{
       setAddressDefault(context);
     } else {
       addOrder(CartService().orderEntity);
-      _notificationApi.createNotification(UIStrings.haveANewOrder);
+      await filterKeyAdmin();
+      _notificationApi.createNotification(UIStrings.haveANewOrder, userListKey);
       notificationSuccess(context);
       CartService().total();
       notifyListeners();
