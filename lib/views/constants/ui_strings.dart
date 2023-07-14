@@ -134,6 +134,10 @@ class UIStrings {
   static const String brownSugar = "Brown Sugar Syrup pump";
   static const String addBrownSugar = "Thêm siro Brown Sugar";
   static const String toppings = "Toppings";
+  static const String caramel = "Caramel Syrup pump";
+  static const String addCaramel = "Thêm siro Caramel";
+  static const String vanilla = "Vanilla Syrup pump";
+  static const String addVanilla = "Thêm siro Vanilla";
   static const String cookieCrumbleTopping = "Cookie Crumble Topping";
   static const String addCart = "Thêm vào giỏ hàng";
   static const String refresh = "Làm mới";
@@ -153,6 +157,8 @@ class UIStrings {
   static const String inputAddressNew = "Nhập địa chỉ giao hàng mới";
   static const String createOrderSuccess = "Tạo đơn hàng thành công";
   static const String confirmOrderSuccess = "Xác nhận đơn hành thành công";
+  static const String confirmDeliverySuccess = "Đã chuyển sang đang giao hàng";
+  static const String confirmFinishSuccess = "Đã hoàn tất đơn hàng";
   static const String cancelOrderSuccess = "Đơn hàng của bạn đã bị hủy";
   static const String canceledOrder = "Hủy đơn hàng thành công";
   static const String inputAddress = "Vui lòng nhập địa chỉ giao hàng";

@@ -226,11 +226,8 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                               ),
                               UIButtonOrder(
                                 callback: () {
-                                  viewModel.updateStatusOrder(
-                                      UIStrings.confirmed,
-                                      widget.orderEntity.orderId
-                                  );
-
+                                  viewModel.updateStatusOrder(UIStrings.confirmed, widget.orderEntity.orderId);
+                                  viewModel.notificationSuccess(context, UIStrings.confirmOrderSuccess);
                                 },
                                 text: UIStrings.confirmOrder,
                               ),
@@ -242,7 +239,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                 ? UIButtonOrder(
                                     callback: () {
                                       viewModel.updateStatusOrder(UIStrings.delivering, widget.orderEntity.orderId);
-                                      viewModel.notificationSuccess(context, UIStrings.confirmOrderSuccess);
+                                      viewModel.notificationSuccess(context, UIStrings.confirmDeliverySuccess);
                                     },
                                     text: UIStrings.delivery,
                                   )
@@ -250,6 +247,7 @@ class _OrderDetailViewState extends State<OrderDetailView> {
                                     ? UIButtonOrder(
                                         callback: () {
                                           viewModel.updateStatusOrder(UIStrings.finish, widget.orderEntity.orderId);
+                                          viewModel.notificationSuccess(context, UIStrings.confirmFinishSuccess);
                                         },
                                         text: UIStrings.finish,
                                       )

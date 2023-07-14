@@ -196,6 +196,7 @@ class OrderViewModel extends ChangeNotifier {
     _orderListFinish = getOrderListFromSnapshot(orderSnapshot);
   }
 
+
   Future<void> fetchOrder() async {
     _viewState = ViewState.busy;
     final orderSnapshot = await docOrder

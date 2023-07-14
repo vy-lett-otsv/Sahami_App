@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sahami_app">
+    package="com.one.sahami_app">
 
     <application
         android:name="${applicationName}"

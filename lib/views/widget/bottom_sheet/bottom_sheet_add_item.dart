@@ -180,8 +180,8 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                     viewModel.setQuantityBrownSugarSyrup(true);
                                   }),
                                   _buildQuantity(
-                                      UIStrings.brownSugar,
-                                      UIStrings.addBrownSugar,
+                                      UIStrings.caramel,
+                                      UIStrings.addCaramel,
                                       viewModel,
                                       viewModel.optionEntity.caramelSyrup != 0
                                           ? viewModel.optionEntity.caramelSyrup
@@ -191,8 +191,8 @@ class _BottomSheetAddItemState extends State<BottomSheetAddItem> {
                                     viewModel.setQuantityCaramelSyrup(true);
                                   }),
                                   _buildQuantity(
-                                      UIStrings.brownSugar,
-                                      UIStrings.addBrownSugar,
+                                      UIStrings.vanilla,
+                                      UIStrings.addVanilla,
                                       viewModel,
                                       viewModel.optionEntity.vanillaSyrup, () {
                                     viewModel.setQuantityVanillaSyrup(false);
