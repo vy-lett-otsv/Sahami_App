@@ -6,7 +6,6 @@ class Dimens extends BaseDimens {
 
   @override
   void initialDimens() {
-    print("Dimens initialDimens");
     paddingBottom = max(indicatorBarHeight, 16);
   }
 }

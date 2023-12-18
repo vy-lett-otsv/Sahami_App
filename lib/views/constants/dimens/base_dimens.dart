@@ -26,9 +26,6 @@ abstract class BaseDimens<T> {
     fullWidth = window.physicalSize.width / devicePixelRatio;
     fullHeight = window.physicalSize.height / devicePixelRatio;
     indicatorBarHeight = window.viewPadding.bottom / devicePixelRatio;
-    // print("homeIndicatorHeight: $indicatorBarHeight");
-    // print("fullWidth: $fullWidth");
-    // print("fullHeight: $fullHeight");
 
     if (orientation == Orientation.portrait) {
       statusBarHeight = window.viewPadding.top / devicePixelRatio;
@@ -86,6 +83,8 @@ abstract class BaseDimens<T> {
   double setRadius(double radius) {
     return radius * min(scaleHeight, scaleWidth);
   }
+
+  // double productImageSize = DimensManager.dimens.setHeight(305);
 }
 
 

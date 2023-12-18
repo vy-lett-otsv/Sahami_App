@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahami_app/data/remote/enitity/product_entity.dart';
-import '../enums/view_state.dart';
-import '../views/constants/ui_color.dart';
-import '../views/screens/manage/product/product_create_view.dart';
+import 'package:sahami_app/views/screens/home/main_view.dart';
+import '../enums/enum.dart';
+import '../views/constants/ui_strings.dart';
+import '../views/containers/toast_widget.dart';
 
 class ProductViewModel extends ChangeNotifier {
   ViewState _viewState = ViewState.idle;
@@ -18,21 +18,87 @@ class ProductViewModel extends ChangeNotifier {
 
   List<ProductEntity> get productList => _productList;
 
-  Future<void> fetchProduct() async {
+  List<ProductEntity> _featureProductList = [];
+
+  List<ProductEntity> get featureProductList => _featureProductList;
+
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerPrice = TextEditingController();
+  TextEditingController controllerDes = TextEditingController();
+  TextEditingController controllerServingSize = TextEditingController();
+  TextEditingController controllerSaturatedFat = TextEditingController();
+  TextEditingController controllerProtein = TextEditingController();
+  TextEditingController controllerSodium = TextEditingController();
+  TextEditingController controllerSugar = TextEditingController();
+  TextEditingController controllerCaffeine = TextEditingController();
+
+  String get getControllerName => controllerName.text;
+
+  void addProduct(BuildContext context) {
+    final productEntity = ProductEntity(
+      productName: controllerName.text,
+      description: controllerDes.text,
+      price: double.parse(controllerPrice.text),
+      categoryName: categoryName,
+      servingSize: double.parse(controllerServingSize.text.isEmpty
+          ? "0"
+          : controllerServingSize.text),
+      saturatedFat: double.parse(controllerSaturatedFat.text.isEmpty
+          ? "0"
+          : controllerSaturatedFat.text),
+      protein: double.parse(
+          controllerProtein.text.isEmpty ? "0" : controllerProtein.text),
+      sodium: double.parse(
+          controllerSodium.text.isEmpty ? "0" : controllerSodium.text),
+      sugars: double.parse(
+          controllerSugar.text.isEmpty ? "0" : controllerSugar.text),
+      caffeine: double.parse(
+          controllerCaffeine.text.isEmpty ? "0" : controllerCaffeine.text),
+    );
+    createProduct(
+      productEntity,
+      context,
+      categoryName,
+    ).then(
+      (value) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MainView(
+            index: 2,
+          ),
+        ),
+      ),
+    );
+  }
+
+  late TextEditingController categoryController;
+  String categoryName = "";
+
+  Future<void> fetchProducts(String status) async {
     _viewState = ViewState.busy;
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("product").get();
+    QuerySnapshot querySnapshot;
+    if (status == "feature") {
+      querySnapshot = await FirebaseFirestore.instance.collection('product').where('status', isEqualTo: "feature").get();
+    } else {
+      querySnapshot = await FirebaseFirestore.instance.collection("product").get();
+    }
     List<ProductEntity> product = querySnapshot.docs.map((docSnapshot) {
       final data = docSnapshot.data() as Map<String, dynamic>;
       return ProductEntity(
-          productName: data['name'] ?? "",
-          description: data['description'] ?? "",
-          price: data['price'] ?? 0,
-          categoryName: data['category_name'] ?? "",
-          productId: data['id'],
-          image: data['image'] ?? "");
+        productName: data['name'],
+        description: data['description'],
+        price: data['price'],
+        categoryName: data['category_name'],
+        productId: data['id'],
+        image: data['image'],
+        priceSale: data['priceSale'].toDouble(),
+      );
     }).toList();
-    _productList = product;
+    if (status == "feature") {
+      _featureProductList = product;
+    } else {
+      _productList = product;
+    }
     notifyListeners();
     _viewState = ViewState.success;
   }
@@ -75,38 +141,17 @@ class ProductViewModel extends ChangeNotifier {
     _category = categoryName;
     final json = product.toJson();
     await docProduct.set(json);
-
-    fetchProduct();
-    if (context.mounted) Navigator.pop(context, product);
+    await fetchProducts("product");
+    ToastWidget.showToastSuccess(message: UIStrings.success);
   }
 
-  Future<void> goToScreenCreateProductView(BuildContext context) async {
-    var result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ProductCreateView()),
-    );
-    if (context.mounted) {
-      createProduct(result, context, category);
-      Flushbar(
-        message: "Success",
-        messageColor: UIColors.primary,
-        duration: const Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.TOP,
-        icon: Icon(
-          Icons.task_alt,
-          color: UIColors.primary,
-        ),
-        backgroundColor: UIColors.background,
-      ).show(context);
-    }
-    fetchProduct();
-  }
 
-  Future<void> deleteProduct(String documentId) async {
+  Future<void> deleteProduct(BuildContext context, String documentId) async {
     await FirebaseFirestore.instance
         .collection("product")
         .doc(documentId)
         .delete();
-    fetchProduct();
+    fetchProducts("product");
+    if(context.mounted) Navigator.pop(context);
   }
 }

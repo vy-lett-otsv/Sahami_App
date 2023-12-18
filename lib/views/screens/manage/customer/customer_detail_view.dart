@@ -99,7 +99,7 @@ class _CustomerDetailViewState extends State<CustomerDetailView> {
                   ),
                 ),
                 SizedBox(height: DimensManager.dimens.setHeight(30)),
-                UITilte(UIStrings.order, color: UIColors.primary, fontWeight: FontWeight.bold),
+                UITitle(UIStrings.order, color: UIColors.primary, fontWeight: FontWeight.bold),
                 SizedBox(height: DimensManager.dimens.setHeight(30)),
                 order == true ?
                 Expanded(

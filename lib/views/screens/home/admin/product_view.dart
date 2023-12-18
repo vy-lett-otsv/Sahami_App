@@ -1,14 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/constants/ui_color.dart';
 import 'package:sahami_app/views/constants/ui_strings.dart';
-import '../../../enums/view_state.dart';
-import '../../../viewmodel/product_view_model.dart';
-import '../../widget/ui_text.dart';
-import '../../widget/ui_title.dart';
+import '../../../../enums/enum.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../viewmodel/product_view_model.dart';
+import '../../../widget/ui_text.dart';
+import '../../../widget/ui_title.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   void initState() {
-    _productViewModel.fetchProduct();
+    _productViewModel.fetchProducts("product");
     super.initState();
   }
 
@@ -40,7 +40,7 @@ class _ProductViewState extends State<ProductView> {
           actions: [
             GestureDetector(
                 onTap: () {
-                  _productViewModel.goToScreenCreateProductView(context);
+                  NavigationServices.instance.navigationToProductCreateScreen(context);
                 },
                 child: const Icon(Icons.add)),
             SizedBox(width: DimensManager.dimens.setWidth(20))
@@ -49,12 +49,14 @@ class _ProductViewState extends State<ProductView> {
         body: SafeArea(child: Consumer<ProductViewModel>(
           builder: (_, product, __) {
             return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 _buildSearch(),
-                product.viewState == ViewState.busy
-                    ? const Expanded(
-                        child: Center(child: CircularProgressIndicator()))
-                    : _buildListProduct(context, product)
+                Expanded(
+                  child: product.viewState == ViewState.busy
+                      ? const Center(child: CircularProgressIndicator())
+                      : _buildListProduct(context, product),
+                )
               ],
             );
           },
@@ -98,7 +100,6 @@ class _ProductViewState extends State<ProductView> {
             margin: EdgeInsets.only(top: DimensManager.dimens.setHeight(20)),
             child: const UIText(UIStrings.isEmptyProduct))
         : ListView.builder(
-            scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: product.productList.length,
             itemBuilder: (context, index) {
@@ -108,42 +109,43 @@ class _ProductViewState extends State<ProductView> {
                   motion: const BehindMotion(),
                   children: [
                     SlidableAction(
-                        backgroundColor: UIColors.background,
-                        foregroundColor: UIColors.lightRed,
-                        icon: Icons.delete,
-                        onPressed: (context) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
-                                ),
-                                title: const UITilte(UIStrings.titleConfirm),
-                                content: const UIText(UIStrings.confirmDelete),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: UIColors.white
-                                    ),
-                                    child: UIText(UIStrings.cancel, color: UIColors.primary),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      _productViewModel.deleteProduct(product.productList[index].productId);
-                                      Navigator.pop(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: UIColors.primary
-                                    ),
-                                    child: const UIText(UIStrings.ok, color: UIColors.white),
-                                  )
-                                ],
+                      backgroundColor: UIColors.background,
+                      foregroundColor: UIColors.lightRed,
+                      icon: Icons.delete,
+                      onPressed: (context) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  DimensManager.dimens.setRadius(20))),
+                            ),
+                            title: const UITitle(UIStrings.titleConfirm),
+                            content: const UIText(UIStrings.confirmDelete),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: UIColors.white),
+                                child: UIText(UIStrings.cancel,
+                                    color: UIColors.primary),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  product.deleteProduct(context, product.productList[index].productId);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: UIColors.primary),
+                                child: const UIText(UIStrings.ok,
+                                    color: UIColors.white),
                               )
-                          );
-                        }),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                     const Spacer(),
                   ],
                 ),
@@ -164,8 +166,7 @@ class _ProductViewState extends State<ProductView> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(
                             DimensManager.dimens.setSp(20)),
-                        child: Image.network(
-                            product.productList[index].image,
+                        child: Image.network(product.productList[index].image,
                             width: DimensManager.dimens.setWidth(80),
                             height: DimensManager.dimens.setHeight(80),
                             fit: BoxFit.cover),
@@ -185,7 +186,8 @@ class _ProductViewState extends State<ProductView> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: DimensManager.dimens.setWidth(10),
                                 vertical: DimensManager.dimens.setHeight(5)),
-                            child: Text(product.productList[index].categoryName),
+                            child:
+                                Text(product.productList[index].categoryName),
                           )
                         ],
                       )
@@ -193,6 +195,7 @@ class _ProductViewState extends State<ProductView> {
                   ),
                 ),
               );
-            });
+            },
+          );
   }
 }
