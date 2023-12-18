@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:sahami_app/viewmodel/customer_view_model.dart';
 import 'package:sahami_app/views/constants/dimens_manager.dart';
 import 'package:sahami_app/views/widget/ui_text.dart';
-import '../../../enums/view_state.dart';
-import '../../../services/navigation_service.dart';
-import '../../../utils/constants.dart';
-import '../../constants/ui_color.dart';
-import '../../constants/ui_strings.dart';
-import '../../widget/bottomsheet_model.dart';
-import 'package:provider/provider.dart';
-import '../../widget/ui_title.dart';
+import '../../../../enums/enum.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../utils/constants.dart';
+import '../../../constants/ui_color.dart';
+import '../../../constants/ui_strings.dart';
+import '../../../widget/bottomsheet_model.dart';
+import '../../../widget/ui_title.dart';
 
 class CustomerView extends StatefulWidget {
   const CustomerView({Key? key}) : super(key: key);
@@ -130,7 +130,7 @@ class _CustomerViewState extends State<CustomerView> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(DimensManager.dimens.setRadius(20))),
                                 ),
-                                title: const UITilte(UIStrings.titleConfirm),
+                                title: const UITitle(UIStrings.titleConfirm),
                                 content: const UIText(UIStrings.confirmDelete),
                                 actions: <Widget>[
                                   ElevatedButton(

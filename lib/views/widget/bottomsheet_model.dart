@@ -28,7 +28,7 @@ class BottomSheetDialog {
                   padding: EdgeInsets.symmetric(
                       vertical: DimensManager.dimens.setWidth(20)
                   ),
-                  child: Center(child: UITilte(UIStrings.filter, color: UIColors.primary)),
+                  child: Center(child: UITitle(UIStrings.filter, color: UIColors.primary)),
                 ),
                 Divider(color: UIColors.text),
                 Container(
@@ -95,7 +95,7 @@ class BottomSheetDialog {
                             icon: const Icon(Icons.keyboard_arrow_left_rounded,
                                 size: 24),
                           ),
-                          const UITilte(UIStrings.category),
+                          const UITitle(UIStrings.category),
                           SizedBox(width: DimensManager.dimens.setWidth(44)),
                         ],
                       ),

@@ -1,9 +1,6 @@
 import 'dimens.dart';
 
 class DimensManager {
-  static double fullWidthScreen = 0;
-  static double fullHeightScreen = 0;
-
   DimensManager._() {
     _setDimens();
   }

@@ -54,6 +54,8 @@ dependencies:
   syncfusion_flutter_charts: 21.1.38
   flutter_slidable: 2.0.0
   another_flushbar: 1.12.29
+  dots_indicator: 2.1.0
+  fluttertoast: 8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -110,6 +112,10 @@ flutter:
     - family: Outfit
       fonts:
         - asset: fonts/Outfit-Regular.ttf
+          style: italic
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Medium.ttf
           style: italic
   #
   # For details regarding fonts from package dependencies,

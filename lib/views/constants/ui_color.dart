@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 class UIColors {
   UIColors._();
   static final Color primary = HexColor.fromHex("#82AA06");
-  static final Color inputBackground = HexColor.fromHex("#D9D9D9");
-  static final Color background = HexColor.fromHex("#F3F4F6");
-  static final Color primaryBackground = HexColor.fromHex("#F4F4F5");
   static final Color text = HexColor.fromHex("#6E6E6E");
   static final Color star = HexColor.fromHex("#F7DC69");
   static final Color label = HexColor.fromHex("#F2F2FF");
@@ -15,7 +12,11 @@ class UIColors {
   static final Color red = HexColor.fromHex("#D52731");
   static final Color primarySecond = HexColor.fromHex("#A0C743");
   static final Color border = HexColor.fromHex("#D9D9D9");
+
   static final Color backgroundBottom = HexColor.fromHex("#E5E5E5");
+  static final Color backgroundInput = HexColor.fromHex("#D9D9D9");
+  static final Color background = HexColor.fromHex("#F3F4F6");
+  static final Color primaryBackground = HexColor.fromHex("#F4F4F5");
 
   static const Color black = Colors.black;
   static const Color white = Colors.white;

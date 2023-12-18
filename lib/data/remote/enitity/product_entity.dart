@@ -4,48 +4,48 @@ class ProductEntity {
   final String description;
   final double price;
   double priceSale;
-  double servingSize;
-  double saturatedFat;
-  double protein;
-  double sodium;
-  double sugars;
-  double caffeine;
+  int servingSize;
+  int saturatedFat;
+  int protein;
+  int sodium;
+  int sugars;
+  int caffeine;
   String image;
   final String status;
   String categoryName;
 
-  ProductEntity({
-    this.productId = ' ',
-    required this.productName,
-    required this.description,
-    required this.price,
-    this.priceSale = 0,
-    this.servingSize = 0,
-    this.saturatedFat = 0,
-    this.protein = 0,
-    this.sodium = 0,
-    this.sugars = 0,
-    this.caffeine = 0,
-    this.image = '',
-    this.status = '',
-    required this.categoryName
-  });
+  ProductEntity(
+      {this.productId = ' ',
+      required this.productName,
+      required this.description,
+      required this.price,
+      this.priceSale = 0.0,
+      this.servingSize = 0,
+      this.saturatedFat = 0,
+      this.protein = 0,
+      this.sodium = 0,
+      this.sugars = 0,
+      this.caffeine = 0,
+      this.image = '',
+      this.status = '',
+      required this.categoryName});
 
   Map<String, dynamic> toJson() => {
-    'id': productId,
-    'name': productName,
-    'description': description,
-    'price': price,
-    'serving_size': servingSize,
-    'saturated_fat': saturatedFat,
-    'protein': protein,
-    'sodium': sodium,
-    'sugars': sugars,
-    'caffeine': caffeine,
-    'image': image,
-    'status': status,
-    'category_name': categoryName,
-  };
+        'id': productId,
+        'name': productName,
+        'description': description,
+        'price': price,
+        'priceSale': priceSale,
+        'serving_size': servingSize,
+        'saturated_fat': saturatedFat,
+        'protein': protein,
+        'sodium': sodium,
+        'sugars': sugars,
+        'caffeine': caffeine,
+        'image': image,
+        'status': status,
+        'category_name': categoryName,
+      };
 
   factory ProductEntity.fromJson(Map<String, dynamic> json) {
     return ProductEntity(
@@ -64,5 +64,12 @@ class ProductEntity {
       status: json['status'],
       categoryName: json['category_name'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'ProductEntity{productId: $productId, productName: $productName, description: $description, price: $price, '
+        'priceSale: $priceSale, servingSize: $servingSize, saturatedFat: $saturatedFat, protein: $protein,  '
+        'sodium: $sodium, sugars: $sugars, caffeine: $caffeine, image: $image, status: $status, categoryName: $categoryName,}';
   }
 }

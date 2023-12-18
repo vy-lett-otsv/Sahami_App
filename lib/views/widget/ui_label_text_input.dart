@@ -71,11 +71,21 @@ class UILabelTextInput extends StatelessWidget {
           ),
           inputNumber == false
               ? TextField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 0, vertical: DimensManager.dimens.setHeight(10)),
+                  ),
                   controller: controller,
                   cursorColor: UIColors.text,
                   focusNode: focusNode,
                 )
               : TextField(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 0, vertical: DimensManager.dimens.setHeight(10)),
+                  ),
                   controller: controller,
                   cursorColor: UIColors.text,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
